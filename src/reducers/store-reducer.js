@@ -29,33 +29,40 @@ export default function reducer(state, action) {
       return {
         ...state, loading: false, error: false, user: undefined, history: {},
       };
-    case 'GET_COMMENTS_ATTEMPT':
-      return {
-        ...state, loading: true, error: false, lastSearchId: undefined,
-      };
-    case 'GET_COMMENTS_SUCCESS':
-      newHistory[action.payload.id] = { ...action.payload };
-      return {
-        ...state, history: newHistory, loading: false, lastSearchId: action.payload.id,
-      };
-    case 'GET_COMMENTS_FAIL':
-      return {
-        ...state, loading: false, error: true, msg: action.payload.msg,
-      };
+    // case 'GET_COMMENTS_ATTEMPT':
+    //   return {
+    //     ...state, loading: true, error: false, lastSearchId: undefined,
+    //   };
+    // case 'GET_COMMENTS_SUCCESS':
+    //   newHistory[action.payload.id] = { ...action.payload };
+    //   return {
+    //     ...state, history: newHistory, loading: false, lastSearchId: action.payload.id,
+    //   };
+    // case 'GET_COMMENTS_FAIL':
+    //   return {
+    //     ...state, loading: false, error: true, msg: action.payload.msg,
+    //   };
     case 'CLEAN_ALERT_BAR':
       return {
         ...state, msg: '',
       };
-    case 'CLEAN_LAST_SEARCH_ID':
-      return {
-        ...state, lastSearchId: undefined,
-      };
-    case 'REMOVE_SEARCH':
-      if (newHistory[action.payload.id]) {
-        delete newHistory[action.payload.id];
+    case 'SET_GRAPH_SENSOR':
+      if (action.payload.graph === 1) {
+        return {
+          ...state, graph1_sensor: action.payload.sensor,
+        };
       }
       return {
-        ...state, history: newHistory,
+        ...state, graph2_sensor: action.payload.sensor,
+      };
+    case 'SET_GRAPH_DATE':
+      if (action.payload.graph === 1) {
+        return {
+          ...state, graph1_date: action.payload.date,
+        };
+      }
+      return {
+        ...state, graph2_date: action.payload.date,
       };
     default:
       return state;

@@ -9,6 +9,10 @@ const initialState = {
   lastSearchId: undefined,
   user: undefined, // Object from user entity /models/user.js
   history: {}, // object with search entities (/models/search.js)
+  graph1_sensor: '',
+  graph2_sensor: '',
+  graph1_date: '',
+  graph2_date: '',
 };
 
 const Store = createContext();

@@ -8,15 +8,25 @@ import DateFnsUtils from '@date-io/date-fns';
 import esLocale from 'date-fns/locale/es';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import useStyles from './useStyles';
+import { setGraphDate, setGraphSensor } from '../../actions/chart-actions';
+import Store from '../../reducers/store';
 
 function DateSelector(props) {
-  const { defaultSensor } = props;
+  const { defaultSensor, graph } = props;
+  const [state, dispatch] = useContext(Store);
   const [sensorId, setSensorId] = useState(defaultSensor);
   const [date, setDate] = useState(new Date());
   const classes = useStyles();
+  const dateFns = new DateFnsUtils();
 
   const handleChangeSensorId = (event) => {
     setSensorId(event.target.value);
+    setGraphSensor(dispatch, { graph, sensorId: event.target.value });
+  };
+
+  const handleChangeDate = (value) => {
+    setDate(value);
+    setGraphDate(dispatch, { graph, date: dateFns.format(value, 'dd/MM/yyyy') });
   };
 
   return (
@@ -37,7 +47,7 @@ function DateSelector(props) {
           label="Fecha"
           format="dd/MM/yyyy"
           value={date}
-          onChange={setDate}
+          onChange={handleChangeDate}
           animateYearScrolling
         />
       </MuiPickersUtilsProvider>
@@ -49,4 +59,5 @@ export default DateSelector;
 
 DateSelector.propTypes = {
   defaultSensor: PropTypes.string,
+  graph: PropTypes.number,
 };
