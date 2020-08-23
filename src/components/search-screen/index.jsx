@@ -6,7 +6,7 @@ import AlertBar from '../alert-bar';
 import SearchForm from '../search-form';
 import Store from '../../reducers/store';
 import useStyles from './useStyles';
-
+import Chart from '../chart';
 
 function SearchScreen(props) {
   const { setFormOpen } = props;
@@ -28,9 +28,7 @@ function SearchScreen(props) {
       style={{ minHeight: '100vh' }}
     >
       <Grid item xs={10} md={6} xl={3}>
-        <div className={classes.logo}>
-          <img alt="youtube logo" src={`${process.env.PUBLIC_URL}/youtube-logo.png`} />
-        </div>
+        <Chart />
         <SearchForm setFormOpen={setFormOpen} />
         <AlertBar msg={state.msg} error={state.error} />
       </Grid>
