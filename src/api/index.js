@@ -61,7 +61,7 @@ export default {
       return (process.env.REACT_APP_DEBUG === 'true' ? Promise.resolve({}) : fetch(q, opt));
     },
   },
-  log: {
+  chart: {
     getData(date, stationId, token) {
       const q = [
         process.env.REACT_APP_API_URL,

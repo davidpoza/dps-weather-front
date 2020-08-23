@@ -7,6 +7,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import useStyles from './useStyles';
 import DateSelector from '../date-selector';
 import Store from '../../reducers/store';
+import { fetchLogData } from '../../actions/chart-actions';
 
 function SearchFrom(props) {
   const { setFormOpen } = props;
@@ -18,6 +19,21 @@ function SearchFrom(props) {
 
   const classes = useStyles();
 
+  const makeRequests = () => {
+    fetchLogData(dispatch, {
+      graph: 1,
+      date: get(state, 'graph1_date'),
+      stationId: get(state, 'graph1_sensor'),
+      token: get(state, 'user.token'),
+    });
+    fetchLogData(dispatch, {
+      graph: 2,
+      date: get(state, 'graph2_date'),
+      stationId: get(state, 'graph2_sensor'),
+      token: get(state, 'user.token'),
+    });
+  };
+
   return (
     <div>
       <form className={classes.root} noValidate autoComplete="off">
@@ -28,12 +44,11 @@ function SearchFrom(props) {
           <Button
             color="primary"
             endIcon={<Icon>search</Icon>}
-            // onClick={state.user ? makeRequest : openLogin}
+            onClick={state.user ? makeRequests : openLogin}
             size="large"
             variant="contained"
-            disabled
           >
-            Buscar
+            Visualizar
           </Button>
         </div>
       </form>

@@ -13,6 +13,8 @@ const initialState = {
   graph2_sensor: '',
   graph1_date: '',
   graph2_date: '',
+  graph1_points: [],
+  graph2_points: [],
 };
 
 const Store = createContext();
