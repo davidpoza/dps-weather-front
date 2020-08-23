@@ -21,6 +21,25 @@ function Chart(props) {
     return data.filter((value) => (value.temperature > -10 && value.temperature < 50));
   };
 
+  const formatData = (data, type = 'temperature') => {
+    if (type === 'pressure') {
+      return data.map((value) => ({
+        x: value.created_on.slice(11, -3),
+        y: value.pressure,
+      }));
+    }
+    if (type === 'humidity') {
+      return data.map((value) => ({
+        x: value.created_on.slice(11, -3),
+        y: value.humidity,
+      }));
+    }
+    return data.map((value) => ({
+      x: value.created_on.slice(11, -3),
+      y: value.temperature,
+    }));
+  };
+
   return (
     <div className={classes.root}>
       <ResponsiveLine
@@ -35,23 +54,17 @@ function Chart(props) {
         data={[
           {
             id: sensor1,
-            data: filterData(data1, 'temperature').map((value) => ({
-              x: value.created_on,
-              y: value.temperature,
-            })),
+            data: formatData(filterData(data1, 'temperature'), 'temperature'),
           },
           {
             id: sensor2,
-            data: filterData(data2, 'temperature').map((value) => ({
-              x: value.created_on,
-              y: value.temperature,
-            })),
+            data: formatData(filterData(data2, 'temperature'), 'temperature'),
           },
         ]}
         xScale={{
           // uses d3-time: https://developer.aliyun.com/mirror/npm/package/d3-time-format
           // format as reveived from API
-          type: 'time', format: '%d-%m-%Y %H:%M:%S', precision: 'second',
+          type: 'time', format: '%H:%M', precision: 'second', useUTC: false,
         }}
         xFormat="time:%H:%M" // used in tootltips
         yScale={{
