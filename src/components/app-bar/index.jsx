@@ -39,7 +39,7 @@ export default function MyAppBar(props) {
           <MenuIcon />
         </IconButton>
         <Typography variant="h6" className={classes.title}>
-          Youtube Comments
+          Dps-Weather
         </Typography>
         {
           userId
