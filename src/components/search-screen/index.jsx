@@ -28,7 +28,12 @@ function SearchScreen(props) {
       style={{ minHeight: '100vh' }}
     >
       <Grid item xs={10} md={8} xl={3}>
-        <Chart data1={state.graph1_points} data2={state.graph2_points} />
+        <Chart
+          data1={state.graph1_points}
+          data2={state.graph2_points}
+          sensor1={state.graph1_sensor}
+          sensor2={state.graph2_sensor}
+        />
         <SearchForm setFormOpen={setFormOpen} />
         <AlertBar msg={state.msg} error={state.error} />
       </Grid>

@@ -5,7 +5,9 @@ import useStyles from './useStyles';
 import Store from '../../reducers/store';
 
 function Chart(props) {
-  const { data1, data2 } = props;
+  const {
+    data1, data2, sensor1, sensor2,
+  } = props;
   const classes = useStyles();
 
   // removes wrong data which is out of certain range depending of type of data
@@ -32,14 +34,14 @@ function Chart(props) {
         }}
         data={[
           {
-            id: 'Sensor1',
+            id: sensor1,
             data: filterData(data1, 'temperature').map((value) => ({
               x: value.created_on,
               y: value.temperature,
             })),
           },
           {
-            id: 'Sensor2',
+            id: sensor2,
             data: filterData(data2, 'temperature').map((value) => ({
               x: value.created_on,
               y: value.temperature,
@@ -73,7 +75,7 @@ function Chart(props) {
               anchor: 'bottom-right',
               direction: 'column',
               itemHeight: 20,
-              itemWidth: 80,
+              itemWidth: 120,
               translateX: 0, // px
               translateY: -40, // px
               justify: true,
@@ -88,7 +90,8 @@ function Chart(props) {
 export default Chart;
 
 Chart.propTypes = {
+  sensor1: PropTypes.string,
+  sensor2: PropTypes.string,
   data1: PropTypes.array,
   data2: PropTypes.array,
-
 };
