@@ -79,7 +79,7 @@ function Chart(props) {
         axisBottom={{
           legend: 'hora',
           legendOffset: -12,
-          format: '%H:%M',
+          format: '%H',
           tickValues: 'every hour',
         }}
         legends={
