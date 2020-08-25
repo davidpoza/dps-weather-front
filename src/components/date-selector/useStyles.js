@@ -9,6 +9,8 @@ export default makeStyles((theme) => ({
     },
   },
   control: {
-    margin: '1em',
+    [theme.breakpoints.up('sm')]: {
+      margin: '1em',
+    },
   },
 }));

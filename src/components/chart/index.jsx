@@ -49,7 +49,7 @@ function Chart(props) {
         useMesh // interaction with mouse
         tooltip={(v) => `${v.point.data.yFormatted} a las ${v.point.data.xFormatted}`} // tooltip for interaction
         margin={{
-          top: 20, right: 20, bottom: 60, left: 80,
+          top: 20, right: 20, bottom: 60, left: 40,
         }}
         data={[
           {
