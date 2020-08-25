@@ -72,13 +72,11 @@ function Chart(props) {
         }}
         axisTop={null}
         axisRight={null}
-        axisLeft={{
-          legend: 'temperatura',
-          legendOffset: 12,
-        }}
+        axisLeft={null}
         axisBottom={{
           legend: 'hora',
-          legendOffset: -12,
+          legendOffset: 40,
+          legendPosition: 'middle',
           format: '%H',
           tickValues: 'every hour',
         }}
