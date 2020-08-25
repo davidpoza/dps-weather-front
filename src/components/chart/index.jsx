@@ -1,6 +1,11 @@
 import React, { useState, useContext, useCallback } from 'react';
 import { ResponsiveLine } from '@nivo/line';
 import PropTypes from 'prop-types';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
 import useStyles from './useStyles';
 import Store from '../../reducers/store';
 
@@ -8,7 +13,12 @@ function Chart(props) {
   const {
     data1, data2, sensor1, sensor2,
   } = props;
+  const [mode, setMode] = useState('temperature');
   const classes = useStyles();
+
+  const handleModeChange = (event) => {
+    setMode(event.target.value);
+  };
 
   // removes wrong data which is out of certain range depending of type of data
   const filterData = (data, type = 'temperature') => {
@@ -42,6 +52,19 @@ function Chart(props) {
 
   return (
     <div className={classes.root}>
+      <FormControl className={classes.modeSelector}>
+        <InputLabel id="mode-label">Modo</InputLabel>
+        <Select
+          labelId="mode-label"
+          id="mode-select"
+          value={mode}
+          onChange={handleModeChange}
+        >
+          <MenuItem value="temperature">Temperature</MenuItem>
+          <MenuItem value="pressure">Barómetro</MenuItem>
+          <MenuItem value="humidity">Humedad</MenuItem>
+        </Select>
+      </FormControl>
       <ResponsiveLine
         colors={{ scheme: 'set1' }}
         pointSize={4}
