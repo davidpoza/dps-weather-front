@@ -11,7 +11,7 @@ import Store from '../../reducers/store';
 
 function Chart(props) {
   const {
-    data1, data2, sensor1, sensor2,
+    data1, data2, date1, date2, sensor1, sensor2,
   } = props;
   const [mode, setMode] = useState('temperature');
   const classes = useStyles();
@@ -70,17 +70,18 @@ function Chart(props) {
         pointSize={4}
         curve="monotoneX"
         useMesh // interaction with mouse
+        animate={false}
         tooltip={(v) => `${v.point.data.yFormatted} a las ${v.point.data.xFormatted}`} // tooltip for interaction
         margin={{
           top: 20, right: 20, bottom: 130, left: 40,
         }}
         data={[
           {
-            id: sensor1,
+            id: `#1 ${date1} ${sensor1}`,
             data: formatData(filterData(data1, 'temperature'), 'temperature'),
           },
           {
-            id: sensor2,
+            id: `#2 ${date2} ${sensor2}`,
             data: formatData(filterData(data2, 'temperature'), 'temperature'),
           },
         ]}
@@ -95,7 +96,9 @@ function Chart(props) {
         }}
         axisTop={null}
         axisRight={null}
-        axisLeft={null}
+        axisLeft={{
+          legendOffset: 12,
+        }}
         axisBottom={{
           legend: 'hora',
           legendOffset: 40,
@@ -109,7 +112,7 @@ function Chart(props) {
               anchor: 'bottom-right',
               direction: 'column',
               itemHeight: 20,
-              itemWidth: 120,
+              itemWidth: 175,
               translateX: 0, // px
               translateY: 70, // px
               justify: true,
@@ -128,4 +131,6 @@ Chart.propTypes = {
   sensor2: PropTypes.string,
   data1: PropTypes.array,
   data2: PropTypes.array,
+  date1: PropTypes.string,
+  date2: PropTypes.string,
 };

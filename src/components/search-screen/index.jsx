@@ -31,8 +31,10 @@ function SearchScreen(props) {
         <Chart
           data1={state.graph1_points}
           data2={state.graph2_points}
-          sensor1={state.graph1_sensor}
-          sensor2={state.graph2_sensor}
+          sensor1={state.graph1_sensor || 'HOME_INDOOR'}
+          sensor2={state.graph2_sensor || 'HOME_OUTDOOR'}
+          date1={state.graph1_date}
+          date2={state.graph2_date}
         />
         <SearchForm setFormOpen={setFormOpen} />
         <AlertBar msg={state.msg} error={state.error} />

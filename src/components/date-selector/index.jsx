@@ -27,8 +27,10 @@ function DateSelector(props) {
   };
 
   const handleChangeDate = (value) => {
-    setDate(value);
-    setGraphDate(dispatch, { graph, date: dateFns.format(value, 'yyyy-MM-dd') });
+    if (value) {
+      setDate(value);
+      setGraphDate(dispatch, { graph, date: dateFns.format(value, 'yyyy-MM-dd') });
+    }
   };
 
   return (
