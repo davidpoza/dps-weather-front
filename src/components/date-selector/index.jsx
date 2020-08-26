@@ -20,8 +20,10 @@ function DateSelector(props) {
   const dateFns = new DateFnsUtils();
 
   const handleChangeSensorId = (event) => {
-    setSensorId(event.target.value);
-    setGraphSensor(dispatch, { graph, sensorId: event.target.value });
+    if (event.target.value !== '') {
+      setSensorId(event.target.value);
+      setGraphSensor(dispatch, { graph, sensorId: event.target.value });
+    }
   };
 
   const handleChangeDate = (value) => {

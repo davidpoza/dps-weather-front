@@ -23,13 +23,13 @@ function SearchFrom(props) {
     fetchLogData(dispatch, {
       graph: 1,
       date: get(state, 'graph1_date'),
-      stationId: get(state, 'graph1_sensor'),
+      stationId: get(state, 'graph1_sensor') || 'HOME_INDOOR',
       token: get(state, 'user.token'),
     });
     fetchLogData(dispatch, {
       graph: 2,
       date: get(state, 'graph2_date'),
-      stationId: get(state, 'graph2_sensor'),
+      stationId: get(state, 'graph2_sensor') || 'HOME_OUTDOOR',
       token: get(state, 'user.token'),
     });
   };
