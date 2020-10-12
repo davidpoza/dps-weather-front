@@ -51,6 +51,39 @@ export default function reducer(state, action) {
       return {
         ...state, loading: false, error: true, msg: action.payload.msg,
       };
+    case 'GET_CURRENT_ATTEMPT':
+      return {
+        ...state,
+        loading: true,
+        error: false,
+        currentConditions: {
+          outdoorTemp: undefined,
+          indoorTemp: undefined,
+          outdoorHum: undefined,
+          indoorHum: undefined,
+          pressure: undefined,
+          wind: undefined,
+          date: undefined,
+        },
+      };
+    case 'GET_CURRENT_SUCCESS':
+      return {
+        ...state,
+        loading: false,
+        currentConditions: {
+          outdoorTemp: action.payload.outdoorTemp,
+          indoorTemp: action.payload.indoorTemp,
+          outdoorHum: action.payload.outdoorHum,
+          indoorHum: action.payload.indoorHum,
+          pressure: action.payload.pressure,
+          wind: action.payload.wind,
+          date: action.payload.date,
+        },
+      };
+    case 'GET_CURRENT_FAIL':
+      return {
+        ...state, loading: false, error: true, msg: action.payload.msg,
+      };
     case 'CLEAN_ALERT_BAR':
       return {
         ...state, msg: '',

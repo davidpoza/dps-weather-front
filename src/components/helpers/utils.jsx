@@ -50,4 +50,8 @@ export function sortCommentsByDate(a, b) {
   return (0);
 }
 
+export function getCurrentDate() {
+  return (moment(new Date()).format('DD-MM-YYYY HH:mm'));
+}
+
 /* eslint-enable import/prefer-default-export */

@@ -85,9 +85,9 @@ function Chart(props) {
           value={mode}
           onChange={handleModeChange}
         >
-          <MenuItem value="temperature">Temperature</MenuItem>
-          <MenuItem value="pressure">Barómetro</MenuItem>
-          <MenuItem value="humidity">Humedad</MenuItem>
+          <MenuItem value="temperature">Temperatura</MenuItem>
+          <MenuItem value="pressure">Presión atmosférica</MenuItem>
+          <MenuItem value="humidity">Humedad Relativa</MenuItem>
           <MenuItem value="wind">Viento</MenuItem>
           <MenuItem value="thw">THW</MenuItem>
         </Select>

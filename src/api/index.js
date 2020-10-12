@@ -79,6 +79,22 @@ export default {
       };
       return (fetch(q, opt));
     },
+    getCurrentData(stationId, token) {
+      const q = [
+        process.env.REACT_APP_API_URL,
+        '/api/logging/log/',
+        `${stationId}`,
+      ].join('');
+      const opt = {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      return (fetch(q, opt));
+    },
   },
   comments: {
     search(videoId, keywords, token) {

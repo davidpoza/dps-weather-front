@@ -15,6 +15,15 @@ const initialState = {
   graph2_date: '',
   graph1_points: [],
   graph2_points: [],
+  currentConditions: {
+    date: undefined,
+    outdoorTemp: undefined,
+    indoorTemp: undefined,
+    outdootHum: undefined,
+    indoorHum: undefined,
+    pressure: undefined,
+    wind: undefined,
+  },
 };
 
 const Store = createContext();
