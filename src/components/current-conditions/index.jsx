@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import moment from 'moment-timezone';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
@@ -22,10 +23,13 @@ function CurrentConditions(props) {
   };
 
   useEffect(() => {
-    const currentDate = getCurrentDate(); // DD-MM-YYYY HH:mm format
-    const lastRegisteredDate = get(state, 'currentConditions.date');
+    const currentDate = moment().tz('Europe/Madrid', new Date());
+    const lastRegisteredDate = moment().tz(
+      get(state, 'currentConditions.date'), 'DD-MM-YYYY HH:mm:ss', 'Europe/Madrid',
+    );
+    const diff = currentDate.diff(lastRegisteredDate, 'minutes');
     if (get(state, 'user.token') && !get(state, 'loading')
-      && (!lastRegisteredDate || !lastRegisteredDate.startsWith(currentDate))) {
+      && (!lastRegisteredDate || diff >= 15)) {
       makeRequest();
     }
   });

@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 /* eslint-disable import/prefer-default-export */
 export function videoUrlIsValid(url) {
@@ -51,7 +51,7 @@ export function sortCommentsByDate(a, b) {
 }
 
 export function getCurrentDate() {
-  return (moment(new Date()).format('DD-MM-YYYY HH:mm'));
+  return (moment().tz('Europe/Madrid', new Date()).format('DD-MM-YYYY HH:mm'));
 }
 
 /* eslint-enable import/prefer-default-export */
