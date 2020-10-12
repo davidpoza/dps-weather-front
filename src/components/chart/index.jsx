@@ -28,6 +28,9 @@ function Chart(props) {
     if (type === 'humidity') {
       return data.filter((value) => (value.humidity > 0 && value.humidity < 100));
     }
+    if (type === 'wind') {
+      return data.filter((value) => (value.wind >= 0 && value.wind < 50));
+    }
     return data.filter((value) => (value.temperature > -10 && value.temperature < 50));
   };
 
@@ -44,10 +47,32 @@ function Chart(props) {
         y: value.humidity,
       }));
     }
+    if (type === 'wind') {
+      return data.map((value) => ({
+        x: value.created_on.slice(11, -3),
+        y: value.wind,
+      }));
+    }
     return data.map((value) => ({
       x: value.created_on.slice(11, -3),
       y: value.temperature,
     }));
+  };
+
+  /**
+   * get units given a measurement mode
+   */
+  const getUnits = (type = 'temperature') => {
+    if (type === 'pressure') {
+      return ' mbar';
+    }
+    if (type === 'wind') {
+      return ' Km/h';
+    }
+    if (type === 'humidity') {
+      return '%';
+    }
+    return '°';
   };
 
   return (
@@ -63,6 +88,8 @@ function Chart(props) {
           <MenuItem value="temperature">Temperature</MenuItem>
           <MenuItem value="pressure">Barómetro</MenuItem>
           <MenuItem value="humidity">Humedad</MenuItem>
+          <MenuItem value="wind">Viento</MenuItem>
+          <MenuItem value="thw">THW</MenuItem>
         </Select>
       </FormControl>
       <ResponsiveLine
@@ -71,18 +98,18 @@ function Chart(props) {
         curve="monotoneX"
         useMesh // interaction with mouse
         animate={false}
-        tooltip={(v) => `${v.point.data.yFormatted} a las ${v.point.data.xFormatted}`} // tooltip for interaction
+        tooltip={(v) => `${v.point.data.yFormatted}${getUnits(mode)} a las ${v.point.data.xFormatted}`} // tooltip for interaction
         margin={{
-          top: 20, right: 20, bottom: 130, left: 40,
+          top: 20, right: 20, bottom: 130, left: 50,
         }}
         data={[
           {
             id: `#1 ${date1} ${sensor1}`,
-            data: formatData(filterData(data1, 'temperature'), 'temperature'),
+            data: formatData(filterData(data1, mode), mode),
           },
           {
             id: `#2 ${date2} ${sensor2}`,
-            data: formatData(filterData(data2, 'temperature'), 'temperature'),
+            data: formatData(filterData(data2, mode), mode),
           },
         ]}
         xScale={{
@@ -97,7 +124,7 @@ function Chart(props) {
         axisTop={null}
         axisRight={null}
         axisLeft={{
-          legendOffset: 12,
+          legendOffset: 13,
         }}
         axisBottom={{
           legend: 'hora',
