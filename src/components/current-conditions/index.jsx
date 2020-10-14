@@ -1,18 +1,18 @@
 import React, { useContext, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import 'moment/locale/es';
 import moment from 'moment-timezone/builds/moment-timezone-with-data';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import {
-  faTemperatureLow, faTemperatureHigh, faWind, faTint, faSignal,
+  faTemperatureLow, faTemperatureHigh, faClock, faWind, faTint, faSignal,
 } from '@fortawesome/free-solid-svg-icons';
 import get from 'lodash.get';
 import PropTypes from 'prop-types';
 import useStyles from './useStyles';
 import Store from '../../reducers/store';
 import { fetchCurrentData } from '../../actions/chart-actions';
-import { getCurrentDate } from '../helpers/utils';
 
 function CurrentConditions(props) {
   const [state, dispatch] = useContext(Store);
@@ -20,6 +20,11 @@ function CurrentConditions(props) {
 
   const makeRequest = () => {
     fetchCurrentData(dispatch, { token: get(state, 'user.token') });
+  };
+
+  const getLocaleDate = (date) => {
+    const dateObj = moment.tz(date, 'DD-MM-YYYY HH:mm:ss', 'Europe/Madrid');
+    return (dateObj.locale('es').format('ddd HH:mm'));
   };
 
   useEffect(() => {
@@ -34,11 +39,18 @@ function CurrentConditions(props) {
     }
   });
   const {
-    indoorTemp, outdoorTemp, indoorHum, outdoorHum, pressure, wind,
+    date, indoorTemp, outdoorTemp, indoorHum, outdoorHum, pressure, wind,
   } = state.currentConditions;
   return (
     <Card className={classes.root}>
       <CardContent>
+        <Typography variant="body1" className={classes.data}>
+          <FontAwesomeIcon icon={faClock} className={classes.icon} />
+          { `${getLocaleDate(date)}` }
+        </Typography>
+        <Typography variant="body1">
+          Última lectura:
+        </Typography>
         <Typography variant="body1" className={classes.data}>
           <FontAwesomeIcon icon={faTemperatureLow} className={classes.icon} />
           { `${indoorTemp} °` }
