@@ -29,10 +29,10 @@ function MainScreen(props) {
         alignItems="center"
         justify="center"
       >
-        <Grid item xs={12} xl={3}>
+        <Grid item xs={12} md={8} xl={3}>
           <CurrentConditions />
         </Grid>
-        <Grid item xs={12} xl={3}>
+        <Grid item xs={12} md={8} xl={3}>
           <Webcam />
         </Grid>
       </Grid>
