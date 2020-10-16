@@ -16,15 +16,6 @@ function Webcam(props) {
   const [state, dispatch] = useContext(Store);
   const classes = useStyles();
 
-  const makeRequest = () => {
-    fetchCurrentData(dispatch, { token: get(state, 'user.token') });
-  };
-
-  useEffect(() => {
-    if (get(state, 'user.token') && !get(state, 'loading') && !get(state, 'currentConditions.date')) {
-      makeRequest();
-    }
-  });
   const {
     indoorTemp, outdoorTemp, indoorHum, outdoorHum, pressure, wind,
   } = state.currentConditions;
