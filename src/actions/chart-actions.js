@@ -35,7 +35,12 @@ export function fetchLogData(dispatch, {
     payload: { graph },
   });
   api.chart.getData(date, stationId, token)
-    .then((res) => (res.json()))
+    .then((res) => {
+      if (res.status !== 200) {
+        return Promise.reject(new Error('Request error'));
+      }
+      return res.json();
+    })
     .then((data) => {
       if (data.length > 0) {
         return dispatch({

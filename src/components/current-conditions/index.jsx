@@ -37,7 +37,8 @@ function CurrentConditions(props) {
       && (!lastRegisteredDate || diff >= 15)) {
       makeRequest();
     }
-  });
+  }, []);
+
   const {
     date, indoorTemp, outdoorTemp, indoorHum, outdoorHum, pressure, wind,
   } = state.currentConditions;

@@ -1,4 +1,6 @@
-import React, { useState, useContext, useCallback } from 'react';
+import React, {
+  useState, useContext, useCallback, useEffect,
+} from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import Button from '@material-ui/core/Button';
@@ -33,6 +35,10 @@ function SearchFrom(props) {
       token: get(state, 'user.token'),
     });
   };
+
+  useEffect(() => {
+    makeRequests();
+  }, []);
 
   return (
     <div>

@@ -1,4 +1,7 @@
-import React, { useState, useContext, useCallback } from 'react';
+import React, {
+  useState, useContext, useCallback, useEffect,
+} from 'react';
+import get from 'lodash.get';
 import PropTypes from 'prop-types';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
@@ -19,6 +22,18 @@ function DateSelector(props) {
   const classes = useStyles();
   const dateFns = new DateFnsUtils();
 
+  const dateAsString = (d) => (
+    dateFns.format(d, 'yyyy-MM-dd')
+  );
+
+  useEffect(() => {
+    const dateString = dateAsString(date);
+    if (dateString !== get(state, `graph${graph}_date`)) {
+      setGraphDate(dispatch, { graph, date: dateString });
+    }
+  }, []);
+
+
   const handleChangeSensorId = (event) => {
     if (event.target.value !== '') {
       setSensorId(event.target.value);
@@ -29,7 +44,7 @@ function DateSelector(props) {
   const handleChangeDate = (value) => {
     if (value) {
       setDate(value);
-      setGraphDate(dispatch, { graph, date: dateFns.format(value, 'yyyy-MM-dd') });
+      setGraphDate(dispatch, { graph, date: dateAsString(value) });
     }
   };
 
