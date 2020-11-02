@@ -6,13 +6,14 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import {
-  faTemperatureLow, faTemperatureHigh, faClock, faWind, faTint, faSignal,
+  faTemperatureLow, faTemperatureHigh, faClock, faWind, faTint, faSignal, faHandHoldingWater,
 } from '@fortawesome/free-solid-svg-icons';
 import get from 'lodash.get';
 import PropTypes from 'prop-types';
 import useStyles from './useStyles';
 import Store from '../../reducers/store';
 import { fetchCurrentData } from '../../actions/chart-actions';
+import { calculateDewPoint } from '../helpers/utils';
 
 function CurrentConditions(props) {
   const [state, dispatch] = useContext(Store);
@@ -43,6 +44,7 @@ function CurrentConditions(props) {
   const {
     date, indoorTemp, outdoorTemp, indoorHum, outdoorHum, pressure, wind,
   } = state.currentConditions;
+  const dewPoint = calculateDewPoint(outdoorTemp, outdoorHum);
   return (
     <Card className={classes.root}>
       <CardContent>
@@ -80,6 +82,13 @@ function CurrentConditions(props) {
         </Typography>
         <Typography variant="body1">
           Humedad ext:
+        </Typography>
+        <Typography variant="body1" className={classes.data}>
+          <FontAwesomeIcon icon={faHandHoldingWater} className={classes.icon} />
+          { `${dewPoint} °` }
+        </Typography>
+        <Typography variant="body1">
+          Punto de rocío:
         </Typography>
         <Typography variant="body1" className={classes.data}>
           <FontAwesomeIcon icon={faWind} className={classes.icon} />

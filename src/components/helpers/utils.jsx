@@ -54,4 +54,68 @@ export function getCurrentDate() {
   return (moment().tz('Europe/Madrid', new Date()).format('DD-MM-YYYY HH:mm'));
 }
 
+/**
+ *
+ * @param {number} temp - celsius
+ * @param {number} hum - relative humidity percentage
+ * @return {number} celsius
+ */
+export function calculateDewPoint(temp, hum) {
+  const calculation = ((hum / 100) ** (1 / 8)) * (112 + (0.9 * temp)) + 0.1 * temp - 112;
+  return (calculation.toFixed(2));
+}
+
+/**
+ * https://gist.github.com/mumblepins/d4e6f2189200cbd0914e217a2e4adde9
+ */
+export function calculateRealFeel() {
+
+}
+
+/**
+ * Only valid for temperature values between 27-43 celsius and humidity values higher than 40%
+ * See: https://www.toppr.com/guides/physics-formulas/heat-index-formula/
+ * @param {number} temp - ambient temperature in Fahrenheit
+ * @param {number} hum - % relative humidity
+ * @return {number} fahrenheit
+ */
+export function calculateHeatIndex(temp, hum) {
+  const c1 = -42.379;
+  const c2 = -2.04901523;
+  const c3 = -10.14333127;
+  const c4 = -0.22475541;
+  const c5 = -6.83783 * 10 ** -3;
+  const c6 = -5.481717 * 10 ** -2;
+  const c7 = -1.22874 * 10 ** -3;
+  const c8 = 8.5282 * 10 ** -4;
+  const c9 = -1.99 * 10 ** -6;
+  return (c1 + c2 * temp + c3 * hum + c4 * temp * hum + c5 * temp ** 2
+    + c6 * hum ** 2 + c7 * temp ** 2 * hum + c8 * temp * hum ** 2 + c9 * temp ** 2 * hum ** 2);
+}
+
+/**
+ * See: https://physics.stackexchange.com/questions/32857/how-to-calculate-temperature-humidity-wind-index
+ * @param {*} heatIndex
+ * @param {*} windSpeed - in miles per hour
+ */
+export function calculateThw(heatIndex, windSpeed) {
+  return (heatIndex - (1.072 * windSpeed));
+}
+
+export function mph2kmh(speed) {
+  return (speed * 1.609);
+}
+
+export function kmh2mph(speed) {
+  return (speed / 1.609);
+}
+
+export function fahrenheit2Celsius(temp) {
+  return (((temp + 40) / 1.8) - 40);
+}
+
+export function celsius2Fahrenheit(temp) {
+  return (((temp + 40) * 1.8) - 40);
+}
+
 /* eslint-enable import/prefer-default-export */
