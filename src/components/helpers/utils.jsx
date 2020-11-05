@@ -66,10 +66,14 @@ export function calculateDewPoint(temp, hum) {
 }
 
 /**
- * https://gist.github.com/mumblepins/d4e6f2189200cbd0914e217a2e4adde9
+ * Calculates THS
+ * @param {number} temp celsius
+ * @param {number} hum relative humidity %
+ * @param {number} wind km/h
  */
-export function calculateRealFeel() {
-
+export function calculateTHWIndex(temp, hum, wind) {
+  const e = (hum / 100) * 6.105 * Math.exp((17.27 * temp) / (237.7 + temp));
+  return (temp + 0.33 * e - 0.70 * (wind / 3.6) - 4.00).toFixed(2);
 }
 
 /**
