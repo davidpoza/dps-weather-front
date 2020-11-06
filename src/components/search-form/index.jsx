@@ -2,6 +2,7 @@ import React, {
   useState, useContext, useCallback, useEffect,
 } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment-timezone/builds/moment-timezone-with-data';
 import get from 'lodash.get';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
@@ -37,8 +38,17 @@ function SearchFrom(props) {
   };
 
   useEffect(() => {
+    const currentDate = moment.tz(new Date(), 'Europe/Madrid');
+    const lastRegisteredDate = get(state, 'currentConditions.date');
+    const lastRegisteredDateObj = moment.tz(
+      lastRegisteredDate, 'DD-MM-YYYY HH:mm:ss', 'Europe/Madrid',
+    );
+    const diff = currentDate.diff(lastRegisteredDateObj, 'minutes');
+    if (get(state, 'user.token') && !get(state, 'loading')
+      && (!lastRegisteredDate || diff >= 15)) {
     makeRequests();
-  }, []);
+    }
+  }, [...Object.values(state)]);
 
   return (
     <div>
