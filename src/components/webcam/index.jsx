@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -14,7 +14,23 @@ import { fetchCurrentData } from '../../actions/chart-actions';
 
 function Webcam(props) {
   const [state, dispatch] = useContext(Store);
+  const [imageList, setImageList] = useState([]);
   const classes = useStyles();
+
+  function fetchImageList() {
+    const url = 'https://aventurate.com/webcam/listdir.php';
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        setImageList(data);
+      });
+  }
+
+  useEffect(() => {
+    if (imageList.length === 0) {
+      fetchImageList();
+    }
+  }, imageList);
 
   const {
     indoorTemp, outdoorTemp, indoorHum, outdoorHum, pressure, wind,
@@ -22,8 +38,10 @@ function Webcam(props) {
   return (
     <Card className={classes.root}>
       <CardContent>
-        modulo de webcam temporal...
-        <img src="https://aventurate.com/webcam/20201012_183000M.jpg" width="100%" />
+        {
+          imageList.length > 0
+          && <img src={`https://aventurate.com/webcam/${imageList[0]}`} alt="estado actual" width="100%" />
+        }
       </CardContent>
     </Card>
   );
