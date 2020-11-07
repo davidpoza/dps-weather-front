@@ -11,10 +11,12 @@ import useStyles from './useStyles';
 import DateSelector from '../date-selector';
 import Store from '../../reducers/store';
 import { fetchLogData } from '../../actions/chart-actions';
+import usePrevious from '../../hooks/use-previous';
 
 function SearchFrom(props) {
   const { setFormOpen } = props;
   const [state, dispatch] = useContext(Store);
+  const [requestCount, setRequestCount] = useState(0);
 
   const openLogin = useCallback(() => {
     setFormOpen(true);
@@ -23,6 +25,7 @@ function SearchFrom(props) {
   const classes = useStyles();
 
   const makeRequests = () => {
+    console.log("---->peticiones lanzadas");
     fetchLogData(dispatch, {
       graph: 1,
       date: get(state, 'graph1_date'),
@@ -35,20 +38,38 @@ function SearchFrom(props) {
       stationId: get(state, 'graph2_sensor') || 'HOME_OUTDOOR',
       token: get(state, 'user.token'),
     });
+    setRequestCount(requestCount + 1);
   };
 
+  const prevState = usePrevious({ ...state });
+
+  // useEffect(() => {
+  //   const prevDate1 = get(prevState, 'graph1_date');
+  //   const prevDate2 = get(prevState, 'graph2_date');
+  //   const date1 = get(state, 'graph1_date');
+  //   const date2 = get(state, 'graph2_date');
+
+  //   if (!prevDate1 && date1) {
+  //     makeRequests();
+  //   }
+  // }, [...Object.values(state)]);
+
   useEffect(() => {
-    const currentDate = moment.tz(new Date(), 'Europe/Madrid');
-    const lastRegisteredDate = get(state, 'currentConditions.date');
-    const lastRegisteredDateObj = moment.tz(
-      lastRegisteredDate, 'DD-MM-YYYY HH:mm:ss', 'Europe/Madrid',
-    );
-    const diff = currentDate.diff(lastRegisteredDateObj, 'minutes');
-    if (get(state, 'user.token') && !get(state, 'loading')
-      && (!lastRegisteredDate || diff >= 15)) {
-    makeRequests();
+    if (requestCount === 0) {
+      const currentDate = moment.tz(new Date(), 'Europe/Madrid');
+      const lastRegisteredDate = get(state, 'currentConditions.date');
+      const lastRegisteredDateObj = moment.tz(
+        lastRegisteredDate, 'DD-MM-YYYY HH:mm:ss', 'Europe/Madrid',
+      );
+      const diff = currentDate.diff(lastRegisteredDateObj, 'minutes');
+      if (get(state, 'user.token') && !get(state, 'loading')
+        && (!lastRegisteredDate || diff >= 15)) {
+        makeRequests();
+      }
     }
   }, [...Object.values(state)]);
+
+  console.log("RENDERIZADO")
 
   return (
     <div>
