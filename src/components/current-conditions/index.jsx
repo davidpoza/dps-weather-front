@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import 'moment/locale/es';
 import moment from 'moment-timezone/builds/moment-timezone-with-data';
@@ -17,6 +17,7 @@ import { calculateTHWIndex, calculateDewPoint } from '../helpers/utils';
 
 function CurrentConditions(props) {
   const [state, dispatch] = useContext(Store);
+  const [requestCount, setRequestCount] = useState(0);
   const classes = useStyles();
 
   const makeRequest = () => {
@@ -29,15 +30,18 @@ function CurrentConditions(props) {
   };
 
   useEffect(() => {
-    const currentDate = moment.tz(new Date(), 'Europe/Madrid');
-    const lastRegisteredDate = get(state, 'currentConditions.date');
-    const lastRegisteredDateObj = moment.tz(
-      lastRegisteredDate, 'DD-MM-YYYY HH:mm:ss', 'Europe/Madrid',
-    );
-    const diff = currentDate.diff(lastRegisteredDateObj, 'minutes');
-    if (get(state, 'user.token') && !get(state, 'loading')
-      && (!lastRegisteredDate || diff >= 15)) {
-      makeRequest();
+    if (requestCount === 0) {
+      const currentDate = moment.tz(new Date(), 'Europe/Madrid');
+      const lastRegisteredDate = get(state, 'currentConditions.date');
+      const lastRegisteredDateObj = moment.tz(
+        lastRegisteredDate, 'DD-MM-YYYY HH:mm:ss', 'Europe/Madrid',
+      );
+      const diff = currentDate.diff(lastRegisteredDateObj, 'minutes');
+      if (get(state, 'user.token') && !get(state, 'loading')
+        && (!lastRegisteredDate || diff >= 15)) {
+        makeRequest();
+        setRequestCount(requestCount + 1);
+      }
     }
   }, []);
 

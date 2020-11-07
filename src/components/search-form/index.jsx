@@ -38,7 +38,6 @@ function SearchFrom(props) {
       stationId: get(state, 'graph2_sensor') || 'HOME_OUTDOOR',
       token: get(state, 'user.token'),
     });
-    setRequestCount(requestCount + 1);
   };
 
   const prevState = usePrevious({ ...state });
@@ -65,6 +64,7 @@ function SearchFrom(props) {
       if (get(state, 'user.token') && !get(state, 'loading')
         && (!lastRegisteredDate || diff >= 15)) {
         makeRequests();
+        setRequestCount(requestCount + 1);
       }
     }
   }, [...Object.values(state)]);
