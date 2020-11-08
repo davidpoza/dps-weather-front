@@ -4,10 +4,14 @@ export default makeStyles((theme) => ({
   root: {
     marginTop: '1rem',
   },
-  data: {
-    float: 'right',
+  buttons: {
+    justifyContent: 'flex-end',
+    padding: 0,
   },
-  icon: {
-    marginRight: '5px',
+  content: {
+    padding: 0,
+  },
+  cover: {
+    height: 184,
   },
 }));
