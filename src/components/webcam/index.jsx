@@ -48,14 +48,14 @@ function Webcam(props) {
 
   useEffect(() => {
     if (imageList.length === 0) {
-      fetchImageList()
-        .then((data) => {
-          // image preloading
-          data.forEach((image) => {
-            const img = new Image();
-            img.src = `https://aventurate.com/webcam/${image}`;
-          });
-        });
+      fetchImageList();
+      // .then((data) => {
+      //   // image preloading
+      //   data.forEach((image) => {
+      //     const img = new Image();
+      //     img.src = `https://aventurate.com/webcam/${image}`;
+      //   });
+      // });
     }
     if (playing) {
       setTimeout(() => {
@@ -86,7 +86,6 @@ function Webcam(props) {
   const fullWidth = imageElement.current?.offsetWidth;
   const calculatedHeight = (456 * fullWidth) / 1472;
   const { day, hour, minute } = parseImageDate(imageList[photoIndex]);
-  console.log("---->", day, hour, minute)
   return (
     <Card className={classes.root}>
 
