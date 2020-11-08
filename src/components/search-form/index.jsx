@@ -54,7 +54,11 @@ function SearchFrom(props) {
   // }, [...Object.values(state)]);
 
   useEffect(() => {
-    if (requestCount === 0) {
+    /*
+    First current conditions component must get updated, this way second
+    request uses current date
+    */
+    if (requestCount <= 1) {
       const currentDate = moment.tz(new Date(), 'Europe/Madrid');
       const lastRegisteredDate = get(state, 'currentConditions.date');
       const lastRegisteredDateObj = moment.tz(
