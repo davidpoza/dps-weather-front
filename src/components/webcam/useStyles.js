@@ -9,9 +9,16 @@ export default makeStyles((theme) => ({
     padding: 0,
   },
   content: {
-    padding: 0,
+    textAlign: 'right',
+    padding: '0 16px 0 16px',
   },
   cover: {
-    height: 184,
+    backgroundSize: 'contain',
+    transition: 'opacity 1s ease-in-out',
+  },
+  coverXl: {
+    height: 154,
+    marginBottom: '6px',
+    transition: 'opacity 1s ease-in-out',
   },
 }));
