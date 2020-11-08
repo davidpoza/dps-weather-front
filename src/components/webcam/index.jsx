@@ -30,7 +30,7 @@ function Webcam(props) {
     if (imageList.length === 0) {
       fetchImageList();
     }
-  }, imageList);
+  }, [imageList]);
 
   const {
     indoorTemp, outdoorTemp, indoorHum, outdoorHum, pressure, wind,
