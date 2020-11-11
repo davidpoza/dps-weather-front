@@ -86,39 +86,41 @@ function Webcam(props) {
   const fullWidth = imageElement.current?.offsetWidth;
   const calculatedHeight = (456 * fullWidth) / 1472;
   const { day, hour, minute } = parseImageDate(imageList[photoIndex]);
-  return (
-    <Card className={classes.root}>
+  return (imageList.length > 0
+    ? (
+      <Card className={classes.root}>
+        <CardMedia
+          className={isXl ? classes.coverXl : classes.cover}
+          image={`https://aventurate.com/webcam/${imageList[`${photoIndex}`]}`}
+          ref={imageElement}
+          style={!isXl ? { height: fullWidth ? `${calculatedHeight}px` : '100px' } : {}}
+        />
+        <CardMedia
+          image={`https://aventurate.com/webcam/${imageList[`${mod(photoIndex + 1, imageList.length)}`]}`}
+        />
+        <CardContent className={classes.content}>
+          <Typography variant="body1" component="div">
+            { `Foto ${photoIndex + 1} de ${imageList.length}, el día ${parseInt(day, 10)} a las ${hour}:${minute}` }
+          </Typography>
+        </CardContent>
+        <CardActions disableSpacing classes={{ root: classes.buttons }}>
+          <IconButton title="Anterior foto" onClick={() => changePhoto(photoIndex - 1)}>
+            <NavigateBeforeIcon />
+          </IconButton>
+          <IconButton title="Ver animación (hacia atrás en el tiempo)" onClick={play}>
+            { playing ? <PauseIcon /> : <PlayArrowIcon /> }
+          </IconButton>
+          <IconButton title="Siguiente foto" onClick={() => changePhoto(photoIndex + 1)}>
+            <NavigateNextIcon />
+          </IconButton>
 
-      <CardMedia
-        className={isXl ? classes.coverXl : classes.cover}
-        image={`https://aventurate.com/webcam/${imageList[`${photoIndex}`]}`}
-        ref={imageElement}
-        style={!isXl && { height: fullWidth ? `${calculatedHeight}px` : '100px' }}
-      />
-      <CardMedia
-        image={`https://aventurate.com/webcam/${imageList[`${mod(photoIndex + 1, imageList.length)}`]}`}
-      />
-      <CardContent className={classes.content}>
-        <Typography variant="body1" component="div">
-          { `Fotografía ${photoIndex + 1} de ${imageList.length}, el día ${parseInt(day, 10)} a las ${hour}:${minute}` }
-        </Typography>
-      </CardContent>
-      <CardActions disableSpacing classes={{ root: classes.buttons }}>
-        <IconButton title="Anterior foto" onClick={() => changePhoto(photoIndex - 1)}>
-          <NavigateBeforeIcon />
-        </IconButton>
-        <IconButton title="Ver animación (hacia atrás en el tiempo)" onClick={play}>
-          { playing ? <PauseIcon /> : <PlayArrowIcon /> }
-        </IconButton>
-        <IconButton title="Siguiente foto" onClick={() => changePhoto(photoIndex + 1)}>
-          <NavigateNextIcon />
-        </IconButton>
-
-        <IconButton title="Volver a foto actual" onClick={() => changePhoto(0)}>
-          <SkipNextIcon />
-        </IconButton>
-      </CardActions>
-    </Card>
+          <IconButton title="Volver a foto actual" onClick={() => changePhoto(0)}>
+            <SkipNextIcon />
+          </IconButton>
+        </CardActions>
+      </Card>
+    )
+    : null
   );
 }
 
