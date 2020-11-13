@@ -22,6 +22,7 @@ import Store from '../../reducers/store';
 function Webcam(props) {
   const [state, dispatch] = useContext(Store);
   const [photoIndex, setPhotoIndex] = useState(0);
+  const [imageLoaded, setImageLoaded] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [imageList, setImageList] = useState([]);
   const classes = useStyles();
@@ -34,6 +35,7 @@ function Webcam(props) {
       .then((response) => response.json())
       .then((data) => {
         setImageList(data);
+        setImageLoaded(true);
         return (data);
       });
   }
@@ -48,6 +50,7 @@ function Webcam(props) {
 
   useEffect(() => {
     if (imageList.length === 0) {
+      setImageLoaded(false);
       fetchImageList();
       // .then((data) => {
       //   // image preloading
@@ -62,7 +65,7 @@ function Webcam(props) {
         changePhoto(photoIndex + 1);
       }, 500);
     }
-  }, [imageList, playing, photoIndex]);
+  }, [imageLoaded, playing, photoIndex]);
 
   function play() {
     setPlaying(!playing);
