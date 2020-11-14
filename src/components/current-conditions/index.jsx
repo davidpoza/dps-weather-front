@@ -4,9 +4,10 @@ import 'moment/locale/es';
 import moment from 'moment-timezone/builds/moment-timezone-with-data';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import {
-  faTemperatureLow, faClock, faWind, faTint, faSignal, faHandHoldingWater,
+  faTemperatureLow, faClock, faWind, faTint, faSignal, faHandHoldingWater, faHome, faMale,
 } from '@fortawesome/free-solid-svg-icons';
 import get from 'lodash.get';
 import PropTypes from 'prop-types';
@@ -54,23 +55,81 @@ function CurrentConditions(props) {
 
   return (
     <Card className={classes.root}>
-      <CardContent>
-        <Typography variant="body1" className={classes.data}>
-          <FontAwesomeIcon icon={faClock} className={classes.icon} />
-          { `${getLocaleDate(date)}` }
-        </Typography>
-        <Typography variant="body1">
-          Última lectura:
-        </Typography>
-        <Typography variant="body1" className={classes.data}>
-          <FontAwesomeIcon icon={faTemperatureLow} className={classes.icon} />
-          { `${indoorTemp} °` }
-        </Typography>
+      <CardContent className={classes.content}>
+        <Grid container spacing={0}>
+          <Grid item xs className={classes.item} title="Temperatura exterior">
+            <FontAwesomeIcon icon={faTemperatureLow} className={classes.icon} size="2x" />
+            <Typography variant="body1" className={classes.data}>
+              { `${outdoorTemp} °` }
+            </Typography>
+          </Grid>
+          <Grid item xs className={classes.item} title="Humedad exterior">
+            <FontAwesomeIcon icon={faTint} className={classes.icon} size="2x" />
+            <Typography variant="body1" className={classes.data}>
+              { `${outdoorHum}%` }
+            </Typography>
+          </Grid>
+          <Grid item xs className={classes.item} title="Sensación térmica">
+            <div>
+              <FontAwesomeIcon icon={faMale} className={classes.icon} size="2x" />
+              <FontAwesomeIcon icon={faTemperatureLow} className={classes.icon} size="md" />
+            </div>
+            <Typography variant="body1" className={classes.data}>
+              { `${thw} °` }
+            </Typography>
+          </Grid>
+          <Grid item xs className={classes.item} title="Temperatura interior">
+            <div>
+              <FontAwesomeIcon icon={faHome} className={classes.icon} size="2x" />
+              <FontAwesomeIcon icon={faTemperatureLow} className={classes.icon} size="md" />
+            </div>
+            <Typography variant="body1" className={classes.data}>
+              { `${indoorTemp} °` }
+            </Typography>
+          </Grid>
+          <Grid item xs className={classes.item} title="Humedad interior">
+            <div>
+              <FontAwesomeIcon icon={faHome} className={classes.icon} size="2x" />
+              <FontAwesomeIcon icon={faTint} className={classes.icon} size="md" />
+            </div>
+            <Typography variant="body1" className={classes.data}>
+              { `${indoorHum}%` }
+            </Typography>
+          </Grid>
+          <Grid item xs className={classes.item} title="Velocidad del viento">
+            <FontAwesomeIcon icon={faWind} className={classes.icon} size="2x" />
+            <Typography variant="body1" className={classes.data}>
+              { `${wind} Km/h` }
+            </Typography>
+          </Grid>
+          <Grid item xs className={classes.item} title="Punto de rocío">
+            <FontAwesomeIcon icon={faHandHoldingWater} className={classes.icon} size="2x" />
+            <Typography variant="body1" className={classes.data}>
+              { `${dewPoint} °` }
+            </Typography>
+          </Grid>
+          <Grid item xs className={classes.item} title="Presión atmosférica">
+            <FontAwesomeIcon icon={faSignal} className={classes.icon} size="2x" />
+            <Typography variant="body1" className={classes.data}>
+              { `${Math.trunc(pressure)}
+              mbar` }
+            </Typography>
+          </Grid>
+        </Grid>
+        <div className={classes.date}>
+          <Typography variant="body1">
+            <FontAwesomeIcon icon={faClock} className={classes.icon} />
+            { ` Última lectura: ${getLocaleDate(date)}` }
+          </Typography>
+        </div>
+        {/*
+
+
         <Typography variant="body1">
           Temperatura int:
         </Typography>
         <Typography variant="body1" className={classes.data}>
-          <FontAwesomeIcon icon={faTemperatureLow} className={classes.icon} />
+
           { `${outdoorTemp} ° (THW: ${thw})` }
         </Typography>
         <Typography variant="body1">
@@ -110,7 +169,7 @@ function CurrentConditions(props) {
         </Typography>
         <Typography variant="body1">
           Presión atmosférica:
-        </Typography>
+        </Typography> */}
       </CardContent>
     </Card>
   );
