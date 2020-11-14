@@ -8,10 +8,11 @@ export default makeStyles((theme) => ({
     padding: '0.5rem',
   },
   data: {
-    fontSize: '0.8rem',
+    fontSize: '0.9rem',
+    fontWeight: 'bold',
   },
   icon: {
-    // marginRight: '5px',
+    color: '#3f4c94',
   },
   item: {
     textAlign: 'center',

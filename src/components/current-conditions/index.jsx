@@ -53,12 +53,12 @@ function CurrentConditions(props) {
    */
   const trendIcon = (trend) => {
     if (trend > 0) {
-      return <FontAwesomeIcon icon={faAngleUp} className={classes.icon} size="2x" />;
+      return <FontAwesomeIcon icon={faAngleUp} size="2x" />;
     }
     if (trend < 0) {
-      return <FontAwesomeIcon icon={faAngleDown} className={classes.icon} size="2x" />;
+      return <FontAwesomeIcon icon={faAngleDown} size="2x" />;
     }
-    return <FontAwesomeIcon icon={faAngleRight} className={classes.icon} size="2x" />;
+    return <FontAwesomeIcon icon={faAngleRight} size="2x" />;
   };
 
   /**
@@ -163,7 +163,7 @@ function CurrentConditions(props) {
         </Grid>
         <div className={classes.date}>
           <Typography variant="body1">
-            <FontAwesomeIcon icon={faClock} className={classes.icon} />
+            <FontAwesomeIcon icon={faClock} />
             { ` Última lectura: ${getLocaleDate(date)}` }
           </Typography>
         </div>
