@@ -4,6 +4,7 @@ import mockSearchComments from './mocks/search-comments';
 import mockListVideos from './mocks/list-videos';
 import mockListChannels from './mocks/list-channel';
 
+const AEMET_API_KEY = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwb3phc3VhcmV6QGdtYWlsLmNvbSIsImp0aSI6IjkwNDVkMWI3LTVjYzgtNDI1Mi1hMjE4LWUxMDk2MDY4NjFkZiIsImlzcyI6IkFFTUVUIiwiaWF0IjoxNjA1MDA1OTkyLCJ1c2VySWQiOiI5MDQ1ZDFiNy01Y2M4LTQyNTItYTIxOC1lMTA5NjA2ODYxZGYiLCJyb2xlIjoiIn0.QRnV3UFCQD-5WGWqgkdZ_1CdBDWHEpq0qdA5WVYTw3g';
 
 export default {
   user: {
@@ -94,6 +95,26 @@ export default {
         },
       };
       return (fetch(q, opt));
+    },
+  },
+  weather: {
+    // devuelve un array con todas las mediciones
+    station(idema) {
+      return fetch(`
+      https://opendata.aemet.es/opendata/api/observacion/convencional/datos/estacion/${idema}?api_key=${AEMET_API_KEY}`)
+        .then((res) => res.json())
+        .then((data) => fetch(data.datos))
+        .then((res) => res.json())
+        .then((data) => data);
+    },
+    // código de municipio, colmenar-> 28045
+    forecast(cmun) {
+      return fetch(`
+      https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/diaria/${cmun}?api_key=${AEMET_API_KEY}`)
+        .then((res) => res.json())
+        .then((data) => fetch(data.datos))
+        .then((res) => res.json())
+        .then((data) => data);
     },
   },
   comments: {
