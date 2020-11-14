@@ -8,6 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import {
   faTemperatureLow, faClock, faWind, faTint, faSignal, faHandHoldingWater, faHome, faMale,
+  faAngleDown, faAngleUp, faAngleRight,
 } from '@fortawesome/free-solid-svg-icons';
 import get from 'lodash.get';
 import PropTypes from 'prop-types';
@@ -29,6 +30,46 @@ function CurrentConditions(props) {
     const dateObj = moment.tz(date, 'DD-MM-YYYY HH:mm:ss', 'Europe/Madrid');
     return (dateObj.locale('es').format('ddd HH:mm'));
   };
+
+  /**
+   * Uses last measurement and 4th before that, that's one hour (if it exists).
+   * Calculates slope = (y1-y2)/(x1-x2)
+   * @param {number} currentValue
+   * @param {Array} measurements
+   */
+  const calculateTrend = (currentValue, measurements) => {
+    if (measurements.length >= 4) {
+      return (currentValue - measurements[measurements.length - 4]);
+    }
+    if (measurements.length === 3) {
+      return (currentValue - measurements[measurements.length - 3]);
+    }
+    return 0;
+  };
+
+  /**
+   * Draws trend arrow for trend number given
+   * @param {number} trend
+   */
+  const trendIcon = (trend) => {
+    if (trend > 0) {
+      return <FontAwesomeIcon icon={faAngleUp} className={classes.icon} size="2x" />;
+    }
+    if (trend < 0) {
+      return <FontAwesomeIcon icon={faAngleDown} className={classes.icon} size="2x" />;
+    }
+    return <FontAwesomeIcon icon={faAngleRight} className={classes.icon} size="2x" />;
+  };
+
+  /**
+   * Receives an array of objects and return an array of numbers, only the specified field of the objects
+   * @param {Array} array
+   * @param {string} field
+   * @return {Array<number>}
+   */
+  const filterArrayObjects = (array, field) => (
+    array.map((e) => e[field])
+  );
 
   useEffect(() => {
     if (requestCount === 0) {
@@ -62,12 +103,14 @@ function CurrentConditions(props) {
             <Typography variant="body1" className={classes.data}>
               { `${outdoorTemp} °` }
             </Typography>
+            {trendIcon(calculateTrend(outdoorTemp, filterArrayObjects(state.graph2_points, 'temperature')))}
           </Grid>
           <Grid item xs className={classes.item} title="Humedad exterior">
             <FontAwesomeIcon icon={faTint} className={classes.icon} size="2x" />
             <Typography variant="body1" className={classes.data}>
               { `${outdoorHum}%` }
             </Typography>
+            {trendIcon(calculateTrend(outdoorHum, filterArrayObjects(state.graph2_points, 'humidity')))}
           </Grid>
           <Grid item xs className={classes.item} title="Sensación térmica">
             <div>
@@ -86,6 +129,7 @@ function CurrentConditions(props) {
             <Typography variant="body1" className={classes.data}>
               { `${indoorTemp} °` }
             </Typography>
+            {trendIcon(calculateTrend(indoorTemp, filterArrayObjects(state.graph1_points, 'temperature')))}
           </Grid>
           <Grid item xs className={classes.item} title="Humedad interior">
             <div>
@@ -95,6 +139,7 @@ function CurrentConditions(props) {
             <Typography variant="body1" className={classes.data}>
               { `${indoorHum}%` }
             </Typography>
+            {trendIcon(calculateTrend(indoorHum, filterArrayObjects(state.graph1_points, 'humidity')))}
           </Grid>
           <Grid item xs className={classes.item} title="Velocidad del viento">
             <FontAwesomeIcon icon={faWind} className={classes.icon} size="2x" />
@@ -108,12 +153,12 @@ function CurrentConditions(props) {
               { `${dewPoint} °` }
             </Typography>
           </Grid>
-          <Grid item xs className={classes.item} title="Presión atmosférica">
+          <Grid item xs className={classes.item} title="Presión atmosférica en milibares">
             <FontAwesomeIcon icon={faSignal} className={classes.icon} size="2x" />
             <Typography variant="body1" className={classes.data}>
-              { `${Math.trunc(pressure)}
-              mbar` }
+              { `${Math.trunc(pressure)}` }
             </Typography>
+            {trendIcon(calculateTrend(pressure, filterArrayObjects(state.graph2_points, 'pressure')))}
           </Grid>
         </Grid>
         <div className={classes.date}>
@@ -122,54 +167,6 @@ function CurrentConditions(props) {
             { ` Última lectura: ${getLocaleDate(date)}` }
           </Typography>
         </div>
-        {/*
-
-
-        <Typography variant="body1">
-          Temperatura int:
-        </Typography>
-        <Typography variant="body1" className={classes.data}>
-
-          { `${outdoorTemp} ° (THW: ${thw})` }
-        </Typography>
-        <Typography variant="body1">
-          Temperatura ext:
-        </Typography>
-        <Typography variant="body1" className={classes.data}>
-          <FontAwesomeIcon icon={faTint} className={classes.icon} />
-          { `${indoorHum}%` }
-        </Typography>
-        <Typography variant="body1">
-          Humedad int:
-        </Typography>
-        <Typography variant="body1" className={classes.data}>
-          <FontAwesomeIcon icon={faTint} className={classes.icon} />
-          { `${outdoorHum}%` }
-        </Typography>
-        <Typography variant="body1">
-          Humedad ext:
-        </Typography>
-        <Typography variant="body1" className={classes.data}>
-          <FontAwesomeIcon icon={faHandHoldingWater} className={classes.icon} />
-          { `${dewPoint} °` }
-        </Typography>
-        <Typography variant="body1">
-          Punto de rocío:
-        </Typography>
-        <Typography variant="body1" className={classes.data}>
-          <FontAwesomeIcon icon={faWind} className={classes.icon} />
-          { `${wind} Km/h.` }
-        </Typography>
-        <Typography variant="body1">
-          Viento:
-        </Typography>
-        <Typography variant="body1" className={classes.data}>
-          <FontAwesomeIcon icon={faSignal} className={classes.icon} />
-          { `${pressure} mbar.` }
-        </Typography>
-        <Typography variant="body1">
-          Presión atmosférica:
-        </Typography> */}
       </CardContent>
     </Card>
   );
