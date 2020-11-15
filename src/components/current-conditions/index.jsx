@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import 'moment/locale/es';
+import get from 'lodash.get';
 import moment from 'moment-timezone/builds/moment-timezone-with-data';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -10,7 +11,6 @@ import {
   faTemperatureLow, faClock, faWind, faTint, faSignal, faHandHoldingWater, faHome, faMale,
   faAngleDown, faAngleUp, faAngleRight, faSun, faMoon,
 } from '@fortawesome/free-solid-svg-icons';
-import get from 'lodash.get';
 import PropTypes from 'prop-types';
 import useStyles from './useStyles';
 import Store from '../../reducers/store';
@@ -100,10 +100,10 @@ function CurrentConditions(props) {
 
   const thw = calculateTHWIndex(outdoorTemp, outdoorHum, wind);
   const dewPoint = calculateDewPoint(outdoorTemp, outdoorHum);
-  const sunrise = (state.forecast && state.forecast['colmenar-viejo'].length > 0)
+  const sunrise = get(state, 'forecast[colmenar-viejo][0]')
     ? state.forecast['colmenar-viejo'][0].sunrise.value
     : 'No disponible';
-  const sunset = (state.forecast && state.forecast['colmenar-viejo'].length > 0)
+  const sunset = get(state, 'forecast[colmenar-viejo][0]')
     ? state.forecast['colmenar-viejo'][0].sunset.value
     : 'No disponible';
 
