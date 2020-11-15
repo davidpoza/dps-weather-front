@@ -15,6 +15,7 @@ const initialState = {
   graph2_date: '',
   graph1_points: [],
   graph2_points: [],
+  forecast: {}, // locations as keys
   currentConditions: {
     date: undefined,
     outdoorTemp: undefined,

@@ -1,5 +1,8 @@
 export default function reducer(state, action) {
   const newHistory = { ...state.history };
+  const newForecastObj = {
+    ...state.forecast,
+  };
   switch (action.type) {
     case 'SIGNUP_ATTEMPT':
       return {
@@ -48,6 +51,20 @@ export default function reducer(state, action) {
         ...state, loading: false, graph2_points: action.payload.points,
       };
     case 'GET_CHART_FAIL':
+      return {
+        ...state, loading: false, error: true, msg: action.payload.msg,
+      };
+    case 'GET_FORECAST_ATTEMPT':
+      newForecastObj[action.payload.location] = [];
+      return {
+        ...state, loading: true, error: false, forecast: newForecastObj,
+      };
+    case 'GET_FORECAST_SUCCESS':
+      newForecastObj[action.payload.location] = action.payload.forecast;
+      return {
+        ...state, loading: false, forecast: newForecastObj,
+      };
+    case 'GET_FORECAST_FAIL':
       return {
         ...state, loading: false, error: true, msg: action.payload.msg,
       };

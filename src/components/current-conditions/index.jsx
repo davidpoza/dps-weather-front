@@ -8,13 +8,14 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import {
   faTemperatureLow, faClock, faWind, faTint, faSignal, faHandHoldingWater, faHome, faMale,
-  faAngleDown, faAngleUp, faAngleRight,
+  faAngleDown, faAngleUp, faAngleRight, faSun, faMoon,
 } from '@fortawesome/free-solid-svg-icons';
 import get from 'lodash.get';
 import PropTypes from 'prop-types';
 import useStyles from './useStyles';
 import Store from '../../reducers/store';
 import { fetchCurrentData } from '../../actions/chart-actions';
+import { fetchForecast } from '../../actions/forecast-actions';
 import { calculateTHWIndex, calculateDewPoint } from '../helpers/utils';
 
 function CurrentConditions(props) {
@@ -29,6 +30,11 @@ function CurrentConditions(props) {
   const getLocaleDate = (date) => {
     const dateObj = moment.tz(date, 'DD-MM-YYYY HH:mm:ss', 'Europe/Madrid');
     return (dateObj.locale('es').format('ddd HH:mm'));
+  };
+
+  const getCESTTime = (date) => {
+    const dateObj = moment(date);
+    return (dateObj.tz('Europe/Madrid').format('HH:mm'));
   };
 
   /**
@@ -82,8 +88,9 @@ function CurrentConditions(props) {
       if (get(state, 'user.token') && !get(state, 'loading')
         && (!lastRegisteredDate || diff >= 15)) {
         makeRequest();
-        setRequestCount(requestCount + 1);
       }
+      fetchForecast(dispatch, { location: 'colmenar-viejo' });
+      setRequestCount(requestCount + 1);
     }
   }, []);
 
@@ -93,10 +100,18 @@ function CurrentConditions(props) {
 
   const thw = calculateTHWIndex(outdoorTemp, outdoorHum, wind);
   const dewPoint = calculateDewPoint(outdoorTemp, outdoorHum);
+  const sunrise = state.forecast['colmenar-viejo'].length > 0 ? state.forecast['colmenar-viejo'][0].sunrise.value : 'No disponible';
+  const sunset = state.forecast['colmenar-viejo'].length > 0 ? state.forecast['colmenar-viejo'][0].sunset.value : 'No disponible';
 
   return (
     <Card className={classes.root}>
       <CardContent className={classes.content}>
+        <div className={classes.date}>
+          <Typography variant="body1">
+            <FontAwesomeIcon icon={faClock} />
+            { ` Última lectura: ${getLocaleDate(date)}` }
+          </Typography>
+        </div>
         <Grid container spacing={0}>
           <Grid item xs className={classes.item} title="Temperatura exterior">
             <FontAwesomeIcon icon={faTemperatureLow} className={classes.icon} size="2x" />
@@ -161,10 +176,14 @@ function CurrentConditions(props) {
             {trendIcon(calculateTrend(pressure, filterArrayObjects(state.graph2_points, 'pressure')))}
           </Grid>
         </Grid>
-        <div className={classes.date}>
+        <div className={classes.sunrise}>
           <Typography variant="body1">
-            <FontAwesomeIcon icon={faClock} />
-            { ` Última lectura: ${getLocaleDate(date)}` }
+            <FontAwesomeIcon icon={faSun} />
+            { ` Amanecer: ${getCESTTime(sunrise)}` }
+          </Typography>
+          <Typography variant="body1">
+            <FontAwesomeIcon icon={faMoon} />
+            { ` Anochecer: ${getCESTTime(sunset)}` }
           </Typography>
         </div>
       </CardContent>
