@@ -100,8 +100,12 @@ function CurrentConditions(props) {
 
   const thw = calculateTHWIndex(outdoorTemp, outdoorHum, wind);
   const dewPoint = calculateDewPoint(outdoorTemp, outdoorHum);
-  const sunrise = state.forecast['colmenar-viejo'].length > 0 ? state.forecast['colmenar-viejo'][0].sunrise.value : 'No disponible';
-  const sunset = state.forecast['colmenar-viejo'].length > 0 ? state.forecast['colmenar-viejo'][0].sunset.value : 'No disponible';
+  const sunrise = (state.forecast && state.forecast['colmenar-viejo'].length > 0)
+    ? state.forecast['colmenar-viejo'][0].sunrise.value
+    : 'No disponible';
+  const sunset = (state.forecast && state.forecast['colmenar-viejo'].length > 0)
+    ? state.forecast['colmenar-viejo'][0].sunset.value
+    : 'No disponible';
 
   return (
     <Card className={classes.root}>
