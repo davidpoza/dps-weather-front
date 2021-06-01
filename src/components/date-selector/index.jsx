@@ -58,6 +58,7 @@ function DateSelector(props) {
         >
           <MenuItem value="HOME_OUTDOOR">Exterior</MenuItem>
           <MenuItem value="HOME_INDOOR">Interior</MenuItem>
+          <MenuItem value="BEDROOM">Habitación David</MenuItem>
         </Select>
       </FormControl>
       <MuiPickersUtilsProvider utils={DateFnsUtils} locale={esLocale}>
