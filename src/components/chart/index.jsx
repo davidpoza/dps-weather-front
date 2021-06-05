@@ -1,24 +1,22 @@
 import React, { useState, useContext, useCallback } from 'react';
 import { ResponsiveLine } from '@nivo/line';
 import PropTypes from 'prop-types';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
 import useStyles from './useStyles';
 import Store from '../../reducers/store';
 
-function Chart(props) {
-  const {
-    data1, data2, date1, date2, sensor1, sensor2,
-  } = props;
-  const [mode, setMode] = useState('temperature');
+function Chart({
+  data1,
+  data2,
+  date,
+  sensor1,
+  sensor2,
+  mode = 'temperature',
+  marginTop,
+  marginBottom,
+  marginLeft,
+  marginRight,
+}) {
   const classes = useStyles();
-
-  const handleModeChange = (event) => {
-    setMode(event.target.value);
-  };
 
   // removes wrong data which is out of certain range depending of type of data
   const filterData = (data, type = 'temperature') => {
@@ -75,23 +73,22 @@ function Chart(props) {
     return '°';
   };
 
+  const data = [
+    {
+      id: `#1 ${date} ${sensor1}`,
+      data: formatData(filterData(data1, mode), mode),
+    },
+  ];
+  if (sensor2) {
+    data.push({
+      id: `#2 ${date} ${sensor2}`,
+      data: formatData(filterData(data2, mode), mode),
+    });
+  }
+
   return (
     <div className={classes.root}>
-      <FormControl className={classes.modeSelector}>
-        <InputLabel id="mode-label">Modo</InputLabel>
-        <Select
-          labelId="mode-label"
-          id="mode-select"
-          value={mode}
-          onChange={handleModeChange}
-        >
-          <MenuItem value="temperature">Temperatura</MenuItem>
-          <MenuItem value="pressure">Presión atmosférica</MenuItem>
-          <MenuItem value="humidity">Humedad Relativa</MenuItem>
-          <MenuItem value="wind">Viento</MenuItem>
-          <MenuItem value="thw">THW</MenuItem>
-        </Select>
-      </FormControl>
+
       <ResponsiveLine
         colors={{ scheme: 'set1' }}
         pointSize={4}
@@ -100,18 +97,9 @@ function Chart(props) {
         animate={false}
         tooltip={(v) => `${v.point.data.yFormatted}${getUnits(mode)} a las ${v.point.data.xFormatted}`} // tooltip for interaction
         margin={{
-          top: 20, right: 20, bottom: 130, left: 50,
+          top: marginTop, right: marginRight, bottom: marginBottom, left: marginLeft,
         }}
-        data={[
-          {
-            id: `#1 ${date1} ${sensor1}`,
-            data: formatData(filterData(data1, mode), mode),
-          },
-          {
-            id: `#2 ${date2} ${sensor2}`,
-            data: formatData(filterData(data2, mode), mode),
-          },
-        ]}
+        data={data}
         xScale={{
           // uses d3-time: https://developer.aliyun.com/mirror/npm/package/d3-time-format
           // format as reveived from API
@@ -127,7 +115,6 @@ function Chart(props) {
           legendOffset: 13,
         }}
         axisBottom={{
-          legend: 'hora',
           legendOffset: 40,
           legendPosition: 'middle',
           format: '%H',
@@ -139,10 +126,10 @@ function Chart(props) {
               anchor: 'bottom-right',
               direction: 'column',
               itemHeight: 20,
-              itemWidth: 175,
-              translateX: 0, // px
+              itemWidth: 275,
+              translateX: -20, // px
               translateY: 70, // px
-              justify: true,
+              justify: false,
             },
           ]
         }
@@ -158,6 +145,10 @@ Chart.propTypes = {
   sensor2: PropTypes.string,
   data1: PropTypes.array,
   data2: PropTypes.array,
-  date1: PropTypes.string,
-  date2: PropTypes.string,
+  date: PropTypes.string,
+  mode: PropTypes.string,
+  marginTop: PropTypes.number,
+  marginRight: PropTypes.number,
+  marginBottom: PropTypes.number,
+  marginLeft: PropTypes.number,
 };

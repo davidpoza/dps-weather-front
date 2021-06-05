@@ -2,7 +2,8 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles((theme) => ({
   root: {
-    height: '60vh',
+    height: '200px',
+    width: '350px',
   },
   modeSelector: {
     marginTop: '1em',

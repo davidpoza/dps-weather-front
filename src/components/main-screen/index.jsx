@@ -18,6 +18,8 @@ import { fetchForecast } from '../../actions/forecast-actions';
 import OutdoorTempertureWidget from '../widgets/outdoor-temperature';
 import IndoorTempertureWidget from '../widgets/indoor-temperature';
 import WebcamWidget from '../widgets/webcam';
+import TemperatureChart from '../widgets/temperature-chart';
+import PressureChart from '../widgets/pressure-chart';
 
 function MainScreen(props) {
   const [state, dispatch] = useContext(Store);
@@ -56,7 +58,9 @@ function MainScreen(props) {
         <OutdoorTempertureWidget />
         <WebcamWidget />
         <IndoorTempertureWidget />
+        <TemperatureChart />
         <OutdoorTempertureWidget />
+        <PressureChart />
         <OutdoorTempertureWidget />
         <OutdoorTempertureWidget />
       </Grid>
