@@ -122,4 +122,35 @@ export function celsius2Fahrenheit(temp) {
   return (((temp + 40) * 1.8) - 40);
 }
 
+/**
+   * Uses last measurement and 4th before that, that's one hour (if it exists).
+   * Calculates slope = (y1-y2)/(x1-x2)
+   * @param {number} currentValue
+   * @param {Array} measurements
+   */
+export const calculateTrend = (currentValue, measurements) => {
+  if (measurements.length >= 4) {
+    return (currentValue - measurements[measurements.length - 4]);
+  }
+  if (measurements.length === 3) {
+    return (currentValue - measurements[measurements.length - 3]);
+  }
+  return 0;
+};
+
+/**
+ * Receives an array of objects and return an array of numbers, only the specified field of the objects
+ * @param {Array} array
+ * @param {string} field
+ * @return {Array<number>}
+ */
+export const filterArrayObjects = (array, field) => (
+  array.map((e) => e[field])
+);
+
+export const getLocaleDate = (date) => {
+  const dateObj = moment.tz(date, 'DD-MM-YYYY HH:mm:ss', 'Europe/Madrid');
+  return (dateObj.locale('es').format('ddd HH:mm'));
+};
+
 /* eslint-enable import/prefer-default-export */
