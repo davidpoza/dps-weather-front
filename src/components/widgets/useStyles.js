@@ -30,4 +30,8 @@ export default makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
   },
+  media: {
+    height: 0,
+    paddingTop: '40.25%',
+  },
 }));
