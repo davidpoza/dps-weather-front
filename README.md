@@ -1,1 +1,1 @@
-This is a search interface for youtube comments API
+This is a React interface for my weather station powered by arduino
