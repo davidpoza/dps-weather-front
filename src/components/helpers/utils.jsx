@@ -128,7 +128,7 @@ export function celsius2Fahrenheit(temp) {
    * @param {number} currentValue
    * @param {Array} measurements
    */
-export const calculateTrend = (currentValue, measurements) => {
+export function calculateTrend(currentValue, measurements) {
   if (measurements.length >= 4) {
     return (currentValue - measurements[measurements.length - 4]);
   }
@@ -136,7 +136,7 @@ export const calculateTrend = (currentValue, measurements) => {
     return (currentValue - measurements[measurements.length - 3]);
   }
   return 0;
-};
+}
 
 /**
  * Receives an array of objects and return an array of numbers, only the specified field of the objects
@@ -148,9 +148,15 @@ export const filterArrayObjects = (array, field) => (
   array.map((e) => e[field])
 );
 
-export const getLocaleDate = (date) => {
-  const dateObj = moment.tz(date, 'DD-MM-YYYY HH:mm:ss', 'Europe/Madrid');
+export function getLocaleDate(date) {
+  if (!date) return null;
+  const initDate = typeof date === 'object' ? date : new Date(date); // if number then it's a timestamp
+  const dateObj = moment.tz(initDate, 'DD-MM-YYYY HH:mm:ss', 'Europe/Madrid');
   return (dateObj.locale('es').format('ddd HH:mm'));
-};
+}
+
+export function formatWeekDay(dateString) {
+  return (moment(dateString).locale('es').format('ddd D'));
+}
 
 /* eslint-enable import/prefer-default-export */
