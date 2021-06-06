@@ -12,7 +12,7 @@ import Webcam from '../webcam';
 import Store from '../../reducers/store';
 import useStyles from './useStyles';
 import Chart from '../chart';
-import { fetchCurrentData } from '../../actions/chart-actions';
+import { fetchCurrentData, fetchLogData, setGraphDate, setGraphSensor } from '../../actions/chart-actions';
 import { fetchForecast } from '../../actions/forecast-actions';
 
 import OutdoorTempertureWidget from '../widgets/outdoor-temperature';
@@ -21,14 +21,32 @@ import WebcamWidget from '../widgets/webcam';
 import TemperatureChartWidget from '../widgets/temperature-chart';
 import PressureChartWidget from '../widgets/pressure-chart';
 import ForecastWidget from '../widgets/forecast';
+import WindChartWidget from '../widgets/wind-chart';
+import HumidityChartWidget from '../widgets/humidity-chart';
 
 function MainScreen(props) {
   const [state, dispatch] = useContext(Store);
   const [requestCount, setRequestCount] = useState(0);
   const classes = useStyles();
 
+  const SENSORS = ['HOME_INDOOR', 'HOME_OUTDOOR', 'BEDROOM', 'BEDROOM2'];
+
   const makeRequest = () => {
     fetchCurrentData(dispatch, { token: get(state, 'user.token') });
+    fetchLogData(dispatch, {
+      graph: 1,
+      date: moment().format('YYYY-MM-DD'),
+      stationId: 'HOME_INDOOR',
+      token: get(state, 'user.token'),
+    });
+    fetchLogData(dispatch, {
+      graph: 2,
+      date: moment().format('YYYY-MM-DD'),
+      stationId: 'HOME_OUTDOOR',
+      token: get(state, 'user.token'),
+    });
+    setGraphSensor(dispatch, { graph: 1, sensorId: 'HOME_INDOOR' });
+    setGraphDate(dispatch, { graph: 1, date: moment().format('YYYY-MM-DD') });
   };
 
   useEffect(() => {
@@ -40,7 +58,7 @@ function MainScreen(props) {
       );
       const diff = currentDate.diff(lastRegisteredDateObj, 'minutes');
       if (get(state, 'user.token') && !get(state, 'loading')
-        && (!lastRegisteredDate || diff >= 15)) {
+        && (!lastRegisteredDate || diff >= 1)) {
         makeRequest();
       }
       fetchForecast(dispatch, { location: 'colmenar-viejo' });
@@ -63,8 +81,9 @@ function MainScreen(props) {
         <TemperatureChartWidget />
         <ForecastWidget location="colmenar-viejo" />
         <PressureChartWidget />
-        <OutdoorTempertureWidget />
-        <OutdoorTempertureWidget />
+        <WindChartWidget />
+        <HumidityChartWidget />
+        <ForecastWidget location="penalara" />
       </Grid>
 
     </>

@@ -159,4 +159,13 @@ export function formatWeekDay(dateString) {
   return (moment(dateString).locale('es').format('ddd D'));
 }
 
+export function capitalizeFirstWords(sentence) {
+  const separateWord = sentence.toLowerCase().split(' ');
+  for (let i = 0; i < separateWord.length; i++) {
+    separateWord[i] = separateWord[i].charAt(0).toUpperCase() +
+    separateWord[i].substring(1);
+  }
+  return separateWord.join(' ');
+}
+
 /* eslint-enable import/prefer-default-export */

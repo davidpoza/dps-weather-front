@@ -16,11 +16,6 @@ export default makeStyles((theme) => ({
     fontSize: '0.8em',
     textAlign: 'center',
   },
-  dew: {
-    marginTop: '10px',
-    fontSize: '0.8em',
-    textAlign: 'center',
-  },
   humidity: {
     marginTop: '10px',
     fontSize: '0.8em',

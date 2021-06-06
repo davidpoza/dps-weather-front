@@ -60,7 +60,7 @@ export function fetchLogData(dispatch, {
 
 export function fetchCurrentData(dispatch, { token }) {
   const currentData = createCurrent({});
-
+console.log("-->", currentData)
   api.chart.getCurrentData('HOME_INDOOR', token)
     .then((res) => (res.json()))
     .then((data) => {

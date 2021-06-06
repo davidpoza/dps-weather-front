@@ -9,7 +9,9 @@ import WidgetBase from '../base';
 import Store from '../../../reducers/store';
 import useStyles from './useStyles';
 import TrendIcon from '../../trend-icon';
-import { getLocaleDate, calculateTrend, filterArrayObjects, calculateTHWIndex } from '../../helpers/utils';
+import {
+  capitalizeFirstWords, getLocaleDate, calculateTrend, filterArrayObjects, calculateTHWIndex,
+} from '../../helpers/utils';
 import DayForecast from './_children/day';
 
 export default function ForecastWidget({ location }) {
@@ -45,7 +47,7 @@ export default function ForecastWidget({ location }) {
   }, []);
 
   return (
-    <WidgetBase title="Pronóstico 5 días">
+    <WidgetBase title={`Pronóstico 5 días para ${capitalizeFirstWords(location.replace('-', ' '))}`}>
       <div className={classes.root}>
         {
           forecast?.data?.map((f) => (
