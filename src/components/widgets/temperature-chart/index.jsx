@@ -22,19 +22,19 @@ export default function TemperatureChart() {
         charts={[
           {
             sensorId: 'Terraza',
-            data: state.graphs.HOME_OUTDOOR[date],
+            data: state.graphs?.HOME_OUTDOOR?.[date],
           },
           {
             sensorId: 'Salón',
-            data: state.graphs.HOME_INDOOR[date],
+            data: state.graphs?.HOME_INDOOR?.[date],
           },
           {
             sensorId: 'Habitación David',
-            data: state.graphs.BEDROOM[date],
+            data: state.graphs?.BEDROOM?.[date],
           },
           {
             sensorId: 'Habitación Luis y Elena',
-            data: state.graphs.BEDROOM2[date],
+            data: state.graphs?.BEDROOM2?.[date],
           },
         ]}
         date={date}

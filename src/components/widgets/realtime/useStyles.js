@@ -7,16 +7,16 @@ export default makeStyles((theme) => ({
   value: {
     fontSize: '4em',
   },
-  trend: {
+  visibility: {
     fontSize: '0.8em',
     textAlign: 'center',
   },
-  feels: {
+  cloudCover: {
     marginTop: '10px',
     fontSize: '0.8em',
     textAlign: 'center',
   },
-  humidity: {
+  radiation: {
     marginTop: '10px',
     fontSize: '0.8em',
     textAlign: 'center',

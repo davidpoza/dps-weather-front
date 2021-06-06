@@ -40,29 +40,29 @@ console.log(realtimeData)
 
   const Extended = () => {
     return (
-      <ul>
-        <li>
+      <div>
+        <div className={classes.visibility}>
           Visibilidad:
           <br />
           <strong>
             {` ${visibility?.toFixed(2)}Km.`}
           </strong>
-        </li>
-        <li>
+        </div>
+        <div className={classes.cloudCover}>
           Cobertura de nubes:
           <br />
           <strong>
             {` ${cloudCover?.toFixed(2)}%.`}
           </strong>
-        </li>
-        <li>
+        </div>
+        <div className={classes.radiation}>
           Radiación solar:
           <br />
           <strong>
             {` ${radiation?.toFixed(2)}W/m².`}
           </strong>
-        </li>
-      </ul>
+        </div>
+      </div>
     );
   };
 

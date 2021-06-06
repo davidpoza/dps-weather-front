@@ -16,7 +16,7 @@ function Chart({
   const classes = useStyles();
 
   // removes wrong data which is out of certain range depending of type of data
-  const filterData = (data, type = 'temperature') => {
+  const filterData = (data = [], type = 'temperature') => {
     if (type === 'pressure') {
       return data.filter((value) => (value.pressure > 700 && value.pressure < 1300));
     }
@@ -29,7 +29,7 @@ function Chart({
     return data.filter((value) => (value.temperature > -10 && value.temperature < 50));
   };
 
-  const formatData = (data, type = 'temperature') => {
+  const formatData = (data = [], type = 'temperature') => {
     if (type === 'pressure') {
       return data.map((value) => ({
         x: value.created_on.slice(11, -3),

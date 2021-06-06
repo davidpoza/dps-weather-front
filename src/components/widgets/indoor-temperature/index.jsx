@@ -38,7 +38,7 @@ export default function IndoorTempertureWidget() {
               calculateTrend(
                 indoorTemp,
                 filterArrayObjects(
-                  state.graphs.HOME_INDOOR[fromDateTimeToIsoString(date)],
+                  state.graphs?.HOME_INDOOR?.[fromDateTimeToIsoString(date)],
                   'temperature',
                 ),
               )

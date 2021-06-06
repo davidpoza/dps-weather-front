@@ -45,7 +45,7 @@ export default function OutdoorTempertureWidget() {
               calculateTrend(
                 outdoorTemp,
                 filterArrayObjects(
-                  state.graphs.HOME_OUTDOOR[fromDateTimeToIsoString(date)],
+                  state.graphs?.HOME_OUTDOOR?.[fromDateTimeToIsoString(date)],
                   'temperature',
                 ),
               )

@@ -22,7 +22,7 @@ export default function TemperatureChart() {
         charts={[
           {
             sensorId: '',
-            data: state.graphs.HOME_OUTDOOR[date],
+            data: state.graphs?.HOME_OUTDOOR?.[date],
           },
         ]}
         date={date}
