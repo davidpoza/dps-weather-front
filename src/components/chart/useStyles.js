@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles((theme) => ({
   root: {
-    height: '200px',
+    height: '240px',
     width: '350px',
   },
   modeSelector: {

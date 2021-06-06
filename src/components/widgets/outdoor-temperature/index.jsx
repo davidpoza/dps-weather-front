@@ -1,8 +1,7 @@
 import React, { useContext } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faTemperatureLow, faClock, faWind, faTint, faSignal, faHandHoldingWater, faHome, faMale,
-  faAngleDown, faAngleUp, faAngleRight, faSun, faMoon, faThermometerQuarter,
+  faClock, faThermometerQuarter,
 } from '@fortawesome/free-solid-svg-icons';
 import Typography from '@material-ui/core/Typography';
 import WidgetBase from '../base';
@@ -10,7 +9,12 @@ import Store from '../../../reducers/store';
 import useStyles from './useStyles';
 import TrendIcon from '../../trend-icon';
 import {
-  calculateDewPoint, getLocaleDate, calculateTrend, filterArrayObjects, calculateTHWIndex,
+  calculateDewPoint,
+  transformDateToLocaleDay,
+  calculateTrend,
+  filterArrayObjects,
+  calculateTHWIndex,
+  fromDateTimeToIsoString,
 } from '../../helpers/utils';
 
 
@@ -18,7 +22,7 @@ export default function OutdoorTempertureWidget() {
   const classes = useStyles();
   const [state, dispatch] = useContext(Store);
   const {
-    date, indoorTemp, outdoorTemp, indoorHum, outdoorHum, pressure, wind,
+    date, outdoorTemp, indoorHum, outdoorHum, pressure, wind,
   } = state.currentConditions;
 
   function calculateColor(value) {
@@ -37,7 +41,15 @@ export default function OutdoorTempertureWidget() {
             Tendencia
           </div>
           <TrendIcon
-            trend={calculateTrend(outdoorTemp, filterArrayObjects(state.graph2_points, 'temperature'))}
+            trend={
+              calculateTrend(
+                outdoorTemp,
+                filterArrayObjects(
+                  state.graphs.HOME_OUTDOOR[fromDateTimeToIsoString(date)],
+                  'temperature',
+                ),
+              )
+            }
           />
         </div>
         <div className={classes.humidity}>
@@ -79,7 +91,7 @@ export default function OutdoorTempertureWidget() {
       <div>
         <Typography variant="caption">
           <FontAwesomeIcon icon={faClock} />
-          { ` Última lectura: ${getLocaleDate(date)}` }
+          { ` Última lectura: ${transformDateToLocaleDay(date)}` }
         </Typography>
       </div>
     </WidgetBase>

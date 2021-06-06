@@ -1,22 +1,23 @@
 import React, { useContext } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faTemperatureLow, faClock, faWind, faTint, faSignal, faHandHoldingWater, faHome, faMale,
-  faAngleDown, faAngleUp, faAngleRight, faSun, faMoon, faThermometerQuarter,
+  faClock, faThermometerQuarter,
 } from '@fortawesome/free-solid-svg-icons';
 import Typography from '@material-ui/core/Typography';
 import WidgetBase from '../base';
 import Store from '../../../reducers/store';
 import useStyles from './useStyles';
 import TrendIcon from '../../trend-icon';
-import { getLocaleDate, calculateTrend, filterArrayObjects, calculateTHWIndex } from '../../helpers/utils';
+import {
+  transformDateToLocaleDay, calculateTrend, filterArrayObjects, fromDateTimeToIsoString,
+} from '../../helpers/utils';
 
 
 export default function IndoorTempertureWidget() {
   const classes = useStyles();
   const [state, dispatch] = useContext(Store);
   const {
-    date, indoorTemp, outdoorTemp, indoorHum, outdoorHum, pressure, wind,
+    date, indoorTemp, indoorHum,
   } = state.currentConditions;
 
   function calculateColor(value) {
@@ -33,7 +34,15 @@ export default function IndoorTempertureWidget() {
             Tendencia
           </div>
           <TrendIcon
-            trend={calculateTrend(indoorTemp, filterArrayObjects(state.graph2_points, 'temperature'))}
+            trend={
+              calculateTrend(
+                indoorTemp,
+                filterArrayObjects(
+                  state.graphs.HOME_INDOOR[fromDateTimeToIsoString(date)],
+                  'temperature',
+                ),
+              )
+            }
           />
         </div>
         <div className={classes.humidity}>
@@ -59,7 +68,7 @@ export default function IndoorTempertureWidget() {
       <div>
         <Typography variant="caption">
           <FontAwesomeIcon icon={faClock} />
-          { ` Última lectura: ${getLocaleDate(date)}` }
+          { ` Última lectura: ${transformDateToLocaleDay(date)}` }
         </Typography>
       </div>
     </WidgetBase>

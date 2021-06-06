@@ -10,7 +10,7 @@ import Store from '../../../reducers/store';
 import useStyles from './useStyles';
 import TrendIcon from '../../trend-icon';
 import {
-  capitalizeFirstWords, getLocaleDate, calculateTrend, filterArrayObjects, calculateTHWIndex,
+  capitalizeFirstWords, transformDateToLocaleDay, calculateTrend, filterArrayObjects, calculateTHWIndex,
 } from '../../helpers/utils';
 import DayForecast from './_children/day';
 
@@ -64,8 +64,14 @@ export default function ForecastWidget({ location }) {
       </div>
       <div className={classes.updated}>
         <Typography variant="caption">
-          <FontAwesomeIcon icon={faClock} />
-          { ` Actualizado en: ${getLocaleDate(forecast.ts)}` }
+          {
+            forecast.ts && (
+              <>
+                <FontAwesomeIcon icon={faClock} />
+                { ` Actualizado en: ${transformDateToLocaleDay(forecast.ts)}` }
+              </>
+            )
+          }
         </Typography>
       </div>
     </WidgetBase>

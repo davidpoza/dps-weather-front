@@ -2,14 +2,11 @@ import React, { useState, useContext, useCallback } from 'react';
 import { ResponsiveLine } from '@nivo/line';
 import PropTypes from 'prop-types';
 import useStyles from './useStyles';
-import Store from '../../reducers/store';
+import { transformDateToLocaleLongFormat } from '../helpers/utils';
 
 function Chart({
-  data1,
-  data2,
+  charts = [],
   date,
-  sensor1,
-  sensor2,
   mode = 'temperature',
   marginTop,
   marginBottom,
@@ -73,18 +70,10 @@ function Chart({
     return '°';
   };
 
-  const data = [
-    {
-      id: `#1 ${date} ${sensor1}`,
-      data: formatData(filterData(data1, mode), mode),
-    },
-  ];
-  if (sensor2) {
-    data.push({
-      id: `#2 ${date} ${sensor2}`,
-      data: formatData(filterData(data2, mode), mode),
-    });
-  }
+  const data = charts.map((c) => ({
+    id: `${c.sensorId ? `${c.sensorId}, ` : ''}en ${transformDateToLocaleLongFormat(date)}`,
+    data: formatData(filterData(c.data, mode), mode),
+  }));
 
   return (
     <div className={classes.root}>
@@ -128,7 +117,7 @@ function Chart({
               itemHeight: 20,
               itemWidth: 275,
               translateX: -20, // px
-              translateY: 70, // px
+              translateY: 20 * (charts.length - 1) + 50, // px
               justify: false,
             },
           ]
@@ -141,10 +130,16 @@ function Chart({
 export default Chart;
 
 Chart.propTypes = {
-  sensor1: PropTypes.string,
-  sensor2: PropTypes.string,
-  data1: PropTypes.array,
-  data2: PropTypes.array,
+  charts: PropTypes.arrayOf(PropTypes.shape({
+    sensorId: PropTypes.string,
+    data: PropTypes.arrayOf(PropTypes.shape({
+      created_on: PropTypes.string,
+      pressure: PropTypes.number,
+      temperature: PropTypes.number,
+      wind: PropTypes.number,
+      humidity: PropTypes.number,
+    })),
+  })),
   date: PropTypes.string,
   mode: PropTypes.string,
   marginTop: PropTypes.number,

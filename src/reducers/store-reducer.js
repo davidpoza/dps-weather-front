@@ -1,5 +1,5 @@
 export default function reducer(state, action) {
-  const newHistory = { ...state.history };
+  const newGraphs = { ...state.graphs };
   const newForecastObj = {
     ...state.forecast,
   };
@@ -122,6 +122,31 @@ export default function reducer(state, action) {
       }
       return {
         ...state, graph2_date: action.payload.date,
+      };
+    case 'GET_GRAPH_ATTEMPT':
+      if (!newGraphs?.[action.payload.sensorId]) {
+        console.log("--->", newGraphs);
+        newGraphs[action.payload.sensorId] = {};
+      }
+      return {
+        ...state,
+        loading: true,
+        error: false,
+        graphs: newGraphs,
+      };
+    case 'GET_GRAPH_SUCCESS':
+      newGraphs[action.payload.sensorId][action.payload.date] = action.payload.data;
+      return {
+        ...state,
+        loading: false,
+        error: false,
+        graphs: newGraphs,
+      };
+    case 'GET_GRAPH_FAIL':
+      return {
+        ...state,
+        loading: false,
+        error: true,
       };
     default:
       return state;

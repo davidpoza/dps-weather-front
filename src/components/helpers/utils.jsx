@@ -50,10 +50,6 @@ export function sortCommentsByDate(a, b) {
   return (0);
 }
 
-export function getCurrentDate() {
-  return (moment().tz('Europe/Madrid', new Date()).format('DD-MM-YYYY HH:mm'));
-}
-
 /**
  *
  * @param {number} temp - celsius
@@ -129,10 +125,10 @@ export function celsius2Fahrenheit(temp) {
    * @param {Array} measurements
    */
 export function calculateTrend(currentValue, measurements) {
-  if (measurements.length >= 4) {
+  if (measurements?.length >= 4) {
     return (currentValue - measurements[measurements.length - 4]);
   }
-  if (measurements.length === 3) {
+  if (measurements?.length === 3) {
     return (currentValue - measurements[measurements.length - 3]);
   }
   return 0;
@@ -145,18 +141,39 @@ export function calculateTrend(currentValue, measurements) {
  * @return {Array<number>}
  */
 export const filterArrayObjects = (array, field) => (
-  array.map((e) => e[field])
+  array?.map((e) => e[field])
 );
 
-export function getLocaleDate(date) {
+// accepts Date obj or timestamp
+export function transformDateToLocaleDay(date) {
   if (!date) return null;
   const initDate = typeof date === 'object' ? date : new Date(date); // if number then it's a timestamp
   const dateObj = moment.tz(initDate, 'DD-MM-YYYY HH:mm:ss', 'Europe/Madrid');
   return (dateObj.locale('es').format('ddd HH:mm'));
 }
 
+export function getCurrentDate() {
+  return (moment().tz('Europe/Madrid', new Date()).format('DD-MM-YYYY HH:mm'));
+}
+
+/**
+ *
+ * @param {String} date - format YYYY-MM-DD
+ * @returns
+ */
+export function transformDateToLocaleLongFormat(date) {
+  const initDate = new Date(date);
+  const dateObj = moment.tz(initDate, 'DD-MM-YYYY', 'Europe/Madrid');
+  return (dateObj.locale('es').format('ddd D [de] MMM YYYY'));
+}
+
 export function formatWeekDay(dateString) {
   return (moment(dateString).locale('es').format('ddd D'));
+}
+
+export function fromDateTimeToIsoString(datetime) {
+  const dateObj = moment.tz(datetime, 'DD-MM-YYYY HH:mm', 'Europe/Madrid');
+  return (dateObj.locale('es').format('YYYY-MM-DD'));
 }
 
 export function capitalizeFirstWords(sentence) {

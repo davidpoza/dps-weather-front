@@ -4,15 +4,9 @@ import Grid from '@material-ui/core/Grid';
 import moment from 'moment-timezone/builds/moment-timezone-with-data';
 import 'moment/locale/es';
 import get from 'lodash.get';
-import { useHistory } from 'react-router-dom';
-import AlertBar from '../alert-bar';
-import SearchForm from '../search-form';
-import CurrentConditions from '../current-conditions';
-import Webcam from '../webcam';
 import Store from '../../reducers/store';
 import useStyles from './useStyles';
-import Chart from '../chart';
-import { fetchCurrentData, fetchLogData, setGraphDate, setGraphSensor } from '../../actions/chart-actions';
+import { fetchCurrentData, fetchLogData  } from '../../actions/chart-actions';
 import { fetchForecast } from '../../actions/forecast-actions';
 
 import OutdoorTempertureWidget from '../widgets/outdoor-temperature';
@@ -29,24 +23,23 @@ function MainScreen(props) {
   const [requestCount, setRequestCount] = useState(0);
   const classes = useStyles();
 
-  const SENSORS = ['HOME_INDOOR', 'HOME_OUTDOOR', 'BEDROOM', 'BEDROOM2'];
+  const sensors = ['HOME_INDOOR', 'HOME_OUTDOOR', 'BEDROOM', 'BEDROOM2'];
 
   const makeRequest = () => {
     fetchCurrentData(dispatch, { token: get(state, 'user.token') });
     fetchLogData(dispatch, {
-      graph: 1,
+      sensorId: 'HOME_INDOOR',
       date: moment().format('YYYY-MM-DD'),
-      stationId: 'HOME_INDOOR',
       token: get(state, 'user.token'),
     });
-    fetchLogData(dispatch, {
-      graph: 2,
-      date: moment().format('YYYY-MM-DD'),
-      stationId: 'HOME_OUTDOOR',
-      token: get(state, 'user.token'),
+
+    sensors.forEach((s) => {
+      fetchLogData(dispatch, {
+        sensorId: s,
+        date: moment().format('YYYY-MM-DD'),
+        token: get(state, 'user.token'),
+      });
     });
-    setGraphSensor(dispatch, { graph: 1, sensorId: 'HOME_INDOOR' });
-    setGraphDate(dispatch, { graph: 1, date: moment().format('YYYY-MM-DD') });
   };
 
   useEffect(() => {
@@ -95,42 +88,3 @@ export default MainScreen;
 MainScreen.propTypes = {
   setFormOpen: PropTypes.func,
 };
-
-
-// return (
-//   <>
-//     <Grid
-//       container
-//       spacing={1}
-//       alignItems="center"
-//       justify="center"
-//     >
-//       <Grid item xs={12} md={8} xl={3}>
-//         <CurrentConditions />
-//       </Grid>
-//       <Grid item xs={12} md={8} xl={3}>
-//         <Webcam />
-//       </Grid>
-//     </Grid>
-//     <Grid
-//       container
-//       spacing={0}
-//       alignItems="center"
-//       justify="center"
-//       style={{ minHeight: '100vh' }}
-//     >
-//       <Grid item xs={12} md={8} xl={6}>
-//         <Chart
-//           data1={state.graph1_points}
-//           data2={state.graph2_points}
-//           sensor1={state.graph1_sensor || 'HOME_INDOOR'}
-//           sensor2={state.graph2_sensor || 'HOME_OUTDOOR'}
-//           date1={state.graph1_date}
-//           date2={state.graph2_date}
-//         />
-//         <SearchForm setFormOpen={setFormOpen} />
-//         <AlertBar msg={state.msg} error={state.error} />
-//       </Grid>
-//     </Grid>
-//   </>
-// );

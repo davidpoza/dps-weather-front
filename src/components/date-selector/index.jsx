@@ -11,7 +11,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import esLocale from 'date-fns/locale/es';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import useStyles from './useStyles';
-import { setGraphDate, setGraphSensor } from '../../actions/chart-actions';
+// import { setGraphDate, setGraphSensor } from '../../actions/chart-actions';
 import Store from '../../reducers/store';
 
 function DateSelector(props) {
@@ -29,7 +29,7 @@ function DateSelector(props) {
   useEffect(() => {
     const dateString = dateAsString(date);
     if (dateString !== get(state, `graph${graph}_date`)) {
-      setGraphDate(dispatch, { graph, date: dateString });
+      // setGraphDate(dispatch, { graph, date: dateString });
     }
   }, []);
 
@@ -37,14 +37,14 @@ function DateSelector(props) {
   const handleChangeSensorId = (event) => {
     if (event.target.value !== '') {
       setSensorId(event.target.value);
-      setGraphSensor(dispatch, { graph, sensorId: event.target.value });
+      // setGraphSensor(dispatch, { graph, sensorId: event.target.value });
     }
   };
 
   const handleChangeDate = (value) => {
     if (value) {
       setDate(value);
-      setGraphDate(dispatch, { graph, date: dateAsString(value) });
+      // setGraphDate(dispatch, { graph, date: dateAsString(value) });
     }
   };
 
