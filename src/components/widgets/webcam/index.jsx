@@ -1,23 +1,19 @@
 import React, {
   useState, useContext, useEffect, useRef,
 } from 'react';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import CardMedia from '@material-ui/core/CardMedia';
-import IconButton from '@material-ui/core/IconButton';
-import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import SkipNextIcon from '@material-ui/icons/SkipNext';
-import PauseIcon from '@material-ui/icons/Pause';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Typography from '@material-ui/core/Typography';
-
+import {
+  faSun, faMoon,
+} from '@fortawesome/free-solid-svg-icons';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import PropTypes from 'prop-types';
 import useStyles from './useStyles';
 import Store from '../../../reducers/store';
 import WidgetBase from '../base';
+import {
+  getCESTTime,
+} from '../../helpers/utils';
 
 function Webcam(props) {
   const [state, dispatch] = useContext(Store);
@@ -86,9 +82,9 @@ function Webcam(props) {
     });
   }
 
-  const fullWidth = imageElement.current?.offsetWidth;
-  const calculatedHeight = (456 * fullWidth) / 1472;
-  const { day, hour, minute } = parseImageDate(imageList[photoIndex]);
+  const sunrise = state?.forecast?.['colmenar-viejo']?.data?.[0]?.sunrise?.value;
+  const sunset = state?.forecast?.['colmenar-viejo']?.data?.[0]?.sunset?.value;
+
   return (imageList.length > 0
     ? (
       <WidgetBase
@@ -96,7 +92,16 @@ function Webcam(props) {
         image={`https://aventurate.com/webcam/${imageList[`${photoIndex}`]}`}
         moreInfo="Ver evolución"
       >
-
+        <div className={classes.sunrise}>
+          <Typography variant="body1">
+            <FontAwesomeIcon icon={faSun} />
+            { ` Amanecer: ${sunrise ? getCESTTime(sunrise) : 'No disponible'}` }
+          </Typography>
+          <Typography variant="body1">
+            <FontAwesomeIcon icon={faMoon} />
+            { ` Anochecer: ${sunset ? getCESTTime(sunset) : 'No disponible'}` }
+          </Typography>
+        </div>
       </WidgetBase>
     )
     : null

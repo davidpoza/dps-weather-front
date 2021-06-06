@@ -156,6 +156,11 @@ export function getCurrentDate() {
   return (moment().tz('Europe/Madrid', new Date()).format('DD-MM-YYYY HH:mm'));
 }
 
+export function getCESTTime(date) {
+  const dateObj = moment(date);
+  return (dateObj.tz('Europe/Madrid').format('HH:mm'));
+}
+
 /**
  *
  * @param {String} date - format YYYY-MM-DD
@@ -183,6 +188,36 @@ export function capitalizeFirstWords(sentence) {
     separateWord[i].substring(1);
   }
   return separateWord.join(' ');
+}
+
+export function getSvgPath(cod) {
+  const path = {
+    clear: 'clear_day',
+    cloudy: 'cloudy',
+    drizzle: 'drizzle',
+    flurries: 'flurries',
+    fog: 'fog',
+    fog_light: 'fog_light',
+    freezing_rain: 'freezing_rain',
+    freezing_rain_drizzle: 'freezing_rain_drizzle',
+    freezing_rain_heavy: 'freezing_rain_heavy',
+    freezing_rain_light: 'freezing_rain_light',
+    ice_pellets: 'ice_pellets',
+    ice_pellets_heavy: 'ice_pellets_heavy',
+    ice_pellets_light: 'ice_pellets_light',
+    most_clear: 'most_clear_day',
+    mostly_clear: 'mostly_clear_day',
+    mostly_cloudy: 'mostly_cloudy',
+    partly_cloudy: 'partly_cloudy_day',
+    rain: 'rain',
+    rain_heavy: 'rain_heavy',
+    rain_light: 'rain_light',
+    snow: 'snow',
+    snow_heavy: 'snow_heavy',
+    snow_light: 'snow_light',
+    tstorm: 'tstorm',
+  };
+  return `svg/forecast/${path[cod]}.svg`;
 }
 
 /* eslint-enable import/prefer-default-export */

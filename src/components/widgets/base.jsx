@@ -15,7 +15,7 @@ export default function WidgetBase({ children, title, image, extended, moreInfo 
   const classes = useStyles();
   return (
     <Grid item xs={12} md={4}>
-      <Card>
+      <Card classes={{ root: classes.root }}>
         <CardHeader
           classes={{
             root: classes.header,

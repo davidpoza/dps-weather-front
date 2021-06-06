@@ -108,13 +108,19 @@ export default {
         .then((data) => data);
     },
     // código de municipio, colmenar-> 28045
-    forecast(cmun) {
+    forecastAEMET(cmun) {
       return fetch(`
       https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/diaria/${cmun}?api_key=${AEMET_API_KEY}`)
         .then((res) => res.json())
         .then((data) => fetch(data.datos))
         .then((res) => res.json())
         .then((data) => data);
+    },
+    forecastClimaCell(location) {
+      return fetch(`https://tiempo.davidinformatico.com/forecast/${location}.json`);
+    },
+    realtimeClimaCell(location) {
+      return fetch(`https://tiempo.davidinformatico.com/realtime/${location}.json`);
     },
   },
   comments: {

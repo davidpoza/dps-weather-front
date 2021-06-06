@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles((theme) => ({
   root: {
-    width: '33%',
+    height: '340px',
   },
   header: {
     textAlign: 'center',
@@ -12,6 +12,7 @@ export default makeStyles((theme) => ({
 
   },
   singleContent: {
+    padding: 0,
     fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
     display: 'flex',
     flexDirection: 'row',

@@ -27,12 +27,20 @@ export default function HumidityChart() {
             sensorId: 'Salón',
             data: state.graphs.HOME_INDOOR[date],
           },
+          {
+            sensorId: 'Habitación David',
+            data: state.graphs.BEDROOM[date],
+          },
+          {
+            sensorId: 'Habitación Luis y Elena',
+            data: state.graphs.BEDROOM2[date],
+          },
         ]}
         date={date}
         mode="humidity"
         marginTop={5}
         marginRight={20}
-        marginBottom={70}
+        marginBottom={110}
         marginLeft={60}
       />
     </WidgetBase>

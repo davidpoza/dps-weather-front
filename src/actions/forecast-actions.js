@@ -1,5 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 
+import api from '../api/index';
+
 export function fetchForecast(dispatch, {
   location,
 }) {
@@ -7,7 +9,7 @@ export function fetchForecast(dispatch, {
     type: 'GET_FORECAST_ATTEMPT',
     payload: { location },
   });
-  fetch(`https://tiempo.davidinformatico.com/forecast/${location}.json`)
+  api.weather.forecastClimaCell(location)
     .then((res) => res.json())
     .then((data) => {
       return dispatch({

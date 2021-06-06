@@ -17,6 +17,7 @@ import PressureChartWidget from '../widgets/pressure-chart';
 import ForecastWidget from '../widgets/forecast';
 import WindChartWidget from '../widgets/wind-chart';
 import HumidityChartWidget from '../widgets/humidity-chart';
+import RealtimeWidget from '../widgets/realtime';
 
 function MainScreen(props) {
   const [state, dispatch] = useContext(Store);
@@ -70,6 +71,7 @@ function MainScreen(props) {
       >
         <OutdoorTempertureWidget />
         <WebcamWidget />
+        <RealtimeWidget location="colmenar-viejo" />
         <IndoorTempertureWidget />
         <TemperatureChartWidget />
         <ForecastWidget location="colmenar-viejo" />
