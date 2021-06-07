@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import moment from 'moment-timezone/builds/moment-timezone-with-data';
@@ -9,7 +9,7 @@ import useStyles from './useStyles';
 import { fetchCurrentData, fetchLogData } from '../../actions/chart-actions';
 import { fetchForecast } from '../../actions/forecast-actions';
 import { fetch24hComparison } from '../../actions/24h-comparison';
-import OutdoorTempertureWidget from '../widgets/outdoor-temperature';
+import TempertureWidget from '../widgets/temperature';
 import WebcamWidget from '../widgets/webcam';
 import TemperatureChartWidget from '../widgets/temperature-chart';
 import PressureChartWidget from '../widgets/pressure-chart';
@@ -68,7 +68,7 @@ function MainScreen(props) {
         alignItems="center"
         justify="center"
       >
-        <OutdoorTempertureWidget />
+        <TempertureWidget />
         <WebcamWidget />
         <RealtimeWidget location="colmenar-viejo" />
         <TemperatureChartWidget />

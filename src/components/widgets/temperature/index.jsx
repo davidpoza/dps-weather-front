@@ -18,7 +18,7 @@ import {
 } from '../../helpers/utils';
 
 
-export default function OutdoorTempertureWidget() {
+export default function TempertureWidget() {
   const classes = useStyles();
   const [state, dispatch] = useContext(Store);
 
@@ -31,41 +31,6 @@ export default function OutdoorTempertureWidget() {
     if (value < 15) return '#7bb6c9';
     return '#46c48d';
   }
-
-  const last24hDiffHumOutdoor = Math.trunc(outdoorHum - state?.last24hComparison?.['HOME_OUTDOOR']?.humidity);
-  const last24hDiffHumIndoor = Math.trunc(indoorHum - state?.last24hComparison?.['HOME_INDOOR']?.humidity);
-  // function ExtendedData(sensorId = 'HOME_OUTDOOR') {
-  //   return (
-  //     <div>
-  //       <div className={classes.trend}>
-  //         <div>
-  //           Interior
-  //         </div>
-  //         <TrendIcon
-  //           trend={
-  //             calculateTrend(
-  //               indoorTemp,
-  //               filterArrayObjects(
-  //                 state.graphs?.HOME_INDOOR?.[fromDateTimeToIsoString(date)],
-  //                 'temperature',
-  //               ),
-  //             )
-  //           }
-  //         />
-  //       </div>
-  //       <div className={classes.humidity}>
-  //         <div>
-  //           Humedad
-  //         </div>
-  //         <div>
-  //           <strong>
-  //             { `${indoorTemp} % ${last24hDiffHumIndoor > 0 ? `+${last24hDiffHumIndoor}` : last24hDiffHumIndoor}` }
-  //           </strong>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   );
-  // }
 
   function ExtendedData({ sensorId = 'HOME_OUTDOOR' }) {
     const value = {
