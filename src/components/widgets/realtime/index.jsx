@@ -1,23 +1,17 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faTemperatureLow, faClock, faWind, faTint, faSignal, faHandHoldingWater, faHome, faMale,
-  faAngleDown, faAngleUp, faAngleRight, faSun, faMoon, faThermometerQuarter,
-} from '@fortawesome/free-solid-svg-icons';
+import { faClock } from '@fortawesome/free-solid-svg-icons';
 import Typography from '@material-ui/core/Typography';
 import WidgetBase from '../base';
 import Store from '../../../reducers/store';
 import useStyles from './useStyles';
-import TrendIcon from '../../trend-icon';
-import { transformDateToLocaleDay, getSvgPath, calculateTrend, filterArrayObjects, calculateTHWIndex } from '../../helpers/utils';
+import { transformDateToLocaleDay } from '../../helpers/utils';
 import api from '../../../api/index';
 
 export default function RealtimeWidget({ location }) {
   const [state, dispatch] = useContext(Store);
   const [realtimeData, setRealtimeData] = useState();
-  const {
-   wind,
-  } = state.currentConditions;
+  const { wind } = state.currentConditions;
   const classes = useStyles();
   useEffect(() => {
     (async () => {
@@ -31,7 +25,7 @@ export default function RealtimeWidget({ location }) {
     if (value < 15) return '#7bb6c9';
     return '#46c48d';
   }
-console.log(realtimeData)
+
   const weatherCode = realtimeData?.data?.weather_code?.value;
   const visibility = realtimeData?.data?.visibility?.value;
   const radiation = realtimeData?.data?.surface_shortwave_radiation?.value;

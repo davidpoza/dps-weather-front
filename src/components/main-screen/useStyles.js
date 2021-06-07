@@ -4,6 +4,7 @@ export default makeStyles((theme) => ({
   root: {
     [theme.breakpoints.up('lg')]: {
       width: '70vw',
+      maxWidth: '1333px',
     },
     margin: 'auto',
   },

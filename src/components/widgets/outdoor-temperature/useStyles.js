@@ -26,4 +26,8 @@ export default makeStyles((theme) => ({
     fontSize: '0.8em',
     textAlign: 'center',
   },
+  doubleExtended: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
 }));

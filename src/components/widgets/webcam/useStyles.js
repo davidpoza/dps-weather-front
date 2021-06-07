@@ -21,4 +21,7 @@ export default makeStyles((theme) => ({
     marginBottom: '6px',
     transition: 'opacity 1s ease-in-out',
   },
+  sunrise: {
+    marginTop: '20px',
+  },
 }));

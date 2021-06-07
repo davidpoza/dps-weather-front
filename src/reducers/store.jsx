@@ -18,6 +18,7 @@ const initialState = {
     pressure: undefined,
     wind: undefined,
   },
+  last24hComparison: {},
 };
 
 const Store = createContext();

@@ -6,11 +6,10 @@ import 'moment/locale/es';
 import get from 'lodash.get';
 import Store from '../../reducers/store';
 import useStyles from './useStyles';
-import { fetchCurrentData, fetchLogData  } from '../../actions/chart-actions';
+import { fetchCurrentData, fetchLogData } from '../../actions/chart-actions';
 import { fetchForecast } from '../../actions/forecast-actions';
-
+import { fetch24hComparison } from '../../actions/24h-comparison';
 import OutdoorTempertureWidget from '../widgets/outdoor-temperature';
-import IndoorTempertureWidget from '../widgets/indoor-temperature';
 import WebcamWidget from '../widgets/webcam';
 import TemperatureChartWidget from '../widgets/temperature-chart';
 import PressureChartWidget from '../widgets/pressure-chart';
@@ -21,45 +20,45 @@ import RealtimeWidget from '../widgets/realtime';
 
 function MainScreen(props) {
   const [state, dispatch] = useContext(Store);
-  const [requestCount, setRequestCount] = useState(0);
   const classes = useStyles();
-
+  const token = get(state, 'user.token');
   const sensors = ['HOME_INDOOR', 'HOME_OUTDOOR', 'BEDROOM', 'BEDROOM2'];
 
-  const makeRequest = () => {
-    fetchCurrentData(dispatch, { token: get(state, 'user.token') });
-    fetchLogData(dispatch, {
-      sensorId: 'HOME_INDOOR',
-      date: moment().format('YYYY-MM-DD'),
-      token: get(state, 'user.token'),
-    });
+  const requestAllSensors = () => {
+    fetchCurrentData(dispatch, { token });
 
-    sensors.forEach((s) => {
+    sensors.forEach((id) => {
       fetchLogData(dispatch, {
-        sensorId: s,
+        sensorId: id,
         date: moment().format('YYYY-MM-DD'),
-        token: get(state, 'user.token'),
+        token,
       });
+      fetch24hComparison(dispatch, { stationId: id, token });
     });
   };
 
-  useEffect(() => {
-    if (requestCount === 0) {
-      const currentDate = moment.tz(new Date(), 'Europe/Madrid');
-      const lastRegisteredDate = get(state, 'currentConditions.date');
-      const lastRegisteredDateObj = moment.tz(
-        lastRegisteredDate, 'DD-MM-YYYY HH:mm:ss', 'Europe/Madrid',
-      );
-      const diff = currentDate.diff(lastRegisteredDateObj, 'minutes');
-      if (get(state, 'user.token') && !get(state, 'loading')
-        && (!lastRegisteredDate || diff >= 1)) {
-        makeRequest();
-      }
-      fetchForecast(dispatch, { location: 'colmenar-viejo' });
-      setRequestCount(requestCount + 1);
+  function makeRequests() {
+    const currentDate = moment.tz(new Date(), 'Europe/Madrid');
+    const lastRegisteredDate = get(state, 'currentConditions.date');
+    const lastRegisteredDateObj = moment.tz(
+      lastRegisteredDate, 'DD-MM-YYYY HH:mm:ss', 'Europe/Madrid',
+    );
+    const diff = currentDate.diff(lastRegisteredDateObj, 'minutes');
+    if (get(state, 'user.token') && !get(state, 'loading')
+      && (!lastRegisteredDate || diff >= 1)) {
+      requestAllSensors();
     }
+    fetchForecast(dispatch, { location: 'colmenar-viejo' });
+  }
+
+  useEffect(() => {
+    makeRequests();
+    setInterval(() => {
+      makeRequests();
+    }, 2 * 60 * 1000);
   }, []);
 
+  if (!state?.user) return null;
   return (
     <>
       <Grid
@@ -72,7 +71,6 @@ function MainScreen(props) {
         <OutdoorTempertureWidget />
         <WebcamWidget />
         <RealtimeWidget location="colmenar-viejo" />
-        <IndoorTempertureWidget />
         <TemperatureChartWidget />
         <ForecastWidget location="colmenar-viejo" />
         <PressureChartWidget />

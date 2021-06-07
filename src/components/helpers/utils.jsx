@@ -156,6 +156,10 @@ export function getCurrentDate() {
   return (moment().tz('Europe/Madrid', new Date()).format('DD-MM-YYYY HH:mm'));
 }
 
+export function getDateTimeAsString(date) {
+  return (moment(date).tz('Europe/Madrid', new Date()).format('YYYY-MM-DD HH:mm'));
+}
+
 export function getCESTTime(date) {
   const dateObj = moment(date);
   return (dateObj.tz('Europe/Madrid').format('HH:mm'));

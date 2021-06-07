@@ -122,6 +122,23 @@ export default {
     realtimeClimaCell(location) {
       return fetch(`https://tiempo.davidinformatico.com/realtime/${location}.json`);
     },
+    getLast24Comparison(datetime, stationId, token) {
+      const q = [
+        process.env.REACT_APP_API_URL,
+        '/api/logging/log/nearest/',
+        `${datetime}/`,
+        `${stationId}`,
+      ].join('');
+      const opt = {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      return (fetch(q, opt));
+    },
   },
   comments: {
     search(videoId, keywords, token) {
