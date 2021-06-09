@@ -11,7 +11,9 @@ import Button from '@material-ui/core/Button';
 // own
 import useStyles from './useStyles';
 
-export default function WidgetBase({ children, title, image, extended, moreInfo }) {
+export default function WidgetBase({
+  children, title, image, panoramic = false, extended, actions, actionsClasses, moreInfo,
+}) {
   const classes = useStyles();
   return (
     <Grid item xs={12} md={4}>
@@ -24,7 +26,7 @@ export default function WidgetBase({ children, title, image, extended, moreInfo 
           title={title}
         />
         {
-          image && <CardMedia image={image} className={classes.media} />
+          image && <CardMedia image={image} className={panoramic ? classes.panoramicMedia : classes.media} />
         }
         {
           children && (
@@ -49,6 +51,14 @@ export default function WidgetBase({ children, title, image, extended, moreInfo 
           moreInfo && (
             <CardActions>
               <Button size="small">{moreInfo}</Button>
+            </CardActions>
+          )
+        }
+
+        {
+          actions && (
+            <CardActions disableSpacing classes={{ root: actionsClasses }}>
+              {actions}
             </CardActions>
           )
         }

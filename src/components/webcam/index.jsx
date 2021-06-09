@@ -1,9 +1,11 @@
 import React, {
   useState, useContext, useEffect, useRef,
 } from 'react';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
+
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 import CardMedia from '@material-ui/core/CardMedia';
 import IconButton from '@material-ui/core/IconButton';
 import NavigateBeforeIcon from '@material-ui/icons/NavigateBefore';
@@ -17,20 +19,48 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import PropTypes from 'prop-types';
 import useStyles from './useStyles';
 import Store from '../../reducers/store';
+import WidgetBase from '../widgets/base';
 
-
+const webcams = [
+  {
+    name: 'Aventúrate',
+    url: 'https://aventurate.com/webcam',
+    panoramic: true,
+  },
+  {
+    name: 'Navacerrada 1',
+    url: 'https://aventurate.com/webcam_externas/navacerrada-1',
+  },
+  {
+    name: 'Navacerrada 2',
+    url: 'https://aventurate.com/webcam_externas/navacerrada-2',
+  },
+  {
+    name: 'Venta Marcelino 1',
+    url: 'https://aventurate.com/webcam_externas/venta-marcelino-1',
+  },
+  {
+    name: 'Venta Marcelino 2',
+    url: 'https://aventurate.com/webcam_externas/venta-marcelino-2',
+  },
+  {
+    name: 'Venta Marcelino 3',
+    url: 'https://aventurate.com/webcam_externas/venta-marcelino-3',
+  },
+];
 function Webcam(props) {
   const [state, dispatch] = useContext(Store);
+  const [selectedUrl, setSelectedUrl] = useState(webcams[0].url);
+  const [panoramic, setPanoramic] = useState(webcams[0].panoramic);
   const [photoIndex, setPhotoIndex] = useState(0);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [imageList, setImageList] = useState([]);
   const classes = useStyles();
-  const isXl = useMediaQuery('(min-width:1920px)');
   const imageElement = useRef(null);
 
   function fetchImageList() {
-    const url = 'https://aventurate.com/webcam/listdir.php';
+    const url = `${selectedUrl}/listdir.php`;
     return fetch(url)
       .then((response) => response.json())
       .then((data) => {
@@ -52,20 +82,21 @@ function Webcam(props) {
     if (imageList.length === 0) {
       setImageLoaded(false);
       fetchImageList();
-      // .then((data) => {
-      //   // image preloading
-      //   data.forEach((image) => {
-      //     const img = new Image();
-      //     img.src = `https://aventurate.com/webcam/${image}`;
-      //   });
-      // });
     }
+  }, [imageLoaded]);
+
+  useEffect(() => {
+    setImageLoaded(false);
+    fetchImageList();
+  }, [selectedUrl]);
+
+  useEffect(() => {
     if (playing) {
       setTimeout(() => {
         changePhoto(photoIndex + 1);
       }, 500);
     }
-  }, [imageLoaded, playing, photoIndex]);
+  }, [playing, photoIndex]);
 
   function play() {
     setPlaying(!playing);
@@ -86,42 +117,60 @@ function Webcam(props) {
     });
   }
 
-  const fullWidth = imageElement.current?.offsetWidth;
-  const calculatedHeight = (456 * fullWidth) / 1472;
   const { day, hour, minute } = parseImageDate(imageList[photoIndex]);
   return (imageList.length > 0
     ? (
-      <Card className={classes.root}>
-        <CardMedia
-          className={isXl ? classes.coverXl : classes.cover}
-          image={`https://aventurate.com/webcam/${imageList[`${photoIndex}`]}`}
-          ref={imageElement}
-          style={!isXl ? { height: fullWidth ? `${calculatedHeight}px` : '100px' } : {}}
-        />
+      <WidgetBase
+        title="Webcams"
+        image={`${selectedUrl}/${imageList[`${photoIndex}`]}`}
+        actionsClasses={classes.buttons}
+        panoramic={panoramic}
+        actions={(
+          <>
+            <FormControl variant="outlined" className={classes.formControl}>
+              <Select
+                labelId="selected"
+                id="selected"
+                value={selectedUrl}
+                onChange={(e) => {
+                  const selectedWebcam = webcams.find(w => w.url === e.target.value);
+                  setPanoramic(selectedWebcam?.panoramic || false);
+                  setSelectedUrl(e.target.value);
+                }}
+                label="Selecciona webcam"
+              >
+                {
+                  webcams.map((w) => (
+                    <MenuItem value={w.url}>
+                      {w.name}
+                    </MenuItem>
+                  ))
+                }
+              </Select>
+            </FormControl>
+            <IconButton title="Anterior foto" onClick={() => changePhoto(photoIndex - 1)}>
+              <NavigateBeforeIcon />
+            </IconButton>
+            <IconButton title="Ver animación (hacia atrás en el tiempo)" onClick={play}>
+              { playing ? <PauseIcon /> : <PlayArrowIcon /> }
+            </IconButton>
+            <IconButton title="Siguiente foto" onClick={() => changePhoto(photoIndex + 1)}>
+              <NavigateNextIcon />
+            </IconButton>
+
+            <IconButton title="Volver a foto actual" onClick={() => changePhoto(0)}>
+              <SkipNextIcon />
+            </IconButton>
+          </>
+        )}
+      >
         <CardMedia
           image={`https://aventurate.com/webcam/${imageList[`${mod(photoIndex + 1, imageList.length)}`]}`}
         />
-        <CardContent className={classes.content}>
-          <Typography variant="body1" component="div">
-            { `Foto ${photoIndex + 1} de ${imageList.length}, el día ${parseInt(day, 10)} a las ${hour}:${minute}` }
-          </Typography>
-        </CardContent>
-        <CardActions disableSpacing classes={{ root: classes.buttons }}>
-          <IconButton title="Anterior foto" onClick={() => changePhoto(photoIndex - 1)}>
-            <NavigateBeforeIcon />
-          </IconButton>
-          <IconButton title="Ver animación (hacia atrás en el tiempo)" onClick={play}>
-            { playing ? <PauseIcon /> : <PlayArrowIcon /> }
-          </IconButton>
-          <IconButton title="Siguiente foto" onClick={() => changePhoto(photoIndex + 1)}>
-            <NavigateNextIcon />
-          </IconButton>
-
-          <IconButton title="Volver a foto actual" onClick={() => changePhoto(0)}>
-            <SkipNextIcon />
-          </IconButton>
-        </CardActions>
-      </Card>
+        <Typography variant="body1" component="div">
+          { `Foto ${photoIndex + 1} de ${imageList.length}, el día ${parseInt(day, 10)} a las ${hour}:${minute}` }
+        </Typography>
+      </WidgetBase>
     )
     : null
   );

@@ -33,6 +33,10 @@ export default makeStyles((theme) => ({
   },
   media: {
     height: 0,
-    paddingTop: '40.25%',
+    paddingTop: '60%',
+  },
+  panoramicMedia: {
+    height: 0,
+    paddingTop: '40%',
   },
 }));
