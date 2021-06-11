@@ -17,7 +17,6 @@ import ForecastWidget from '../widgets/forecast';
 import WindChartWidget from '../widgets/wind-chart';
 import HumidityChartWidget from '../widgets/humidity-chart';
 import RealtimeWidget from '../widgets/realtime';
-import Webcam from '../webcam';
 
 function MainScreen(props) {
   const [state, dispatch] = useContext(Store);
@@ -78,7 +77,6 @@ function MainScreen(props) {
         <WindChartWidget />
         <HumidityChartWidget />
         <ForecastWidget location="penalara" />
-        <Webcam />
       </Grid>
 
     </>

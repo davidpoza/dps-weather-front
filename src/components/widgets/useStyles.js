@@ -1,8 +1,17 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles((theme) => ({
-  root: {
+  rootSpaceBetween: {
     height: '340px',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+  },
+  rootCenter: {
+    height: '340px',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
   },
   header: {
     textAlign: 'center',
@@ -30,6 +39,7 @@ export default makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    width: '100%',
   },
   media: {
     height: 0,

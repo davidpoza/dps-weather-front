@@ -12,19 +12,23 @@ import Button from '@material-ui/core/Button';
 import useStyles from './useStyles';
 
 export default function WidgetBase({
-  children, title, image, panoramic = false, extended, actions, actionsClasses, moreInfo,
+  children, title, image, panoramic = false, extended, actions, actionsClasses, moreInfo, spaceBetween,
 }) {
   const classes = useStyles();
   return (
     <Grid item xs={12} md={4}>
-      <Card classes={{ root: classes.root }}>
-        <CardHeader
-          classes={{
-            root: classes.header,
-            title: classes.headerTitle,
-          }}
-          title={title}
-        />
+      <Card classes={{ root: spaceBetween ? classes.rootSpaceBetween : classes.rootCenter }}>
+        {
+          title && (
+            <CardHeader
+              classes={{
+                root: classes.header,
+                title: classes.headerTitle,
+              }}
+              title={title}
+            />
+          )
+        }
         {
           image && <CardMedia image={image} className={panoramic ? classes.panoramicMedia : classes.media} />
         }

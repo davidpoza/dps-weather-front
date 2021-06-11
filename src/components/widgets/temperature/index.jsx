@@ -48,7 +48,7 @@ export default function TempertureWidget() {
       <div>
         <div className={classes.trend}>
           <div>
-            Exterior
+            { sensorId === 'HOME_OUTDOOR' ? 'Exterior' : 'Interior' }
           </div>
           <TrendIcon
             trend={

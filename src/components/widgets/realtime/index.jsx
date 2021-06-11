@@ -1,11 +1,11 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClock } from '@fortawesome/free-solid-svg-icons';
+import { faClock, faSun, faMoon } from '@fortawesome/free-solid-svg-icons';
 import Typography from '@material-ui/core/Typography';
 import WidgetBase from '../base';
 import Store from '../../../reducers/store';
 import useStyles from './useStyles';
-import { transformDateToLocaleDay } from '../../helpers/utils';
+import { transformDateToLocaleDay, getCESTTime } from '../../helpers/utils';
 import api from '../../../api/index';
 
 export default function RealtimeWidget({ location }) {
@@ -31,6 +31,8 @@ export default function RealtimeWidget({ location }) {
   const radiation = realtimeData?.data?.surface_shortwave_radiation?.value;
   const cloudCover = realtimeData?.data?.cloud_cover?.value;
   const windDirection = realtimeData?.data?.wind_direction?.value || 0;
+  const sunrise = state?.forecast?.['colmenar-viejo']?.data?.[0]?.sunrise?.value;
+  const sunset = state?.forecast?.['colmenar-viejo']?.data?.[0]?.sunset?.value;
 
   const Extended = () => {
     return (
@@ -55,6 +57,12 @@ export default function RealtimeWidget({ location }) {
           <strong>
             {` ${radiation?.toFixed(2)}W/m².`}
           </strong>
+        </div>
+        <div className={classes.radiation}>
+          <FontAwesomeIcon icon={faSun} />
+          { `${sunrise ? getCESTTime(sunrise) : ''} ` }
+          <FontAwesomeIcon icon={faMoon} />
+          { `${sunset ? getCESTTime(sunset) : ''}` }
         </div>
       </div>
     );

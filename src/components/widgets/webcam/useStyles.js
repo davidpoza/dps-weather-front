@@ -5,23 +5,26 @@ export default makeStyles((theme) => ({
     marginTop: '1rem',
   },
   buttons: {
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     padding: 0,
+    marginBottom: '50px',
   },
   content: {
     textAlign: 'right',
     padding: '0 16px 0 16px',
   },
-  cover: {
-    backgroundSize: 'contain',
+  media: {
+    height: '250px',
+    width: '100%',
     transition: 'opacity 1s ease-in-out',
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
   },
-  coverXl: {
-    height: 154,
-    marginBottom: '6px',
+  panoramicMedia: {
+    height: '180px',
+    width: '100%',
     transition: 'opacity 1s ease-in-out',
-  },
-  sunrise: {
-    marginTop: '20px',
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
   },
 }));
