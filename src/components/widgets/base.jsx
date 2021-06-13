@@ -16,7 +16,7 @@ export default function WidgetBase({
 }) {
   const classes = useStyles();
   return (
-    <Grid item xs={12} md={4}>
+    <Grid item xs={12} sm={6} lg={4}>
       <Card classes={{ root: spaceBetween ? classes.rootSpaceBetween : classes.rootCenter }}>
         {
           title && (
