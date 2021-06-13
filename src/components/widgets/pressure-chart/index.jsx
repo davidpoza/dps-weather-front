@@ -17,7 +17,7 @@ export default function TemperatureChart() {
   }
   const date = moment().format('YYYY-MM-DD');
   return (
-    <WidgetBase title="Evolución de presión atomosférica" moreInfo="Inspeccionar">
+    <WidgetBase title="Evolución de presión atomosférica">
       <Chart
         charts={[
           {

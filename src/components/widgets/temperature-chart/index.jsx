@@ -10,14 +10,9 @@ export default function TemperatureChart() {
   const classes = useStyles();
   const [state, dispatch] = useContext(Store);
 
-  function calculateColor(value) {
-    if (value > 27) return '#ac1058';
-    if (value < 15) return '#7bb6c9';
-    return '#46c48d';
-  }
   const date = moment().format('YYYY-MM-DD');
   return (
-    <WidgetBase title="Evolución de temperatura" moreInfo="Inspeccionar">
+    <WidgetBase title="Evolución de temperatura">
       <Chart
         charts={[
           {

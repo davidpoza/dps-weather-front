@@ -73,11 +73,10 @@ function MainScreen(props) {
         <WebcamWidget />
         <RealtimeWidget location="colmenar-viejo" />
         <TemperatureChartWidget />
-        <ForecastWidget location="colmenar-viejo" />
+        <ForecastWidget defaultLocation="colmenar-viejo" />
         <PressureChartWidget />
         <WindChartWidget />
         <HumidityChartWidget />
-        <ForecastWidget location="penalara" />
         <WindyWidget />
       </Grid>
 

@@ -17,7 +17,7 @@ export default function TemperatureChart() {
   }
   const date = moment().format('YYYY-MM-DD');
   return (
-    <WidgetBase title="Rachas de viento" moreInfo="Inspeccionar">
+    <WidgetBase title="Rachas de viento">
       <Chart
         charts={[
           {

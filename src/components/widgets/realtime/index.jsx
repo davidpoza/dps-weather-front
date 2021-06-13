@@ -69,7 +69,7 @@ export default function RealtimeWidget({ location }) {
   };
 
   return (
-    <WidgetBase title="Condiciones en tiempo real" moreInfo="Inspeccionar" extended={<Extended />}>
+    <WidgetBase title="Condiciones en tiempo real" extended={<Extended />}>
       <div className={classes.wind}>
         <img
           className={classes.icon}

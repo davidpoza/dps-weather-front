@@ -16,7 +16,7 @@ export default function HumidityChart() {
   }
   const date = moment().format('YYYY-MM-DD');
   return (
-    <WidgetBase title="Evolución de humedad" moreInfo="Inspeccionar">
+    <WidgetBase title="Evolución de humedad">
       <Chart
         charts={[
           {

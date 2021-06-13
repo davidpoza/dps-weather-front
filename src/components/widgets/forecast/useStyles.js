@@ -8,4 +8,10 @@ export default makeStyles((theme) => ({
   updated: {
     marginTop: '15px',
   },
+  buttons: {
+    justifyContent: 'center',
+    padding: 0,
+    marginBottom: '20px',
+    marginTop: '20px',
+  },
 }));

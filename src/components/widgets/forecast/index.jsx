@@ -1,20 +1,27 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faTemperatureLow, faClock, faWind, faTint, faSignal, faHandHoldingWater, faHome, faMale,
-  faAngleDown, faAngleUp, faAngleRight, faSun, faMoon, faThermometerQuarter,
-} from '@fortawesome/free-solid-svg-icons';
+import { faClock } from '@fortawesome/free-solid-svg-icons';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
 import WidgetBase from '../base';
 import Store from '../../../reducers/store';
 import useStyles from './useStyles';
-import TrendIcon from '../../trend-icon';
 import {
-  capitalizeFirstWords, transformDateToLocaleDay, calculateTrend, filterArrayObjects, calculateTHWIndex,
+  capitalizeFirstWords, transformDateToLocaleDay,
 } from '../../helpers/utils';
 import DayForecast from './_children/day';
 
-export default function ForecastWidget({ location }) {
+const locations = {
+  'colmenar-viejo': 'Colmenar Viejo',
+  penalara: 'Peñalara',
+  'hoyos-del-espino': 'Hoyos del Espino',
+  somosierra: 'Somosierra',
+};
+
+export default function ForecastWidget({ defaultLocation }) {
+  const [location, setLocation] = useState(defaultLocation);
   const [forecast, setForecast] = useState([]);
   const classes = useStyles();
   const enppoint = `https://tiempo.davidinformatico.com/forecast/${location}.json`;
@@ -22,12 +29,6 @@ export default function ForecastWidget({ location }) {
   const {
     date, indoorTemp, outdoorTemp, indoorHum, outdoorHum, pressure, wind,
   } = state.currentConditions;
-
-  function calculateColor(value) {
-    if (value > 27) return '#ac1058';
-    if (value < 15) return '#7bb6c9';
-    return '#46c48d';
-  }
 
   async function requestForecast() {
     try {
@@ -44,10 +45,36 @@ export default function ForecastWidget({ location }) {
     (async () => {
       setForecast(await requestForecast());
     })();
-  }, []);
+  }, [location]);
 
   return (
-    <WidgetBase title={`Pronóstico 5 días para ${capitalizeFirstWords(location.replace('-', ' '))}`}>
+    <WidgetBase
+      title={`Pronóstico 5 días para ${locations[location]}`}
+      actionsClasses={classes.buttons}
+      actions={(
+        <>
+          <FormControl variant="outlined" className={classes.formControl}>
+            <Select
+              labelId="selected"
+              id="selected"
+              value={location}
+              onChange={(e) => {
+                setLocation(e.target.value);
+              }}
+              label="Selecciona localización"
+            >
+              {
+                Object.keys(locations).map((loc) => (
+                  <MenuItem value={loc}>
+                    {locations[loc]}
+                  </MenuItem>
+                ))
+              }
+            </Select>
+          </FormControl>
+        </>
+      )}
+    >
       <div className={classes.root}>
         {
           forecast?.data?.map((f) => (

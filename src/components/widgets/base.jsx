@@ -12,7 +12,7 @@ import Button from '@material-ui/core/Button';
 import useStyles from './useStyles';
 
 export default function WidgetBase({
-  children, title, image, panoramic = false, extended, actions, actionsClasses, moreInfo, spaceBetween,
+  children, title, image, panoramic = false, extended, actions, actionsClasses, spaceBetween,
 }) {
   const classes = useStyles();
   return (
@@ -47,15 +47,6 @@ export default function WidgetBase({
                 )
               }
             </CardContent>
-          )
-        }
-
-
-        {
-          moreInfo && (
-            <CardActions>
-              <Button size="small">{moreInfo}</Button>
-            </CardActions>
           )
         }
 

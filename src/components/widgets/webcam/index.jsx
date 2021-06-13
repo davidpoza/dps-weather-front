@@ -17,7 +17,7 @@ import PropTypes from 'prop-types';
 import useStyles from './useStyles';
 import Store from '../../../reducers/store';
 import WidgetBase from '../base';
-;
+
 
 const webcams = [
   {
