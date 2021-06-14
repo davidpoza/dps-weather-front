@@ -147,7 +147,7 @@ export const filterArrayObjects = (array, field) => (
 // accepts Date obj or timestamp
 export function transformDateToLocaleDay(date) {
   if (!date) return null;
-  const initDate = typeof date === 'object' ? date : new Date(date); // if number then it's a timestamp
+  const initDate = typeof date === 'string' ? date : new Date(date); // if number then it's a timestamp
   const dateObj = moment.tz(initDate, 'DD-MM-YYYY HH:mm:ss', 'Europe/Madrid');
   return (dateObj.locale('es').format('ddd HH:mm'));
 }
