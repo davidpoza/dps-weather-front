@@ -6,6 +6,7 @@ import WidgetBase from '../base';
 import Store from '../../../reducers/store';
 import useStyles from './useStyles';
 import { transformDateToLocaleDay, getCESTTime } from '../../helpers/utils';
+import Index from './_children/index/index';
 import api from '../../../api/index';
 
 export default function RealtimeWidget({ location }) {
@@ -33,6 +34,9 @@ export default function RealtimeWidget({ location }) {
   const windDirection = realtimeData?.data?.wind_direction?.value || 0;
   const sunrise = state?.forecast?.['colmenar-viejo']?.data?.[0]?.sunrise?.value;
   const sunset = state?.forecast?.['colmenar-viejo']?.data?.[0]?.sunset?.value;
+  const pollenWeed =  realtimeData?.data?.pollen_weed?.value;
+  const pollenTree =  realtimeData?.data?.pollen_tree?.value;
+  const pollenGrass =  realtimeData?.data?.pollen_grass?.value;
 
   const Extended = () => {
     return (
@@ -63,6 +67,18 @@ export default function RealtimeWidget({ location }) {
           { `${sunrise ? getCESTTime(sunrise) : ''} ` }
           <FontAwesomeIcon icon={faMoon} />
           { `${sunset ? getCESTTime(sunset) : ''}` }
+        </div>
+        <div className={classes.pollen}>
+          Polen maleza
+          <Index key="pollenWeed" value={pollenWeed} max={5} />
+        </div>
+        <div className={classes.pollen}>
+          Polen hierba
+          <Index key="pollenGrass" value={pollenGrass} max={5} />
+        </div>
+        <div className={classes.pollen}>
+          Polen árboles
+          <Index key="pollenTree" value={pollenTree} max={5} />
         </div>
       </div>
     );

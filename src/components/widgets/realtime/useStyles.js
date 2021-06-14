@@ -34,4 +34,9 @@ export default makeStyles((theme) => ({
   updated: {
     marginTop: '50px',
   },
+  pollen: {
+    marginTop: '10px',
+    fontSize: '0.8em',
+    textAlign: 'center',
+  },
 }));
