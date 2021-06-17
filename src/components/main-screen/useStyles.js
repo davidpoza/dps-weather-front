@@ -6,8 +6,8 @@ export default makeStyles((theme) => ({
       width: '70vw',
       minWidth: '1231px',
       maxWidth: '1333px',
+      margin: 'auto',
     },
-    margin: 'auto',
   },
   logo: {
     textAlign: 'center',
