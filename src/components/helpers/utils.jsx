@@ -176,8 +176,10 @@ export function transformDateToLocaleLongFormat(date) {
   return (dateObj.locale('es').format('ddd D [de] MMM YYYY'));
 }
 
-export function formatWeekDay(dateString) {
-  return (moment(dateString).locale('es').format('ddd D'));
+// accepts string or timestamp
+export function formatWeekDay(date) {
+  const initDate = typeof date === 'number' ? new Date(date * 1000) : date;
+  return (moment(initDate).locale('es').format('ddd D'));
 }
 
 export function fromDateTimeToIsoString(datetime) {
@@ -194,34 +196,28 @@ export function capitalizeFirstWords(sentence) {
   return separateWord.join(' ');
 }
 
-export function getSvgPath(cod) {
+export function getWeatherImage(cod) {
   const path = {
-    clear: 'clear_day',
-    cloudy: 'cloudy',
-    drizzle: 'drizzle',
-    flurries: 'flurries',
-    fog: 'fog',
-    fog_light: 'fog_light',
-    freezing_rain: 'freezing_rain',
-    freezing_rain_drizzle: 'freezing_rain_drizzle',
-    freezing_rain_heavy: 'freezing_rain_heavy',
-    freezing_rain_light: 'freezing_rain_light',
-    ice_pellets: 'ice_pellets',
-    ice_pellets_heavy: 'ice_pellets_heavy',
-    ice_pellets_light: 'ice_pellets_light',
-    most_clear: 'most_clear_day',
-    mostly_clear: 'mostly_clear_day',
-    mostly_cloudy: 'mostly_cloudy',
-    partly_cloudy: 'partly_cloudy_day',
-    rain: 'rain',
-    rain_heavy: 'rain_heavy',
-    rain_light: 'rain_light',
-    snow: 'snow',
-    snow_heavy: 'snow_heavy',
-    snow_light: 'snow_light',
-    tstorm: 'tstorm',
+    '01d': '01d',
+    '01n': '01n',
+    '02d': '02d',
+    '02n': '02n',
+    '03d': '03d',
+    '03n': '03n',
+    '04d': '04d',
+    '04n': '04n',
+    '09d': '09d',
+    '09n': '09n',
+    '10d': '10d',
+    '10n': '10n',
+    '11d': '11d',
+    '11n': '11n',
+    '13d': '13d',
+    '13n': '13n',
+    '50d': '50d',
+    '50n': '50n',
   };
-  return `svg/forecast/${path[cod]}.svg`;
+  return `openweathermap/${path[cod]}.png`;
 }
 
 /* eslint-enable import/prefer-default-export */

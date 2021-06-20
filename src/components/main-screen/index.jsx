@@ -49,7 +49,6 @@ function MainScreen(props) {
       && (!lastRegisteredDate || diff >= 1)) {
       requestAllSensors();
     }
-    fetchForecast(dispatch, { location: 'colmenar-viejo' });
   }
 
   useEffect(() => {

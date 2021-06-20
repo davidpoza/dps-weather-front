@@ -9,7 +9,7 @@ import WidgetBase from '../base';
 import Store from '../../../reducers/store';
 import useStyles from './useStyles';
 import {
-  capitalizeFirstWords, transformDateToLocaleDay,
+  transformDateToLocaleDay, formatWeekDay,
 } from '../../helpers/utils';
 import DayForecast from './_children/day';
 
@@ -24,7 +24,7 @@ export default function ForecastWidget({ defaultLocation }) {
   const [location, setLocation] = useState(defaultLocation);
   const [forecast, setForecast] = useState([]);
   const classes = useStyles();
-  const enppoint = `https://tiempo.davidinformatico.com/forecast/${location}.json`;
+  const enppoint = `https://tiempo.davidinformatico.com/forecastv2/${location}.json`;
   const [state, dispatch] = useContext(Store);
   const {
     date, indoorTemp, outdoorTemp, indoorHum, outdoorHum, pressure, wind,
@@ -77,14 +77,15 @@ export default function ForecastWidget({ defaultLocation }) {
     >
       <div className={classes.root}>
         {
-          forecast?.data?.map((f) => (
+          forecast?.data?.['daily_forecast']?.slice(1, 6).map((f) => (
             <DayForecast
-              code={f?.['weather_code']?.value}
-              date={f?.['observation_time']?.value}
-              maxT={f?.temp?.[1]?.max?.value}
-              minT={f?.temp?.[0]?.min?.value}
-              precipitation={f?.precipitation?.[0]?.max?.value}
-              wind={f?.wind_speed?.[1]?.max?.value}
+              code={f?.weather}
+              date={formatWeekDay(f?.date)}
+              maxT={f?.['max_temp']}
+              minT={f?.['min_temp']}
+              precipitation={f?.rain}
+              probPrecipitation={f?.['probability_of_precipitation']}
+              wind={f?.['wind_speed']}
             />
           ))
         }

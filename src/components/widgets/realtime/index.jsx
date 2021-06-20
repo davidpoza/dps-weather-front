@@ -16,7 +16,7 @@ export default function RealtimeWidget({ location }) {
   const classes = useStyles();
 
   async function makeRequest() {
-    const res = await api.weather.realtimeClimaCell(location);
+    const res = await api.weather.getForecast(location);
     setRealtimeData(await res.json());
   }
 
@@ -28,17 +28,16 @@ export default function RealtimeWidget({ location }) {
       await makeRequest();
     }, 2 * 60 * 1000);
   }, []);
-
-  const weatherCode = realtimeData?.data?.weather_code?.value;
-  const visibility = realtimeData?.data?.visibility?.value;
-  const radiation = realtimeData?.data?.surface_shortwave_radiation?.value;
-  const cloudCover = realtimeData?.data?.cloud_cover?.value;
-  const windDirection = realtimeData?.data?.wind_direction?.value || 0;
-  const sunrise = state?.forecast?.['colmenar-viejo']?.data?.[0]?.sunrise?.value;
-  const sunset = state?.forecast?.['colmenar-viejo']?.data?.[0]?.sunset?.value;
-  const pollenWeed = realtimeData?.data?.pollen_weed?.value;
-  const pollenTree = realtimeData?.data?.pollen_tree?.value;
-  const pollenGrass = realtimeData?.data?.pollen_grass?.value;
+console.log(">>>",realtimeData)
+  const visibility = realtimeData?.data?.current?.visibility;
+  const uvi = realtimeData?.data?.current?.uvi;
+  const cloudCover = realtimeData?.data?.current?.['cloud_cover'];
+  const windDirection = realtimeData?.data?.current?.['wind_direction'] || 0;
+  const sunrise = realtimeData?.data?.current?.sunrise * 1000;
+  const sunset = realtimeData?.data?.current?.sunset * 1000;
+  const pollenWeed = realtimeData?.data?.pollen?.weedIndex;
+  const pollenTree = realtimeData?.data?.pollen?.treeIndex;
+  const pollenGrass = realtimeData?.data?.pollen?.grassIndex;
 
   const Extended = () => (
     <div>
@@ -46,7 +45,7 @@ export default function RealtimeWidget({ location }) {
         Visibilidad:
         <br />
         <strong>
-          {` ${visibility?.toFixed(2)}Km.`}
+          {` ${(visibility / 1000)?.toFixed(2)}Km.`}
         </strong>
       </div>
       <div className={classes.cloudCover}>
@@ -57,10 +56,10 @@ export default function RealtimeWidget({ location }) {
         </strong>
       </div>
       <div className={classes.radiation}>
-        Radiación solar:
+        Radiación ultravioleta:
         <br />
         <strong>
-          {` ${radiation?.toFixed(2)}W/m².`}
+          {` ${uvi?.toFixed(2)}`}
         </strong>
       </div>
       <div className={classes.radiation}>
@@ -91,7 +90,7 @@ export default function RealtimeWidget({ location }) {
           className={classes.icon}
           src="svg/wind-rose.svg"
           style={{ transform: `rotate(${windDirection}deg)` }}
-          alt={weatherCode}
+          alt={windDirection}
         />
         <div>
           <div>
