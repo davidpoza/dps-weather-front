@@ -48,7 +48,7 @@ export default function TempertureWidget() {
       <div>
         <div className={classes.trend}>
           <div>
-            { sensorId === 'HOME_OUTDOOR' ? 'Exterior' : 'Interior' }
+            {sensorId === 'HOME_OUTDOOR' ? 'Exterior' : 'Interior'}
           </div>
           <TrendIcon
             trend={
@@ -68,7 +68,7 @@ export default function TempertureWidget() {
           </div>
           <div>
             <strong>
-              { `${value} % ${diff > 0 ? `+${diff}` : diff}` }
+              {`${value} % ${diff > 0 ? `+${diff}` : diff}`}
             </strong>
           </div>
         </div>
@@ -79,7 +79,7 @@ export default function TempertureWidget() {
                 Se siente
               </div>
               <div>
-                <strong>{ `${thw} °C` }</strong>
+                <strong>{`${thw} °C`}</strong>
               </div>
             </div>
           )
@@ -91,7 +91,7 @@ export default function TempertureWidget() {
                 Punto de rocío
               </div>
               <div>
-                <strong>{ `${dewPoint} °C` }</strong>
+                <strong>{`${dewPoint} °C`}</strong>
               </div>
             </div>
           )
@@ -100,42 +100,59 @@ export default function TempertureWidget() {
     );
   }
 
-  const DoubleExtended = () => {
-    return (
-      <div className={classes.doubleExtended}>
-        <ExtendedData sensorId="HOME_INDOOR" />
-        <ExtendedData sensorId="HOME_OUTDOOR" />
-      </div>
-    );
-  };
+  const DoubleExtended = () => (
+    <div className={classes.doubleExtended}>
+      <ExtendedData sensorId="HOME_INDOOR" />
+      <ExtendedData sensorId="HOME_OUTDOOR" />
+    </div>
+  );
 
   const last24hDiffTempOutdoor = (outdoorTemp - state?.last24hComparison?.['HOME_OUTDOOR']?.temperature)?.toFixed(2);
   const last24hDiffTempIndoor = (indoorTemp - state?.last24hComparison?.['HOME_INDOOR']?.temperature)?.toFixed(2);
+  console.log(state);
   return (
     <WidgetBase title="Temperatura" extended={<DoubleExtended />}>
       <div>
         <FontAwesomeIcon icon={faThermometerQuarter} className={classes.icon} size="2x" />
       </div>
       <div className={classes.value} style={{ color: calculateColor(outdoorTemp) }}>
-        { `${outdoorTemp} °C` }
+        {`${outdoorTemp} °C`}
       </div>
       <div>
         <strong>
-          { last24hDiffTempOutdoor > 0 ? `+${last24hDiffTempOutdoor} °C` : `${last24hDiffTempOutdoor} °C` }
+          {
+            !isNaN(last24hDiffTempOutdoor) && (
+              last24hDiffTempOutdoor > 0
+                ? `+${last24hDiffTempOutdoor} °C`
+                : `${last24hDiffTempOutdoor} °C`
+            )
+          }
+          {
+            isNaN(last24hDiffTempOutdoor) && 'Sin datos hace 24h'
+          }
         </strong>
       </div>
       <div className={classes.value} style={{ color: calculateColor(indoorTemp) }}>
-        { `${indoorTemp} °C` }
+        {`${indoorTemp} °C`}
       </div>
       <div>
         <strong>
-          { last24hDiffTempIndoor > 0 ? `+${last24hDiffTempIndoor} °C` : `${last24hDiffTempIndoor} °C` }
+          {
+            !isNaN(last24hDiffTempIndoor) && (
+              last24hDiffTempIndoor > 0
+                ? `+${last24hDiffTempIndoor} °C`
+                : `${last24hDiffTempIndoor} °C`
+            )
+          }
+          {
+            isNaN(last24hDiffTempIndoor) && 'Sin datos hace 24h'
+          }
         </strong>
       </div>
       <div>
         <Typography variant="caption">
           <FontAwesomeIcon icon={faClock} />
-          { ` Última lectura: ${transformDateToLocaleDay(date)}` }
+          {` Última lectura: ${transformDateToLocaleDay(date)}`}
         </Typography>
       </div>
     </WidgetBase>
