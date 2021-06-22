@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock } from '@fortawesome/free-solid-svg-icons';
 import FormControl from '@material-ui/core/FormControl';
@@ -6,12 +7,12 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
 import WidgetBase from '../base';
-import Store from '../../../reducers/store';
 import useStyles from './useStyles';
 import {
-  capitalizeFirstWords, transformDateToLocaleDay,
+  transformDateToLocaleDay,
 } from '../../helpers/utils';
 import DayForecast from './_children/day';
+import useCachedFetch from '../../../hooks/useCachedFetch';
 
 const locations = {
   'colmenar-viejo': 'Colmenar Viejo',
@@ -25,27 +26,11 @@ export default function ForecastWidget({ defaultLocation }) {
   const [forecast, setForecast] = useState([]);
   const classes = useStyles();
   const enppoint = `https://tiempo.davidinformatico.com/forecast/${location}.json`;
-  const [state, dispatch] = useContext(Store);
-  const {
-    date, indoorTemp, outdoorTemp, indoorHum, outdoorHum, pressure, wind,
-  } = state.currentConditions;
-
-  async function requestForecast() {
-    try {
-      const res = await fetch(enppoint);
-      const data = await res.json();
-      return data;
-    } catch (Error) {
-      console.log('Error during forecast fetch', Error);
-      return ([]);
-    }
-  }
+  const [data, isLoading] = useCachedFetch(enppoint);
 
   useEffect(() => {
-    (async () => {
-      setForecast(await requestForecast());
-    })();
-  }, [location]);
+    setForecast(data);
+  }, [data]);
 
   return (
     <WidgetBase
@@ -84,7 +69,7 @@ export default function ForecastWidget({ defaultLocation }) {
               maxT={f?.temp?.[1]?.max?.value}
               minT={f?.temp?.[0]?.min?.value}
               precipitation={f?.precipitation?.[0]?.max?.value}
-              wind={f?.wind_speed?.[1]?.max?.value}
+              wind={f?.['wind_speed']?.[1]?.max?.value}
             />
           ))
         }
@@ -104,3 +89,7 @@ export default function ForecastWidget({ defaultLocation }) {
     </WidgetBase>
   );
 }
+
+ForecastWidget.propTypes = {
+  defaultLocation: PropTypes.string,
+};
