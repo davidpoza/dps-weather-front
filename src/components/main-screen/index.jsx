@@ -1,61 +1,85 @@
 import React, { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
-import { useHistory } from 'react-router-dom';
-import AlertBar from '../alert-bar';
-import SearchForm from '../search-form';
-import CurrentConditions from '../current-conditions';
-import Webcam from '../webcam';
+import moment from 'moment-timezone/builds/moment-timezone-with-data';
+import 'moment/locale/es';
+import get from 'lodash.get';
 import Store from '../../reducers/store';
 import useStyles from './useStyles';
-import Chart from '../chart';
+import { fetchCurrentData, fetchLogData } from '../../actions/chart-actions';
+import { fetchForecast } from '../../actions/forecast-actions';
+import { fetch24hComparison } from '../../actions/24h-comparison';
+import TempertureWidget from '../widgets/temperature';
+import WebcamWidget from '../widgets/webcam';
+import TemperatureChartWidget from '../widgets/temperature-chart';
+import PressureChartWidget from '../widgets/pressure-chart';
+import ForecastWidget from '../widgets/forecast';
+import WindChartWidget from '../widgets/wind-chart';
+import HumidityChartWidget from '../widgets/humidity-chart';
+import RealtimeWidget from '../widgets/realtime';
+import WindyWidget from '../widgets/windy';
 
 function MainScreen(props) {
-  const { setFormOpen } = props;
   const [state, dispatch] = useContext(Store);
   const classes = useStyles();
-  const history = useHistory();
-  useEffect(() => {
-    if (state.lastSearchId) {
-      history.push(`/results/${state.lastSearchId}`);
-      dispatch({ type: 'CLEAN_LAST_SEARCH_ID' });
+  const token = get(state, 'user.token');
+  const sensors = ['HOME_INDOOR', 'HOME_OUTDOOR', 'BEDROOM', 'BEDROOM2'];
+
+  const requestAllSensors = () => {
+    fetchCurrentData(dispatch, { token });
+
+    sensors.forEach((id) => {
+      fetchLogData(dispatch, {
+        sensorId: id,
+        date: moment().format('YYYY-MM-DD'),
+        token,
+      });
+      fetch24hComparison(dispatch, { stationId: id, token });
+    });
+  };
+
+  function makeRequests() {
+    const currentDate = moment.tz(new Date(), 'Europe/Madrid');
+    const lastRegisteredDate = get(state, 'currentConditions.date');
+    const lastRegisteredDateObj = moment.tz(
+      lastRegisteredDate, 'DD-MM-YYYY HH:mm:ss', 'Europe/Madrid',
+    );
+    const diff = currentDate.diff(lastRegisteredDateObj, 'minutes');
+    if (get(state, 'user.token') && !get(state, 'loading')
+      && (!lastRegisteredDate || diff >= 1)) {
+      requestAllSensors();
     }
-  }, [state.lastSearchId, dispatch, history]);
+    fetchForecast(dispatch, { location: 'colmenar-viejo' });
+  }
+
+  useEffect(() => {
+    makeRequests();
+    setInterval(() => {
+      makeRequests();
+    }, 2 * 60 * 1000);
+  }, []);
+
+  if (!state?.user) return null;
   return (
     <>
       <Grid
+        className={classes.root}
         container
-        spacing={1}
+        spacing={2}
         alignItems="center"
         justify="center"
       >
-        <Grid item xs={12} md={8} xl={3}>
-          <CurrentConditions />
-        </Grid>
-        <Grid item xs={12} md={8} xl={3}>
-          <Webcam />
-        </Grid>
+        <TempertureWidget />
+        <WebcamWidget />
+        <RealtimeWidget location="colmenar-viejo" />
+        <TemperatureChartWidget />
+        <ForecastWidget defaultLocation="colmenar-viejo" />
+        <PressureChartWidget />
+        <WindChartWidget />
+        <HumidityChartWidget />
+        <WindyWidget />
       </Grid>
-      <Grid
-        container
-        spacing={0}
-        alignItems="center"
-        justify="center"
-        style={{ minHeight: '100vh' }}
-      >
-        <Grid item xs={12} md={8} xl={6}>
-          <Chart
-            data1={state.graph1_points}
-            data2={state.graph2_points}
-            sensor1={state.graph1_sensor || 'HOME_INDOOR'}
-            sensor2={state.graph2_sensor || 'HOME_OUTDOOR'}
-            date1={state.graph1_date}
-            date2={state.graph2_date}
-          />
-          <SearchForm setFormOpen={setFormOpen} />
-          <AlertBar msg={state.msg} error={state.error} />
-        </Grid>
-      </Grid>
+
     </>
   );
 }

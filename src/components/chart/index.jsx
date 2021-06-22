@@ -1,27 +1,22 @@
 import React, { useState, useContext, useCallback } from 'react';
 import { ResponsiveLine } from '@nivo/line';
 import PropTypes from 'prop-types';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
 import useStyles from './useStyles';
-import Store from '../../reducers/store';
+import { transformDateToLocaleLongFormat } from '../helpers/utils';
 
-function Chart(props) {
-  const {
-    data1, data2, date1, date2, sensor1, sensor2,
-  } = props;
-  const [mode, setMode] = useState('temperature');
+function Chart({
+  charts = [],
+  date,
+  mode = 'temperature',
+  marginTop,
+  marginBottom,
+  marginLeft,
+  marginRight,
+}) {
   const classes = useStyles();
 
-  const handleModeChange = (event) => {
-    setMode(event.target.value);
-  };
-
   // removes wrong data which is out of certain range depending of type of data
-  const filterData = (data, type = 'temperature') => {
+  const filterData = (data = [], type = 'temperature') => {
     if (type === 'pressure') {
       return data.filter((value) => (value.pressure > 700 && value.pressure < 1300));
     }
@@ -34,7 +29,7 @@ function Chart(props) {
     return data.filter((value) => (value.temperature > -10 && value.temperature < 50));
   };
 
-  const formatData = (data, type = 'temperature') => {
+  const formatData = (data = [], type = 'temperature') => {
     if (type === 'pressure') {
       return data.map((value) => ({
         x: value.created_on.slice(11, -3),
@@ -75,23 +70,14 @@ function Chart(props) {
     return '°';
   };
 
+  const data = charts.map((c) => ({
+    id: `${c.sensorId ? `${c.sensorId}, ` : ''}en ${transformDateToLocaleLongFormat(date)}`,
+    data: formatData(filterData(c.data, mode), mode),
+  }));
+
   return (
     <div className={classes.root}>
-      <FormControl className={classes.modeSelector}>
-        <InputLabel id="mode-label">Modo</InputLabel>
-        <Select
-          labelId="mode-label"
-          id="mode-select"
-          value={mode}
-          onChange={handleModeChange}
-        >
-          <MenuItem value="temperature">Temperatura</MenuItem>
-          <MenuItem value="pressure">Presión atmosférica</MenuItem>
-          <MenuItem value="humidity">Humedad Relativa</MenuItem>
-          <MenuItem value="wind">Viento</MenuItem>
-          <MenuItem value="thw">THW</MenuItem>
-        </Select>
-      </FormControl>
+
       <ResponsiveLine
         colors={{ scheme: 'set1' }}
         pointSize={4}
@@ -100,18 +86,9 @@ function Chart(props) {
         animate={false}
         tooltip={(v) => `${v.point.data.yFormatted}${getUnits(mode)} a las ${v.point.data.xFormatted}`} // tooltip for interaction
         margin={{
-          top: 20, right: 20, bottom: 130, left: 50,
+          top: marginTop, right: marginRight, bottom: marginBottom, left: marginLeft,
         }}
-        data={[
-          {
-            id: `#1 ${date1} ${sensor1}`,
-            data: formatData(filterData(data1, mode), mode),
-          },
-          {
-            id: `#2 ${date2} ${sensor2}`,
-            data: formatData(filterData(data2, mode), mode),
-          },
-        ]}
+        data={data}
         xScale={{
           // uses d3-time: https://developer.aliyun.com/mirror/npm/package/d3-time-format
           // format as reveived from API
@@ -127,7 +104,6 @@ function Chart(props) {
           legendOffset: 13,
         }}
         axisBottom={{
-          legend: 'hora',
           legendOffset: 40,
           legendPosition: 'middle',
           format: '%H',
@@ -139,10 +115,10 @@ function Chart(props) {
               anchor: 'bottom-right',
               direction: 'column',
               itemHeight: 20,
-              itemWidth: 175,
-              translateX: 0, // px
-              translateY: 70, // px
-              justify: true,
+              itemWidth: 275,
+              translateX: -20, // px
+              translateY: 20 * (charts.length - 1) + 50, // px
+              justify: false,
             },
           ]
         }
@@ -154,10 +130,20 @@ function Chart(props) {
 export default Chart;
 
 Chart.propTypes = {
-  sensor1: PropTypes.string,
-  sensor2: PropTypes.string,
-  data1: PropTypes.array,
-  data2: PropTypes.array,
-  date1: PropTypes.string,
-  date2: PropTypes.string,
+  charts: PropTypes.arrayOf(PropTypes.shape({
+    sensorId: PropTypes.string,
+    data: PropTypes.arrayOf(PropTypes.shape({
+      created_on: PropTypes.string,
+      pressure: PropTypes.number,
+      temperature: PropTypes.number,
+      wind: PropTypes.number,
+      humidity: PropTypes.number,
+    })),
+  })),
+  date: PropTypes.string,
+  mode: PropTypes.string,
+  marginTop: PropTypes.number,
+  marginRight: PropTypes.number,
+  marginBottom: PropTypes.number,
+  marginLeft: PropTypes.number,
 };

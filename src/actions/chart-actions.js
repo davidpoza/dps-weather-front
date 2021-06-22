@@ -1,40 +1,16 @@
-import moment from 'moment';
-import { v4 as uuid } from 'uuid';
-import get from 'lodash.get';
 import api from '../api';
-import createChart from '../models/chart';
-import current from '../models/current';
 import createCurrent from '../models/current';
 
 /* eslint-disable import/prefer-default-export */
 
-export function setGraphSensor(dispatch, { graph, sensorId }) {
-  dispatch({
-    type: 'SET_GRAPH_SENSOR',
-    payload: { graph, sensor: sensorId },
-  });
-}
-
-export function setGraphDate(dispatch, { graph, date }) {
-  dispatch({
-    type: 'SET_GRAPH_DATE',
-    payload: { graph, date },
-  });
-}
-
 export function fetchLogData(dispatch, {
-  graph, stationId, date, token,
+  sensorId, date, token,
 }) {
-  const chart = createChart({
-    id: uuid(),
-    date,
-    stationId,
-  });
   dispatch({
-    type: 'GET_CHART_ATTEMPT',
-    payload: { graph },
+    type: 'GET_GRAPH_ATTEMPT',
+    payload: { sensorId },
   });
-  api.chart.getData(date, stationId, token)
+  api.chart.getData(date, sensorId, token)
     .then((res) => {
       if (res.status !== 200) {
         return Promise.reject(new Error('Request error'));
@@ -44,15 +20,15 @@ export function fetchLogData(dispatch, {
     .then((data) => {
       if (data.length > 0) {
         return dispatch({
-          type: 'GET_CHART_SUCCESS',
-          payload: { graph, points: data },
+          type: 'GET_GRAPH_SUCCESS',
+          payload: { sensorId, date, data },
         });
       }
       return Promise.reject(new Error('No data on this date'));
     })
     .catch((err) => {
       dispatch({
-        type: 'GET_CHART_FAIL',
+        type: 'GET_GRAPH_FAIL',
         payload: { msg: `Error fetching: ${err.message}` },
       });
     });
@@ -60,7 +36,6 @@ export function fetchLogData(dispatch, {
 
 export function fetchCurrentData(dispatch, { token }) {
   const currentData = createCurrent({});
-
   api.chart.getCurrentData('HOME_INDOOR', token)
     .then((res) => (res.json()))
     .then((data) => {

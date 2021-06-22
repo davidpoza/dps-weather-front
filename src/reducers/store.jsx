@@ -6,16 +6,9 @@ const initialState = {
   loading: false,
   error: false,
   msg: '',
-  lastSearchId: undefined,
   user: undefined, // Object from user entity /models/user.js
-  history: {}, // object with search entities (/models/search.js)
-  graph1_sensor: '',
-  graph2_sensor: '',
-  graph1_date: '',
-  graph2_date: '',
-  graph1_points: [],
-  graph2_points: [],
   forecast: {}, // locations as keys
+  graphs: {},
   currentConditions: {
     date: undefined,
     outdoorTemp: undefined,
@@ -25,6 +18,7 @@ const initialState = {
     pressure: undefined,
     wind: undefined,
   },
+  last24hComparison: {},
 };
 
 const Store = createContext();

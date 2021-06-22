@@ -1,5 +1,6 @@
 export default function reducer(state, action) {
-  const newHistory = { ...state.history };
+  const newGraphs = { ...state.graphs };
+  const newlast24hComparison = { ...state.last24hComparison };
   const newForecastObj = {
     ...state.forecast,
   };
@@ -122,6 +123,50 @@ export default function reducer(state, action) {
       }
       return {
         ...state, graph2_date: action.payload.date,
+      };
+    case 'GET_GRAPH_ATTEMPT':
+      if (!newGraphs?.[action.payload.sensorId]) {
+        newGraphs[action.payload.sensorId] = {};
+      }
+      return {
+        ...state,
+        loading: true,
+        error: false,
+        graphs: newGraphs,
+      };
+    case 'GET_GRAPH_SUCCESS':
+      newGraphs[action.payload.sensorId][action.payload.date] = action.payload.data;
+      return {
+        ...state,
+        loading: false,
+        error: false,
+        graphs: newGraphs,
+      };
+    case 'GET_GRAPH_FAIL':
+      return {
+        ...state,
+        loading: false,
+        error: true,
+      };
+    case 'GET_24H_COMPARISON_ATTEMPT':
+      return {
+        ...state,
+        loading: true,
+        error: false,
+      };
+    case 'GET_24H_COMPARISON_SUCCESS':
+      newlast24hComparison[action.payload.stationId] = action.payload.data;
+      return {
+        ...state,
+        loading: false,
+        error: false,
+        last24hComparison: newlast24hComparison,
+      };
+    case 'GET_24H_COMPARISON_FAIL':
+      return {
+        ...state,
+        loading: false,
+        error: true,
       };
     default:
       return state;

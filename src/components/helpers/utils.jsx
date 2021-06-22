@@ -50,10 +50,6 @@ export function sortCommentsByDate(a, b) {
   return (0);
 }
 
-export function getCurrentDate() {
-  return (moment().tz('Europe/Madrid', new Date()).format('DD-MM-YYYY HH:mm'));
-}
-
 /**
  *
  * @param {number} temp - celsius
@@ -120,6 +116,112 @@ export function fahrenheit2Celsius(temp) {
 
 export function celsius2Fahrenheit(temp) {
   return (((temp + 40) * 1.8) - 40);
+}
+
+/**
+   * Uses last measurement and 4th before that, that's one hour (if it exists).
+   * Calculates slope = (y1-y2)/(x1-x2)
+   * @param {number} currentValue
+   * @param {Array} measurements
+   */
+export function calculateTrend(currentValue, measurements) {
+  if (measurements?.length >= 4) {
+    return (currentValue - measurements[measurements.length - 4]);
+  }
+  if (measurements?.length === 3) {
+    return (currentValue - measurements[measurements.length - 3]);
+  }
+  return 0;
+}
+
+/**
+ * Receives an array of objects and return an array of numbers, only the specified field of the objects
+ * @param {Array} array
+ * @param {string} field
+ * @return {Array<number>}
+ */
+export const filterArrayObjects = (array, field) => (
+  array?.map((e) => e[field])
+);
+
+// accepts Date obj or timestamp
+export function transformDateToLocaleDay(date) {
+  if (!date) return null;
+  const initDate = typeof date === 'string' ? date : new Date(date); // if number then it's a timestamp
+  const dateObj = moment.tz(initDate, 'DD-MM-YYYY HH:mm:ss', 'Europe/Madrid');
+  return (dateObj.locale('es').format('ddd HH:mm'));
+}
+
+export function getCurrentDate() {
+  return (moment().tz('Europe/Madrid', new Date()).format('DD-MM-YYYY HH:mm'));
+}
+
+export function getDateTimeAsString(date) {
+  return (moment(date).tz('Europe/Madrid', new Date()).format('YYYY-MM-DD HH:mm'));
+}
+
+export function getCESTTime(date) {
+  const dateObj = moment(date);
+  return (dateObj.tz('Europe/Madrid').format('HH:mm'));
+}
+
+/**
+ *
+ * @param {String} date - format YYYY-MM-DD
+ * @returns
+ */
+export function transformDateToLocaleLongFormat(date) {
+  const initDate = new Date(date);
+  const dateObj = moment.tz(initDate, 'DD-MM-YYYY', 'Europe/Madrid');
+  return (dateObj.locale('es').format('ddd D [de] MMM YYYY'));
+}
+
+export function formatWeekDay(dateString) {
+  return (moment(dateString).locale('es').format('ddd D'));
+}
+
+export function fromDateTimeToIsoString(datetime) {
+  const dateObj = moment.tz(datetime, 'DD-MM-YYYY HH:mm', 'Europe/Madrid');
+  return (dateObj.locale('es').format('YYYY-MM-DD'));
+}
+
+export function capitalizeFirstWords(sentence) {
+  const separateWord = sentence.toLowerCase().split(' ');
+  for (let i = 0; i < separateWord.length; i++) {
+    separateWord[i] = separateWord[i].charAt(0).toUpperCase() +
+    separateWord[i].substring(1);
+  }
+  return separateWord.join(' ');
+}
+
+export function getSvgPath(cod) {
+  const path = {
+    clear: 'clear_day',
+    cloudy: 'cloudy',
+    drizzle: 'drizzle',
+    flurries: 'flurries',
+    fog: 'fog',
+    fog_light: 'fog_light',
+    freezing_rain: 'freezing_rain',
+    freezing_rain_drizzle: 'freezing_rain_drizzle',
+    freezing_rain_heavy: 'freezing_rain_heavy',
+    freezing_rain_light: 'freezing_rain_light',
+    ice_pellets: 'ice_pellets',
+    ice_pellets_heavy: 'ice_pellets_heavy',
+    ice_pellets_light: 'ice_pellets_light',
+    most_clear: 'most_clear_day',
+    mostly_clear: 'mostly_clear_day',
+    mostly_cloudy: 'mostly_cloudy',
+    partly_cloudy: 'partly_cloudy_day',
+    rain: 'rain',
+    rain_heavy: 'rain_heavy',
+    rain_light: 'rain_light',
+    snow: 'snow',
+    snow_heavy: 'snow_heavy',
+    snow_light: 'snow_light',
+    tstorm: 'tstorm',
+  };
+  return `svg/forecast/${path[cod]}.svg`;
 }
 
 /* eslint-enable import/prefer-default-export */

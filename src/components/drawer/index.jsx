@@ -32,30 +32,6 @@ export default function Drawer(props) {
     setDrawerOpen(!drawerIsOpen);
   }, [setDrawerOpen, drawerIsOpen]);
 
-  const list = () => (
-    <List className={classes.list}>
-      {
-        Object.keys(state.history)
-          .map((id) => (state.history[id]))
-          .sort(sortByDate)
-          .map((obj) => (
-            <DrawerItem
-              commentCount={get(obj, 'comments', []).length}
-              date={get(obj, 'date')}
-              id={get(obj, 'id')}
-              imageUrl={get(obj, 'imageLink')}
-              key={get(obj, 'id')}
-              keywords={get(obj, 'keywords')}
-              title={get(obj, 'videoTitle')}
-              userLink={get(obj, 'userLink')}
-              userName={get(obj, 'userName')}
-              videoId={get(obj, 'videoId')}
-              videoLink={`https://www.youtube.com/watch?v=${get(obj, 'videoId')}`}
-            />
-          ))
-      }
-    </List>
-  );
 
   return (
     <div>
@@ -68,7 +44,6 @@ export default function Drawer(props) {
         <Typography className={classes.title} variant="h6" component="h2">
           Search history
         </Typography>
-        {list()}
       </SwipeableDrawer>
     </div>
   );
