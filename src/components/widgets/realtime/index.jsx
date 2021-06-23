@@ -112,7 +112,7 @@ export default function RealtimeWidget({ location }) {
           <Tab classes={{ root: classes.tab }} label="Avance" value="3" />
           <Tab classes={{ root: classes.tab }} label="Nubes" value="4" />
         </Tabs>
-        <AirTab value="2" windDirection={windDirection} windSpeed={windSpeed} />
+        <AirTab value="2" windDirection={windDirection} windSpeed={windSpeed} ts={realtimeData?.ts} />
         <HoursTab value="3" data={hourly} />
       </TabContext>
     </WidgetBase>

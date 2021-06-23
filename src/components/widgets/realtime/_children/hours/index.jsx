@@ -10,28 +10,46 @@ import TableRow from '@material-ui/core/TableRow';
 import useStyles from './useStyles';
 import { transformDateToLocaleDay } from '../../../../helpers/utils';
 
-export default function HoursTab({ value, data }) {
-  console.log(data)
+function TableCol({ data }) {
   const classes = useStyles();
   return (
-    <TabPanel value={value}>
-      <TableContainer component={Paper}>
-        <Table className={classes.table} size="small" aria-label="a dense table">
-          <TableBody>
-            {
-              data?.slice(0,7).map((row) => (
-                <TableRow key={row.name}>
-                  <TableCell component="th" scope="row">{transformDateToLocaleDay(row.date * 1000)}</TableCell>
-                  <TableCell align="right">{`${row.probability_of_precipitation * 100}%`}</TableCell>
-                  {
-                    row.rain && <TableCell align="right">{`${row.rain}mm/H`}</TableCell>
-                  }
-                </TableRow>
-              ))
-            }
-          </TableBody>
-        </Table>
-      </TableContainer>
+    <TableContainer component={Paper}>
+      <Table size="small" aria-label="a dense table">
+        <TableBody>
+          {
+            data?.map((row) => (
+              <TableRow key={row.name}>
+                <TableCell
+                  classes={{ root: classes.dateCell }}
+                  scope="row"
+                >
+                  { transformDateToLocaleDay(row.date * 1000) }
+                </TableCell>
+                <TableCell
+                  classes={{ root: classes.cell }}
+                  align="right"
+                >
+                  {`${row.probability_of_precipitation * 100}%`}
+                  { row.rain ? ` - ${row.rain}mm/h` : ''}
+                </TableCell>
+              </TableRow>
+            ))
+          }
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+}
+
+export default function HoursTab({ value, data }) {
+  const classes = useStyles();
+  if (data?.[0]) data[0].rain = 33;
+  return (
+    <TabPanel value={value} className={classes.tabPanel}>
+      <div className={classes.root}>
+        <TableCol data={data?.slice(0, 8)} />
+        <TableCol data={data?.slice(8, 16)} />
+      </div>
     </TabPanel>
   );
 }
