@@ -1,19 +1,30 @@
 import React, { useContext, useState, useEffect } from 'react';
+import TabContext from '@material-ui/lab/TabContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faSun, faMoon } from '@fortawesome/free-solid-svg-icons';
 import Typography from '@material-ui/core/Typography';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 import WidgetBase from '../base';
 import Store from '../../../reducers/store';
 import useStyles from './useStyles';
 import { transformDateToLocaleDay, getCESTTime } from '../../helpers/utils';
 import Index from './_children/index/index';
 import api from '../../../api/index';
+import AirTab from './_children/air/index';
+import HoursTab from './_children/hours/index';
 
 export default function RealtimeWidget({ location }) {
   const [state, dispatch] = useContext(Store);
   const [realtimeData, setRealtimeData] = useState();
   const { wind } = state.currentConditions;
   const classes = useStyles();
+
+  const [tab, setTab] = React.useState('1');
+
+  const handleTabChange = (event, newValue) => {
+    setTab(newValue);
+  };
 
   async function makeRequest() {
     const res = await api.weather.getForecast(location);
@@ -28,16 +39,18 @@ export default function RealtimeWidget({ location }) {
       await makeRequest();
     }, 2 * 60 * 1000);
   }, []);
-console.log(">>>",realtimeData)
+
   const visibility = realtimeData?.data?.current?.visibility;
   const uvi = realtimeData?.data?.current?.uvi;
   const cloudCover = realtimeData?.data?.current?.['cloud_cover'];
+  const windSpeed = realtimeData?.data?.current?.['wind_speed'] || 0;
   const windDirection = realtimeData?.data?.current?.['wind_direction'] || 0;
   const sunrise = realtimeData?.data?.current?.sunrise * 1000;
   const sunset = realtimeData?.data?.current?.sunset * 1000;
   const pollenWeed = realtimeData?.data?.pollen?.weedIndex;
   const pollenTree = realtimeData?.data?.pollen?.treeIndex;
   const pollenGrass = realtimeData?.data?.pollen?.grassIndex;
+  const hourly = realtimeData?.data?.hourly_forecast;
 
   const Extended = () => (
     <div>
@@ -84,35 +97,24 @@ console.log(">>>",realtimeData)
   );
 
   return (
-    <WidgetBase title="Condiciones en tiempo real" extended={<Extended />}>
-      <div className={classes.wind}>
-        <img
-          className={classes.icon}
-          src="svg/wind-rose.svg"
-          style={{ transform: `rotate(${windDirection}deg)` }}
-          alt={windDirection}
-        />
-        <div>
-          <div>
-            {wind}
-          </div>
-          <div className="units">
-            Km/h
-          </div>
-        </div>
-      </div>
-      <div className={classes.updated}>
-        <Typography variant="caption">
-          {
-            realtimeData?.ts && (
-              <>
-                <FontAwesomeIcon icon={faClock} />
-                {` ${transformDateToLocaleDay(realtimeData.ts)}`}
-              </>
-            )
-          }
-        </Typography>
-      </div>
+    <WidgetBase spaceBetween>
+      <TabContext value={tab}>
+        <Tabs
+          value={tab}
+          variant="fullWidth"
+          onChange={handleTabChange}
+          indicatorColor="primary"
+          textColor="primary"
+          centered
+        >
+          <Tab classes={{ root: classes.tab }} label="Astro" value="1" />
+          <Tab classes={{ root: classes.tab }} label="Aire" value="2" />
+          <Tab classes={{ root: classes.tab }} label="Avance" value="3" />
+          <Tab classes={{ root: classes.tab }} label="Nubes" value="4" />
+        </Tabs>
+        <AirTab value="2" windDirection={windDirection} windSpeed={windSpeed} />
+        <HoursTab value="3" data={hourly} />
+      </TabContext>
     </WidgetBase>
   );
 }

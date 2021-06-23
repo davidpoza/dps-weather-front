@@ -39,4 +39,9 @@ export default makeStyles((theme) => ({
     fontSize: '0.8em',
     textAlign: 'center',
   },
+  tab: {
+    fontSize: '0.8em',
+    minWidth: 100,
+    width: 100,
+  },
 }));
