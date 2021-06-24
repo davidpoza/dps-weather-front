@@ -33,6 +33,7 @@ export default makeStyles((theme) => ({
   },
   updated: {
     marginTop: '50px',
+    textAlign: 'center',
   },
   pollen: {
     marginTop: '10px',

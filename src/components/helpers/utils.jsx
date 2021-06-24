@@ -220,4 +220,51 @@ export function getWeatherImage(cod) {
   return `openweathermap/${path[cod]}.png`;
 }
 
+/**
+ * @param {number} p - percentage
+ * 0 – new moon
+ * 0-0.25 – waxing crescent
+ * 0.25 – first quarter
+ * 0.25-0.5 – waxing gibbous
+ * 0.5 – full moon
+ * 0.5-0.75 – waning gibbous
+ * 0.75 – last quarter
+ * 0.75 -1 – waning crescent
+ */
+export function getMoonPhaseImage(p) {
+  const result = {
+    image: '',
+    phase: '',
+  };
+  if (p === 0) {
+    result.image = 'new_moon';
+    result.phase = 'luna nueva';
+  } else if (p === 0.5) {
+    result.image = 'full_moon';
+    result.phase = 'luna llena';
+  } else if (p === 0.25) {
+    result.image = 'first_quarter';
+    result.phase = 'cuarto creciente';
+  } else if (p === 0.75) {
+    result.image = 'last_quarter';
+    result.phase = 'cuarto menguante';
+  } else if (p > 0 && p < 0.25) {
+    result.image = 'waxing_crescent';
+    result.phase = 'luna nueva creciente';
+  } else if (p > 0.25 && p < 0.5) {
+    result.image = 'waxing_gibbous';
+    result.phase = 'luna gibosa creciente';
+  } else if (p > 0.5 && p < 0.75) {
+    result.image = 'waning_gibbous';
+    result.phase = 'luna gibosa menguante';
+  } else if (p > 0.74 && p <= 1) {
+    result.image = 'waning_crescent';
+    result.phase = 'luna menguante';
+  }
+  return {
+    image: `moon/${result.image}.svg`,
+    phase: result.phase,
+  };
+}
+
 /* eslint-enable import/prefer-default-export */
