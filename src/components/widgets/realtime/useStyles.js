@@ -7,34 +7,6 @@ export default makeStyles((theme) => ({
   value: {
     fontSize: '4em',
   },
-  visibility: {
-    fontSize: '0.8em',
-    textAlign: 'center',
-  },
-  cloudCover: {
-    marginTop: '10px',
-    fontSize: '0.8em',
-    textAlign: 'center',
-  },
-  radiation: {
-    marginTop: '10px',
-    fontSize: '0.8em',
-    textAlign: 'center',
-  },
-  wind: {
-    marginTop: '40px',
-    textAlign: 'center',
-    fontSize: '3em',
-    display: 'flex',
-    flexDirection: 'row',
-    '& .units': {
-      fontSize: '0.5em',
-    },
-  },
-  updated: {
-    marginTop: '50px',
-    textAlign: 'center',
-  },
   pollen: {
     marginTop: '10px',
     fontSize: '0.8em',

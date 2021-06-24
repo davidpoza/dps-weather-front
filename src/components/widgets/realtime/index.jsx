@@ -9,9 +9,10 @@ import WidgetBase from '../base';
 import Store from '../../../reducers/store';
 import useStyles from './useStyles';
 import { transformDateToLocaleDay, getCESTTime } from '../../helpers/utils';
-import Index from './_children/index/index';
+
 import api from '../../../api/index';
 import AirTab from './_children/air/index';
+import CloudsTab from './_children/clouds/index';
 import AstroTab from './_children/astro/index';
 import HoursTab from './_children/hours/index';
 
@@ -56,50 +57,6 @@ export default function RealtimeWidget({ location }) {
   const moonrise = realtimeData?.data?.['daily_forecast']?.[0]?.['moonrise'] * 1000;
   const moonset = realtimeData?.data?.['daily_forecast']?.[0]?.['moonset'] * 1000;
 
-  const Extended = () => (
-    <div>
-      <div className={classes.visibility}>
-        Visibilidad:
-        <br />
-        <strong>
-          {` ${(visibility / 1000)?.toFixed(2)}Km.`}
-        </strong>
-      </div>
-      <div className={classes.cloudCover}>
-        Cobertura de nubes:
-        <br />
-        <strong>
-          {` ${cloudCover?.toFixed(2)}%.`}
-        </strong>
-      </div>
-      <div className={classes.radiation}>
-        Radiación ultravioleta:
-        <br />
-        <strong>
-          {` ${uvi?.toFixed(2)}`}
-        </strong>
-      </div>
-      <div className={classes.radiation}>
-        <FontAwesomeIcon icon={faSun} />
-        {`${sunrise ? getCESTTime(sunrise) : ''} `}
-        <FontAwesomeIcon icon={faMoon} />
-        {`${sunset ? getCESTTime(sunset) : ''}`}
-      </div>
-      <div className={classes.pollen}>
-        Polen maleza
-        <Index key="pollenWeed" value={pollenWeed} max={5} />
-      </div>
-      <div className={classes.pollen}>
-        Polen hierba
-        <Index key="pollenGrass" value={pollenGrass} max={5} />
-      </div>
-      <div className={classes.pollen}>
-        Polen árboles
-        <Index key="pollenTree" value={pollenTree} max={5} />
-      </div>
-    </div>
-  );
-
   return (
     <WidgetBase spaceBetween>
       <TabContext value={tab}>
@@ -124,8 +81,17 @@ export default function RealtimeWidget({ location }) {
           moonrise={moonrise}
           moonset={moonset}
         />
-        <AirTab value="2" windDirection={windDirection} windSpeed={windSpeed} ts={realtimeData?.ts} />
+        <AirTab value="2" pollenWeed={pollenWeed} pollenTree={pollenTree} pollenGrass={pollenGrass} />
         <HoursTab value="3" data={hourly} />
+        <CloudsTab
+          value="4"
+          windDirection={windDirection}
+          windSpeed={windSpeed}
+          ts={realtimeData?.ts}
+          cloudCover={cloudCover}
+          visibility={visibility}
+          uvi={uvi}
+        />
       </TabContext>
     </WidgetBase>
   );
