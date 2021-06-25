@@ -4,7 +4,7 @@ import { faClock, faSun, faMoon } from '@fortawesome/free-solid-svg-icons';
 import TabPanel from '@material-ui/lab/TabPanel';
 import Typography from '@material-ui/core/Typography';
 import useStyles from './useStyles';
-import { transformDateToLocaleDay, getCESTTime } from '../../../../helpers/utils';
+import { transformDateToLocaleDay, getUVI } from '../../../../helpers/utils';
 
 export default function AirTab({ value, windSpeed, windDirection, visibility, cloudCover, uvi, ts = 0 }) {
   const classes = useStyles();
@@ -28,8 +28,8 @@ export default function AirTab({ value, windSpeed, windDirection, visibility, cl
       <div className={classes.radiation}>
         Radiación ultravioleta
         <br />
-        <strong>
-          {` ${uvi?.toFixed(2)}`}
+        <strong style={{ color: getUVI(uvi).color }}>
+          {` ${uvi?.toFixed(2)} ${getUVI(uvi).description}`}
         </strong>
       </div>
     </div>

@@ -267,4 +267,28 @@ export function getMoonPhaseImage(p) {
   };
 }
 
+export function getUVI(uvi) {
+  const result = {
+    color: '',
+    description: '',
+  };
+  if (uvi > 0 && uvi < 3) {
+    result.color = 'green';
+    result.description = 'bajo';
+  } else if (uvi >= 3 && uvi < 6) {
+    result.color = 'yellow';
+    result.description = 'moderado';
+  } else if (uvi >= 6 && uvi < 8) {
+    result.color = 'orange';
+    result.description = 'alto';
+  } else if (uvi >= 8 && uvi < 11) {
+    result.color = 'red';
+    result.description = 'muy alto';
+  } else if (uvi >= 11) {
+    result.color = 'violet';
+    result.description = 'extremo';
+  }
+  return result;
+}
+
 /* eslint-enable import/prefer-default-export */
