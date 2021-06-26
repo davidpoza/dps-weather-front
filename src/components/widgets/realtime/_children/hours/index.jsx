@@ -43,7 +43,6 @@ function TableCol({ data }) {
 
 export default function HoursTab({ value, data }) {
   const classes = useStyles();
-  if (data?.[0]) data[0].rain = 33;
   return (
     <TabPanel value={value} className={classes.tabPanel}>
       <div className={classes.root}>
