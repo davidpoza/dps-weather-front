@@ -14,7 +14,7 @@ export default makeStyles((theme) => ({
   },
   tab: {
     fontSize: '0.8em',
-    minWidth: 100,
-    width: 100,
+    minWidth: 70,
+    width: 70,
   },
 }));

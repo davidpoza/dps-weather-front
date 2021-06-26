@@ -15,6 +15,7 @@ import AirTab from './_children/air/index';
 import CloudsTab from './_children/clouds/index';
 import AstroTab from './_children/astro/index';
 import HoursTab from './_children/hours/index';
+import TextForecastTab from './_children/textForecast/index';
 
 export default function RealtimeWidget({ location }) {
   const [state, dispatch] = useContext(Store);
@@ -56,6 +57,7 @@ export default function RealtimeWidget({ location }) {
   const moonPhase = realtimeData?.data?.['daily_forecast']?.[0]?.['moon_phase'];
   const moonrise = realtimeData?.data?.['daily_forecast']?.[0]?.['moonrise'] * 1000;
   const moonset = realtimeData?.data?.['daily_forecast']?.[0]?.['moonset'] * 1000;
+  const textForecast = realtimeData?.data?.textForecast;
 
   return (
     <WidgetBase spaceBetween>
@@ -72,6 +74,7 @@ export default function RealtimeWidget({ location }) {
           <Tab classes={{ root: classes.tab }} label="Aire" value="2" />
           <Tab classes={{ root: classes.tab }} label="Avance" value="3" />
           <Tab classes={{ root: classes.tab }} label="Nubes" value="4" />
+          <Tab classes={{ root: classes.tab }} label="P.Texto" value="5" />
         </Tabs>
         <AstroTab
           value="1"
@@ -91,7 +94,9 @@ export default function RealtimeWidget({ location }) {
           cloudCover={cloudCover}
           visibility={visibility}
           uvi={uvi}
+          textForecast={textForecast}
         />
+        <TextForecastTab value="5" textForecast={textForecast} />
       </TabContext>
     </WidgetBase>
   );
