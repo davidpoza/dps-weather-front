@@ -20,6 +20,7 @@ import TextForecastTab from './_children/textForecast/index';
 export default function RealtimeWidget({ location }) {
   const [state, dispatch] = useContext(Store);
   const [realtimeData, setRealtimeData] = useState();
+  const [madridPollutionScene, setMadridPollutionScene] = useState();
   const { wind } = state.currentConditions;
   const classes = useStyles();
 
@@ -31,6 +32,8 @@ export default function RealtimeWidget({ location }) {
 
   async function makeRequest() {
     const res = await api.weather.getForecast(location);
+    const resPollutionScene = await api.pollution.getMadridScene();
+    setMadridPollutionScene(await resPollutionScene.json());
     setRealtimeData(await res.json());
   }
 
@@ -84,7 +87,13 @@ export default function RealtimeWidget({ location }) {
           moonrise={moonrise}
           moonset={moonset}
         />
-        <AirTab value="2" pollenWeed={pollenWeed} pollenTree={pollenTree} pollenGrass={pollenGrass} />
+        <AirTab
+          value="2"
+          pollenWeed={pollenWeed}
+          pollenTree={pollenTree}
+          pollenGrass={pollenGrass}
+          madridPollutionScene={madridPollutionScene}
+        />
         <HoursTab value="3" data={hourly} />
         <CloudsTab
           value="4"

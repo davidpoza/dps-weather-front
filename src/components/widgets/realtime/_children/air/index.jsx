@@ -4,7 +4,7 @@ import Index from '../index/index';
 import useStyles from '../../useStyles';
 import { transformDateToLocaleDay, getCESTTime } from '../../../../helpers/utils';
 
-export default function AirTab({ value, pollenTree, pollenGrass, pollenWeed, ts = 0 }) {
+export default function AirTab({ value, pollenTree, pollenGrass, pollenWeed, madridPollutionScene, ts = 0 }) {
   const classes = useStyles();
 
   return (
@@ -20,6 +20,10 @@ export default function AirTab({ value, pollenTree, pollenGrass, pollenWeed, ts 
       <div className={classes.pollen}>
         Polen árboles
         <Index key="pollenTree" value={pollenTree} max={5} />
+      </div>
+      <div className={classes.pollen}>
+        Protocolo anticontaminación C.Madrid
+        <Index key="madridPollution" value={madridPollutionScene} max={5} />
       </div>
     </TabPanel>
   );

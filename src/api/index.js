@@ -95,6 +95,11 @@ export default {
       return (fetch(q, opt));
     },
   },
+  pollution: {
+    getMadridScene() {
+      return fetch('https://tiempo.davidinformatico.com/forecastv2/pollution_scene.json');
+    },
+  },
   weather: {
     getForecast(location) {
       return fetch(`https://tiempo.davidinformatico.com/forecastv2/${location}.json`);
