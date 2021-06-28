@@ -13,6 +13,7 @@ export default makeStyles((theme) => ({
     borderRadius: '3px',
     border: '1px solid #c0c0c0',
     marginBottom: '5px',
+    backgroundColor: '#ccd',
   },
   icon: {
     width: '40px',
