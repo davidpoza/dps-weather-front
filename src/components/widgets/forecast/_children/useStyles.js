@@ -11,9 +11,8 @@ export default makeStyles((theme) => ({
   border: {
     padding: '5px',
     borderRadius: '3px',
-    border: '1px solid #c0c0c0',
     marginBottom: '5px',
-    backgroundColor: '#ccd',
+    backgroundColor: '#e8e8f3',
   },
   icon: {
     width: '40px',
