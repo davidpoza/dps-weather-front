@@ -6,12 +6,13 @@ export default makeStyles((theme) => ({
     flexDirection: 'row',
   },
   dateCell: {
-    fontSize: '0.7em',
+    fontSize: '0.6em',
     paddingLeft: 10,
     paddingRight: 2,
   },
   cell: {
     fontSize: '0.7em',
+    fontWeight: 'bold',
     paddingLeft: 2,
     paddingRight: 10,
   },

@@ -29,8 +29,9 @@ function TableCol({ data }) {
                   classes={{ root: classes.cell }}
                   align="right"
                 >
-                  {`${row.probability_of_precipitation * 100}%`}
-                  { row.rain ? ` - ${row.rain}mm/h` : ''}
+                  {`${Math.trunc(row.temp)}° `}
+                  {`${Math.trunc(row.probability_of_precipitation * 100)}%`}
+                  { row.rain ? ` ${row.rain}mm/h` : ''}
                 </TableCell>
               </TableRow>
             ))
