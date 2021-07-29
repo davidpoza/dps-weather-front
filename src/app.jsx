@@ -1,6 +1,5 @@
 import React, { useState, useContext } from 'react';
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom/';
-import Drawer from './components/drawer';
 import MainScreen from './components/main-screen';
 // import ResultsScreen from './components/results-screen';
 import AppBar from './components/app-bar';
@@ -10,7 +9,6 @@ import Store from './reducers/store';
 
 function App() {
   const [state, dispatch] = useContext(Store);
-  const [drawerIsOpen, setOpenDrawer] = useState(false);
   const [loginFormIsOpen, setLoginFormOpen] = useState(!state.user);
   const [registerFormIsOpen, setRegisterFormOpen] = useState(false);
   return (
@@ -22,8 +20,7 @@ function App() {
           setRegisterFormOpen={setRegisterFormOpen}
         />
         <RegisterForm formIsOpen={registerFormIsOpen} setFormOpen={setRegisterFormOpen} />
-        <AppBar drawerIsOpen={drawerIsOpen} setDrawerOpen={setOpenDrawer} setLoginFormOpen={setLoginFormOpen} />
-        <Drawer drawerIsOpen={drawerIsOpen} setDrawerOpen={setOpenDrawer} />
+        <AppBar setLoginFormOpen={setLoginFormOpen} />
         <Route
           exact
           path="/"
