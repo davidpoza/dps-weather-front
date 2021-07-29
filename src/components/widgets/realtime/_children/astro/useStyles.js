@@ -15,6 +15,16 @@ export default makeStyles((theme) => ({
     width: '100px',
   },
   sunImage: {
-    width: '120px',
+    width: '102px',
+  },
+  clock: {
+    '& > .text': {
+      fontSize: '12px',
+      marginBottom: '1em',
+    },
+    fontSize: '1.5em',
+    backgroundColor: '#e8e8f3',
+    borderRadius: '5px',
+    padding: '5px',
   },
 }));

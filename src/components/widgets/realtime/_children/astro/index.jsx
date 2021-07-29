@@ -1,8 +1,9 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClock, faSun, faMoon } from '@fortawesome/free-solid-svg-icons';
+import {
+  faSun, faMoon, faArrowUp, faArrowDown,
+} from '@fortawesome/free-solid-svg-icons';
 import TabPanel from '@material-ui/lab/TabPanel';
-import Typography from '@material-ui/core/Typography';
 import useStyles from './useStyles';
 import { getMoonPhaseImage, getCESTTime } from '../../../../helpers/utils';
 
@@ -17,13 +18,16 @@ export default function AstroTab({
       <div className={classes.root}>
         <div className={classes.col}>
           <div>
-            <img className={classes.sunImage} src="svg/sunset.svg" alt="sunset" />
+            <img className={classes.sunImage} src="sun.png" alt="sunset" />
           </div>
-          <div>
+          <div className={classes.clock}>
+            <div className="text">Salida y puesta de sol</div>
             <FontAwesomeIcon icon={faSun} />
+            <FontAwesomeIcon style={{ fontSize: '10px' }} icon={faArrowUp} />
             {`${sunrise ? ` ${getCESTTime(sunrise)}` : ''} `}
             <br />
-            <FontAwesomeIcon icon={faMoon} />
+            <FontAwesomeIcon icon={faSun} />
+            <FontAwesomeIcon style={{ fontSize: '10px' }} icon={faArrowDown} />
             {`${sunset ? ` ${getCESTTime(sunset)}` : ''}`}
           </div>
         </div>
@@ -31,13 +35,15 @@ export default function AstroTab({
           <div>
             { moonPhase && <img className={classes.moonImage} src={moon.image} alt="lunar_phase" /> }
           </div>
-          <div>
-            {moon.phase}
+          <div className={classes.clock}>
+            <div className="text">{moon.phase}</div>
+            <FontAwesomeIcon icon={faMoon} />
+            <FontAwesomeIcon style={{ fontSize: '10px' }} icon={faArrowUp} />
+            {`${moonrise ? ` ${getCESTTime(moonrise)}` : ''} `}
             <br />
-            <FontAwesomeIcon icon={faClock} />
-            {`${moonrise ? getCESTTime(moonrise) : ''} `}
-            <FontAwesomeIcon icon={faClock} />
-            {`${moonset ? getCESTTime(moonset) : ''}`}
+            <FontAwesomeIcon icon={faMoon} />
+            <FontAwesomeIcon style={{ fontSize: '10px' }} icon={faArrowDown} />
+            {`${moonset ? ` ${getCESTTime(moonset)}` : ''}`}
           </div>
         </div>
       </div>

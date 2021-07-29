@@ -40,7 +40,7 @@ export default function LoginForm(props) {
         <DialogTitle id="form-dialog-title">Login</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            To access search functionallity you have to be logged in.
+            To access this page you have to be logged in.
           </DialogContentText>
           <DialogContentText>
             Do you have no account?, create one
