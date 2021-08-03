@@ -1,14 +1,11 @@
 import React, { useContext, useState, useEffect } from 'react';
 import TabContext from '@material-ui/lab/TabContext';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClock, faSun, faMoon } from '@fortawesome/free-solid-svg-icons';
-import Typography from '@material-ui/core/Typography';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import Store from 'reducers/store';
 import WidgetBase from '../base';
-import Store from '../../../reducers/store';
 import useStyles from './useStyles';
-import { transformDateToLocaleDay, getCESTTime } from '../../helpers/utils';
+
 
 import api from '../../../api/index';
 import AirTab from './_children/air/index';

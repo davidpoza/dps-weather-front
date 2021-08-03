@@ -14,8 +14,8 @@ import PauseIcon from '@material-ui/icons/Pause';
 
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
+import Store from 'reducers/store';
 import useStyles from './useStyles';
-import Store from '../../../reducers/store';
 import WidgetBase from '../base';
 
 

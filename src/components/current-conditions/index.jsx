@@ -12,11 +12,11 @@ import {
   faAngleDown, faAngleUp, faAngleRight, faSun, faMoon,
 } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
+import Store from 'reducers/store';
+import { fetchCurrentData } from 'actions/chart-actions';
+import { fetchForecast } from 'actions/forecast-actions';
+import { calculateTHWIndex, calculateDewPoint } from 'components/helpers/utils';
 import useStyles from './useStyles';
-import Store from '../../reducers/store';
-import { fetchCurrentData } from '../../actions/chart-actions';
-import { fetchForecast } from '../../actions/forecast-actions';
-import { calculateTHWIndex, calculateDewPoint } from '../helpers/utils';
 
 function CurrentConditions(props) {
   const [state, dispatch] = useContext(Store);

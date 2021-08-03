@@ -10,10 +10,10 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import ErrorIcon from '@material-ui/icons/Error';
-import { emailIsValid, passwordIsValid } from '../helpers/utils';
-import Store from '../../reducers/store';
+import { emailIsValid, passwordIsValid } from 'components/helpers/utils';
+import Store from 'reducers/store';
+import { register } from 'actions/user-actions';
 import useStyles from './useStyles';
-import { register } from '../../actions/user-actions';
 
 export default function RegisterForm(props) {
   const [state, dispatch] = useContext(Store);

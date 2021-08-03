@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom/';
+import { BrowserRouter as Router, Route } from 'react-router-dom/';
 import MainScreen from './components/main-screen';
 // import ResultsScreen from './components/results-screen';
 import AppBar from './components/app-bar';

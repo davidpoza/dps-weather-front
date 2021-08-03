@@ -4,10 +4,7 @@ import {
   faClock, faThermometerQuarter,
 } from '@fortawesome/free-solid-svg-icons';
 import Typography from '@material-ui/core/Typography';
-import WidgetBase from '../base';
-import Store from '../../../reducers/store';
-import useStyles from './useStyles';
-import TrendIcon from '../../trend-icon';
+import Store from 'reducers/store';
 import {
   calculateDewPoint,
   transformDateToLocaleDay,
@@ -15,7 +12,11 @@ import {
   filterArrayObjects,
   calculateTHWIndex,
   fromDateTimeToIsoString,
-} from '../../helpers/utils';
+} from 'components/helpers/utils';
+import WidgetBase from '../base';
+import useStyles from './useStyles';
+import TrendIcon from '../../trend-icon';
+
 
 
 export default function TempertureWidget() {

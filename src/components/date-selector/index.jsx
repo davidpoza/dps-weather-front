@@ -12,7 +12,7 @@ import esLocale from 'date-fns/locale/es';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import useStyles from './useStyles';
 // import { setGraphDate, setGraphSensor } from '../../actions/chart-actions';
-import Store from '../../reducers/store';
+import Store from 'reducers/store';
 
 function DateSelector(props) {
   const { defaultSensor, graph } = props;

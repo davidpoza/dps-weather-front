@@ -8,7 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import SearchIcon from '@material-ui/icons/Search';
 import { useLocation } from 'react-router-dom';
-import Store from '../../reducers/store';
+import Store from 'reducers/store';
 import useStyles from './useStyles';
 import Avatar from '../avatar';
 

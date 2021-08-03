@@ -1,15 +1,14 @@
 import React, { useContext } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faTemperatureLow, faClock, faWind, faTint, faSignal, faHandHoldingWater, faHome, faMale,
-  faAngleDown, faAngleUp, faAngleRight, faSun, faMoon, faThermometerQuarter,
+  faClock, faThermometerQuarter,
 } from '@fortawesome/free-solid-svg-icons';
 import Typography from '@material-ui/core/Typography';
+import Store from 'reducers/store';
+import { calculateTrend, filterArrayObjects, calculateTHWIndex } from 'components/helpers/utils';
 import WidgetBase from '../base';
-import Store from '../../../reducers/store';
-import useStyles from './useStyles';
 import TrendIcon from '../../trend-icon';
-import { getLocaleDate, calculateTrend, filterArrayObjects, calculateTHWIndex } from '../../helpers/utils';
+import useStyles from './useStyles';
 
 
 export default function OutdoorTempertureWidget() {

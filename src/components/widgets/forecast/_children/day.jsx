@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faWind, faTint,
 } from '@fortawesome/free-solid-svg-icons';
-import { formatWeekDay, getWeatherImage } from '../../../helpers/utils';
+import { getWeatherImage } from 'components/helpers/utils';
 import useStyles from './useStyles';
 
 export default function DayForecast({

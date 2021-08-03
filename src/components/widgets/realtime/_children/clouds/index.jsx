@@ -1,10 +1,10 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClock, faSun, faMoon } from '@fortawesome/free-solid-svg-icons';
+import { faClock } from '@fortawesome/free-solid-svg-icons';
 import TabPanel from '@material-ui/lab/TabPanel';
 import Typography from '@material-ui/core/Typography';
+import { transformDateToLocaleDay, getUVI } from 'components/helpers/utils';
 import useStyles from './useStyles';
-import { transformDateToLocaleDay, getUVI } from '../../../../helpers/utils';
 
 export default function AirTab({ value, windSpeed, windDirection, visibility, cloudCover, uvi, ts = 0 }) {
   const classes = useStyles();

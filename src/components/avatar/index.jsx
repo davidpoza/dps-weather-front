@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Avatar from '@material-ui/core/Avatar';
+import Store from 'reducers/store';
+import { logout } from 'actions/user-actions';
 import useStyles from './useStyles';
-import Store from '../../reducers/store';
-import { logout } from '../../actions/user-actions';
 
 export default function MyAvatar(props) {
   const [state, dispatch] = useContext(Store);

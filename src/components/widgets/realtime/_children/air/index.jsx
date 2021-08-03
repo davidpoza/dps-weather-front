@@ -2,7 +2,6 @@ import React from 'react';
 import TabPanel from '@material-ui/lab/TabPanel';
 import Index from '../index/index';
 import useStyles from '../../useStyles';
-import { transformDateToLocaleDay, getCESTTime } from '../../../../helpers/utils';
 
 export default function AirTab({ value, pollenTree, pollenGrass, pollenWeed, madridPollutionScene, ts = 0 }) {
   const classes = useStyles();

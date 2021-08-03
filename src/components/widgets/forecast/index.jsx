@@ -5,8 +5,8 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
+import Store from 'reducers/store';
 import WidgetBase from '../base';
-import Store from '../../../reducers/store';
 import useStyles from './useStyles';
 import {
   transformDateToLocaleDay, formatWeekDay,

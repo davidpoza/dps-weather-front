@@ -4,8 +4,8 @@ import {
   faSun, faMoon, faArrowUp, faArrowDown,
 } from '@fortawesome/free-solid-svg-icons';
 import TabPanel from '@material-ui/lab/TabPanel';
+import { getMoonPhaseImage, getCESTTime } from 'components/helpers/utils';
 import useStyles from './useStyles';
-import { getMoonPhaseImage, getCESTTime } from '../../../../helpers/utils';
 
 export default function AstroTab({
   value, moonPhase, sunrise, sunset, moonrise, moonset, ts = 0,

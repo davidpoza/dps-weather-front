@@ -7,8 +7,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TabPanel from '@material-ui/lab/TabPanel';
 import TableRow from '@material-ui/core/TableRow';
 
+import { transformDateToLocaleDay } from 'components/helpers/utils';
 import useStyles from './useStyles';
-import { transformDateToLocaleDay } from '../../../../helpers/utils';
 
 function TableCol({ data }) {
   const classes = useStyles();

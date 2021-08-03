@@ -1,8 +1,8 @@
-import React, { useState, useContext, useCallback } from 'react';
+import React from 'react';
 import { ResponsiveLine } from '@nivo/line';
 import PropTypes from 'prop-types';
+import { transformDateToLocaleLongFormat } from 'components/helpers/utils';
 import useStyles from './useStyles';
-import { transformDateToLocaleLongFormat } from '../helpers/utils';
 
 function Chart({
   charts = [],

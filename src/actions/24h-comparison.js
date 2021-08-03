@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 
-import api from '../api/index';
-import { getDateTimeAsString } from '../components/helpers/utils';
+import { getDateTimeAsString } from 'components/helpers/utils';
+import api from 'api/index';
 
 export function fetch24hComparison(dispatch, {
   stationId, token,

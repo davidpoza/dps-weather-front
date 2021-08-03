@@ -7,9 +7,9 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Store from '../../reducers/store';
+import Store from 'reducers/store';
+import { login } from 'actions/user-actions';
 import useStyles from './useStyles';
-import { login } from '../../actions/user-actions';
 
 export default function LoginForm(props) {
   const [state, dispatch] = useContext(Store);
