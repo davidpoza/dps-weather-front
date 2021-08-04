@@ -12,7 +12,7 @@ import { login } from 'actions/user-actions';
 import useStyles from './useStyles';
 
 export default function LoginForm(props) {
-  const [state, dispatch] = useContext(Store);
+  const [, dispatch] = useContext(Store);
   const classes = useStyles();
   const { formIsOpen, setFormOpen, setRegisterFormOpen } = props;
   const [password, setPassword] = useState('');

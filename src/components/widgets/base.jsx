@@ -60,3 +60,14 @@ export default function WidgetBase({
     </Grid>
   );
 }
+
+WidgetBase.propTypes = {
+  children: PropTypes.node,
+  title: PropTypes.string,
+  image: PropTypes.string,
+  panoramic: PropTypes.bool,
+  extended: PropTypes.node,
+  actions: PropTypes.node,
+  actionsClasses: PropTypes.object,
+  spaceBetween: PropTypes.bool,
+};

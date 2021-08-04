@@ -13,7 +13,7 @@ import useStyles from './useStyles';
 import Avatar from '../avatar';
 
 export default function MyAppBar(props) {
-  const [state, dispatch] = useContext(Store);
+  const [state] = useContext(Store);
   const userId = get(state, 'user.id');
   const { setLoginFormOpen } = props;
   const location = useLocation();

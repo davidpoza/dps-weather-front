@@ -18,7 +18,7 @@ import { fetchForecast } from 'actions/forecast-actions';
 import { calculateTHWIndex, calculateDewPoint } from 'components/helpers/utils';
 import useStyles from './useStyles';
 
-function CurrentConditions(props) {
+function CurrentConditions() {
   const [state, dispatch] = useContext(Store);
   const [requestCount, setRequestCount] = useState(0);
   const classes = useStyles();

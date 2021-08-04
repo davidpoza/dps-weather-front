@@ -188,12 +188,9 @@ export function fromDateTimeToIsoString(datetime) {
 }
 
 export function capitalizeFirstWords(sentence) {
-  const separateWord = sentence.toLowerCase().split(' ');
-  for (let i = 0; i < separateWord.length; i++) {
-    separateWord[i] = separateWord[i].charAt(0).toUpperCase() +
-    separateWord[i].substring(1);
-  }
-  return separateWord.join(' ');
+  const words = sentence.toLowerCase().split(' ');
+  capitalizeFirstWords.map((word) => word.charAt(0).toUpperCase() + word.substring(1));
+  return words.join(' ');
 }
 
 export function getWeatherImage(cod) {
@@ -289,6 +286,10 @@ export function getUVI(uvi) {
     result.description = 'extremo';
   }
   return result;
+}
+
+export function mod(n, m) {
+  return ((n % m) + m) % m;
 }
 
 /* eslint-enable import/prefer-default-export */

@@ -1,5 +1,4 @@
 import fetch from 'isomorphic-fetch';
-import config from '../config';
 import mockSearchComments from './mocks/search-comments';
 import mockListVideos from './mocks/list-videos';
 import mockListChannels from './mocks/list-channel';

@@ -1,12 +1,10 @@
-import React, { useContext, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React, { useContext, useEffect, useCallback } from 'react';
 import Grid from '@material-ui/core/Grid';
 import moment from 'moment-timezone/builds/moment-timezone-with-data';
 import 'moment/locale/es';
 import get from 'lodash.get';
 import Store from 'reducers/store';
 import { fetchCurrentData, fetchLogData } from 'actions/chart-actions';
-import { fetchForecast } from 'actions/forecast-actions';
 import { fetch24hComparison } from 'actions/24h-comparison';
 import TempertureWidget from 'components/widgets/temperature';
 import WebcamWidget from 'components/widgets/webcam';
@@ -19,13 +17,14 @@ import RealtimeWidget from 'components/widgets/realtime';
 import WindyWidget from 'components/widgets/windy';
 import useStyles from './useStyles';
 
-function MainScreen(props) {
+
+function MainScreen() {
   const [state, dispatch] = useContext(Store);
   const classes = useStyles();
   const token = get(state, 'user.token');
   const sensors = ['HOME_INDOOR', 'HOME_OUTDOOR', 'BEDROOM', 'BEDROOM2'];
 
-  const requestAllSensors = () => {
+  const requestAllSensors = useCallback(() => {
     fetchCurrentData(dispatch, { token });
 
     sensors.forEach((id) => {
@@ -36,9 +35,9 @@ function MainScreen(props) {
       });
       fetch24hComparison(dispatch, { stationId: id, token });
     });
-  };
+  }, [sensors, dispatch, token]);
 
-  function makeRequests() {
+  const makeRequests = useCallback(() => {
     const currentDate = moment.tz(new Date(), 'Europe/Madrid');
     const lastRegisteredDate = get(state, 'currentConditions.date');
     const lastRegisteredDateObj = moment.tz(
@@ -49,14 +48,14 @@ function MainScreen(props) {
       && (!lastRegisteredDate || diff >= 1)) {
       requestAllSensors();
     }
-  }
+  }, [state, requestAllSensors]);
 
   useEffect(() => {
     makeRequests();
     setInterval(() => {
       makeRequests();
     }, 2 * 60 * 1000);
-  }, []);
+  }, [makeRequests]);
 
   if (!state?.user) return null;
   return (
@@ -86,5 +85,5 @@ function MainScreen(props) {
 export default MainScreen;
 
 MainScreen.propTypes = {
-  setFormOpen: PropTypes.func,
+
 };

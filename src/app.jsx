@@ -8,7 +8,7 @@ import RegisterForm from './components/register-form';
 import Store from './reducers/store';
 
 function App() {
-  const [state, dispatch] = useContext(Store);
+  const [state] = useContext(Store);
   const [loginFormIsOpen, setLoginFormOpen] = useState(!state.user);
   const [registerFormIsOpen, setRegisterFormOpen] = useState(false);
   return (
@@ -27,15 +27,6 @@ function App() {
         >
           <MainScreen setFormOpen={setLoginFormOpen} />
         </Route>
-        {/* <Route
-          path="/results/:searchId/:pag?"
-        >
-          {
-            state.user
-              ? <ResultsScreen />
-              : <Redirect to="/" />
-          }
-        </Route> */}
       </Router>
     </>
   );

@@ -70,6 +70,8 @@ function Chart({
     return '°';
   };
 
+  const formatTooltip = (v) => `${v.point.data.yFormatted}${getUnits(mode)} a las ${v.point.data.xFormatted}`;
+
   const data = charts.map((c) => ({
     id: `${c.sensorId ? `${c.sensorId}, ` : ''}en ${transformDateToLocaleLongFormat(date)}`,
     data: formatData(filterData(c.data, mode), mode),
@@ -77,14 +79,13 @@ function Chart({
 
   return (
     <div className={classes.root}>
-
       <ResponsiveLine
         colors={{ scheme: 'set1' }}
         pointSize={4}
         curve="monotoneX"
         useMesh // interaction with mouse
         animate={false}
-        tooltip={(v) => `${v.point.data.yFormatted}${getUnits(mode)} a las ${v.point.data.xFormatted}`} // tooltip for interaction
+        tooltip={formatTooltip} // tooltip for interaction
         margin={{
           top: marginTop, right: marginRight, bottom: marginBottom, left: marginLeft,
         }}

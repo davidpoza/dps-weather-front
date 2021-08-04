@@ -16,7 +16,7 @@ import { register } from 'actions/user-actions';
 import useStyles from './useStyles';
 
 export default function RegisterForm(props) {
-  const [state, dispatch] = useContext(Store);
+  const [, dispatch] = useContext(Store);
   const classes = useStyles();
   const { formIsOpen, setFormOpen } = props;
   const [msg, setMsg] = useState('');

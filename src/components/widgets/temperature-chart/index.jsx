@@ -3,12 +3,10 @@ import moment from 'moment-timezone/builds/moment-timezone-with-data';
 import Store from 'reducers/store';
 import Chart from 'components/chart';
 import WidgetBase from '../base';
-import useStyles from './useStyles';
 
 
 export default function TemperatureChart() {
-  const classes = useStyles();
-  const [state, dispatch] = useContext(Store);
+  const [state] = useContext(Store);
 
   const date = moment().format('YYYY-MM-DD');
   return (

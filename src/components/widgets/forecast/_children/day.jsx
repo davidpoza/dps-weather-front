@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faWind, faTint,
@@ -26,11 +27,26 @@ export default function DayForecast({
         {`${maxT} °C`}
       </div>
       <div className={classes.precipitation}>
-        <FontAwesomeIcon icon={faTint} title={`Probabilidades ${probPrecipitation*100}%`} /> {`${precipitation?.toFixed(2)}mm`}
+        <FontAwesomeIcon
+          icon={faTint}
+          title={`Probabilidades ${probPrecipitation * 100}%`}
+        />
+        {` ${precipitation?.toFixed(2)}mm`}
       </div>
       <div className={classes.wind}>
-        <FontAwesomeIcon icon={faWind} /> {`${(wind * 3.6).toFixed()}km/h`}
+        <FontAwesomeIcon icon={faWind} />
+        {` ${(wind * 3.6).toFixed()}km/h`}
       </div>
     </div>
   );
 }
+
+DayForecast.propTypes = {
+  code: PropTypes.string,
+  date: PropTypes.string,
+  maxT: PropTypes.number,
+  minT: PropTypes.number,
+  precipitation: PropTypes.number,
+  probPrecipitation: PropTypes.number,
+  wind: PropTypes.number,
+};

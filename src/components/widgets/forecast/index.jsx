@@ -1,11 +1,11 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock } from '@fortawesome/free-solid-svg-icons';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
-import Store from 'reducers/store';
 import WidgetBase from '../base';
 import useStyles from './useStyles';
 import {
@@ -25,12 +25,8 @@ export default function ForecastWidget({ defaultLocation }) {
   const [forecast, setForecast] = useState([]);
   const classes = useStyles();
   const enppoint = `https://tiempo.davidinformatico.com/forecastv2/${location}.json`;
-  const [state, dispatch] = useContext(Store);
-  const {
-    date, indoorTemp, outdoorTemp, indoorHum, outdoorHum, pressure, wind,
-  } = state.currentConditions;
 
-  async function requestForecast() {
+  const requestForecast = useCallback(async () => {
     try {
       const res = await fetch(enppoint);
       const data = await res.json();
@@ -39,13 +35,13 @@ export default function ForecastWidget({ defaultLocation }) {
       console.log('Error during forecast fetch', Error);
       return ([]);
     }
-  }
+  }, [enppoint]);
 
   useEffect(() => {
     (async () => {
       setForecast(await requestForecast());
     })();
-  }, [location]);
+  }, [location, requestForecast]);
 
   return (
     <WidgetBase
@@ -105,3 +101,7 @@ export default function ForecastWidget({ defaultLocation }) {
     </WidgetBase>
   );
 }
+
+ForecastWidget.propTypes = {
+  defaultLocation: PropTypes.string,
+};
