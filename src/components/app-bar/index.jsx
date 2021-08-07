@@ -6,21 +6,18 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
-import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import { useLocation } from 'react-router-dom';
-import Store from '../../reducers/store';
+import Store from 'reducers/store';
 import useStyles from './useStyles';
 import Avatar from '../avatar';
 
 export default function MyAppBar(props) {
-  const [state, dispatch] = useContext(Store);
+  const [state] = useContext(Store);
   const userId = get(state, 'user.id');
-  const { drawerIsOpen, setDrawerOpen, setLoginFormOpen } = props;
+  const { setLoginFormOpen } = props;
   const location = useLocation();
-  const toggleDrawer = useCallback(() => {
-    setDrawerOpen(!drawerIsOpen);
-  }, [drawerIsOpen, setDrawerOpen]);
+
   const openLoginForm = useCallback(() => {
     setLoginFormOpen(true);
   }, [setLoginFormOpen]);
@@ -29,15 +26,6 @@ export default function MyAppBar(props) {
   return (
     <AppBar position="static">
       <Toolbar>
-        <IconButton
-          aria-label="menu"
-          className={classes.menuButton}
-          color="inherit"
-          edge="start"
-          onClick={toggleDrawer}
-        >
-          <MenuIcon />
-        </IconButton>
         <Typography variant="h6" className={classes.title}>
           Dps-Weather
         </Typography>
@@ -72,7 +60,5 @@ export default function MyAppBar(props) {
 }
 
 MyAppBar.propTypes = {
-  setDrawerOpen: PropTypes.func,
-  drawerIsOpen: PropTypes.bool,
   setLoginFormOpen: PropTypes.func,
 };

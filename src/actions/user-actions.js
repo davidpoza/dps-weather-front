@@ -1,8 +1,5 @@
-import moment from 'moment';
-import { v4 as uuid } from 'uuid';
-import get from 'lodash.get';
-import api from '../api';
-import createUser from '../models/user';
+import api from 'api';
+import createUser from 'models/user';
 
 /* eslint-disable import/prefer-default-export */
 export function login(dispatch, { email, password }) {

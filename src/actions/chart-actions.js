@@ -1,5 +1,5 @@
-import api from '../api';
-import createCurrent from '../models/current';
+import api from 'api';
+import createCurrent from 'models/current';
 
 /* eslint-disable import/prefer-default-export */
 

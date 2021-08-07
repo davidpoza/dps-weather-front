@@ -176,8 +176,10 @@ export function transformDateToLocaleLongFormat(date) {
   return (dateObj.locale('es').format('ddd D [de] MMM YYYY'));
 }
 
-export function formatWeekDay(dateString) {
-  return (moment(dateString).locale('es').format('ddd D'));
+// accepts string or timestamp
+export function formatWeekDay(date) {
+  const initDate = typeof date === 'number' ? new Date(date * 1000) : date;
+  return (moment(initDate).locale('es').format('ddd D'));
 }
 
 export function fromDateTimeToIsoString(datetime) {
@@ -186,42 +188,108 @@ export function fromDateTimeToIsoString(datetime) {
 }
 
 export function capitalizeFirstWords(sentence) {
-  const separateWord = sentence.toLowerCase().split(' ');
-  for (let i = 0; i < separateWord.length; i++) {
-    separateWord[i] = separateWord[i].charAt(0).toUpperCase() +
-    separateWord[i].substring(1);
-  }
-  return separateWord.join(' ');
+  const words = sentence.toLowerCase().split(' ');
+  capitalizeFirstWords.map((word) => word.charAt(0).toUpperCase() + word.substring(1));
+  return words.join(' ');
 }
 
-export function getSvgPath(cod) {
+export function getWeatherImage(cod) {
   const path = {
-    clear: 'clear_day',
-    cloudy: 'cloudy',
-    drizzle: 'drizzle',
-    flurries: 'flurries',
-    fog: 'fog',
-    fog_light: 'fog_light',
-    freezing_rain: 'freezing_rain',
-    freezing_rain_drizzle: 'freezing_rain_drizzle',
-    freezing_rain_heavy: 'freezing_rain_heavy',
-    freezing_rain_light: 'freezing_rain_light',
-    ice_pellets: 'ice_pellets',
-    ice_pellets_heavy: 'ice_pellets_heavy',
-    ice_pellets_light: 'ice_pellets_light',
-    most_clear: 'most_clear_day',
-    mostly_clear: 'mostly_clear_day',
-    mostly_cloudy: 'mostly_cloudy',
-    partly_cloudy: 'partly_cloudy_day',
-    rain: 'rain',
-    rain_heavy: 'rain_heavy',
-    rain_light: 'rain_light',
-    snow: 'snow',
-    snow_heavy: 'snow_heavy',
-    snow_light: 'snow_light',
-    tstorm: 'tstorm',
+    '01d': '01d',
+    '01n': '01n',
+    '02d': '02d',
+    '02n': '02n',
+    '03d': '03d',
+    '03n': '03n',
+    '04d': '04d',
+    '04n': '04n',
+    '09d': '09d',
+    '09n': '09n',
+    '10d': '10d',
+    '10n': '10n',
+    '11d': '11d',
+    '11n': '11n',
+    '13d': '13d',
+    '13n': '13n',
+    '50d': '50d',
+    '50n': '50n',
   };
-  return `svg/forecast/${path[cod]}.svg`;
+  return `openweathermap/${path[cod]}.png`;
+}
+
+/**
+ * @param {number} p - percentage
+ * 0 – new moon
+ * 0-0.25 – waxing crescent
+ * 0.25 – first quarter
+ * 0.25-0.5 – waxing gibbous
+ * 0.5 – full moon
+ * 0.5-0.75 – waning gibbous
+ * 0.75 – last quarter
+ * 0.75 -1 – waning crescent
+ */
+export function getMoonPhaseImage(p) {
+  const result = {
+    image: '',
+    phase: '',
+  };
+  if (p === 0) {
+    result.image = 'new_moon';
+    result.phase = 'luna nueva';
+  } else if (p === 0.5) {
+    result.image = 'full_moon';
+    result.phase = 'luna llena';
+  } else if (p === 0.25) {
+    result.image = 'first_quarter';
+    result.phase = 'cuarto creciente';
+  } else if (p === 0.75) {
+    result.image = 'last_quarter';
+    result.phase = 'cuarto menguante';
+  } else if (p > 0 && p < 0.25) {
+    result.image = 'waxing_crescent';
+    result.phase = 'luna nueva creciente';
+  } else if (p > 0.25 && p < 0.5) {
+    result.image = 'waxing_gibbous';
+    result.phase = 'luna gibosa creciente';
+  } else if (p > 0.5 && p < 0.75) {
+    result.image = 'waning_gibbous';
+    result.phase = 'luna gibosa menguante';
+  } else if (p > 0.74 && p <= 1) {
+    result.image = 'waning_crescent';
+    result.phase = 'luna menguante';
+  }
+  return {
+    image: `moon/${result.image}.svg`,
+    phase: result.phase,
+  };
+}
+
+export function getUVI(uvi) {
+  const result = {
+    color: '',
+    description: '',
+  };
+  if (uvi > 0 && uvi < 3) {
+    result.color = 'green';
+    result.description = 'bajo';
+  } else if (uvi >= 3 && uvi < 6) {
+    result.color = 'yellow';
+    result.description = 'moderado';
+  } else if (uvi >= 6 && uvi < 8) {
+    result.color = 'orange';
+    result.description = 'alto';
+  } else if (uvi >= 8 && uvi < 11) {
+    result.color = 'red';
+    result.description = 'muy alto';
+  } else if (uvi >= 11) {
+    result.color = 'violet';
+    result.description = 'extremo';
+  }
+  return result;
+}
+
+export function mod(n, m) {
+  return ((n % m) + m) % m;
 }
 
 /* eslint-enable import/prefer-default-export */

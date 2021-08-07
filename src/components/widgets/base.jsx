@@ -6,7 +6,6 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardActions from '@material-ui/core/CardActions';
-import Button from '@material-ui/core/Button';
 
 // own
 import useStyles from './useStyles';
@@ -61,3 +60,14 @@ export default function WidgetBase({
     </Grid>
   );
 }
+
+WidgetBase.propTypes = {
+  children: PropTypes.node,
+  title: PropTypes.string,
+  image: PropTypes.string,
+  panoramic: PropTypes.bool,
+  extended: PropTypes.node,
+  actions: PropTypes.node,
+  actionsClasses: PropTypes.object,
+  spaceBetween: PropTypes.bool,
+};

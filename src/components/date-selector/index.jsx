@@ -1,5 +1,5 @@
 import React, {
-  useState, useContext, useCallback, useEffect,
+  useState, useContext, useEffect,
 } from 'react';
 import get from 'lodash.get';
 import PropTypes from 'prop-types';
@@ -10,13 +10,12 @@ import MenuItem from '@material-ui/core/MenuItem';
 import DateFnsUtils from '@date-io/date-fns';
 import esLocale from 'date-fns/locale/es';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import Store from 'reducers/store';
 import useStyles from './useStyles';
-// import { setGraphDate, setGraphSensor } from '../../actions/chart-actions';
-import Store from '../../reducers/store';
 
 function DateSelector(props) {
   const { defaultSensor, graph } = props;
-  const [state, dispatch] = useContext(Store);
+  const [state] = useContext(Store);
   const [sensorId, setSensorId] = useState(defaultSensor);
   const [date, setDate] = useState(new Date());
   const classes = useStyles();

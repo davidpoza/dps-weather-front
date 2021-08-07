@@ -1,9 +1,5 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faTemperatureLow, faClock, faWind, faTint, faSignal, faHandHoldingWater, faHome, faMale,
-  faAngleDown, faAngleUp, faAngleRight, faSun, faMoon,
-} from '@fortawesome/free-solid-svg-icons';
+import PropTypes from 'prop-types';
 import TrendingDownIcon from '@material-ui/icons/TrendingDown';
 import TrendingFlatIcon from '@material-ui/icons/TrendingFlat';
 import TrendingUpIcon from '@material-ui/icons/TrendingUp';
@@ -19,3 +15,7 @@ export default function TrendIcon({ trend }) {
   }
   return <TrendingFlatIcon className={classes.root} />;
 }
+
+TrendIcon.propTypes = {
+  trend: PropTypes.number,
+};

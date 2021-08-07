@@ -7,12 +7,12 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Store from '../../reducers/store';
+import Store from 'reducers/store';
+import { login } from 'actions/user-actions';
 import useStyles from './useStyles';
-import { login } from '../../actions/user-actions';
 
 export default function LoginForm(props) {
-  const [state, dispatch] = useContext(Store);
+  const [, dispatch] = useContext(Store);
   const classes = useStyles();
   const { formIsOpen, setFormOpen, setRegisterFormOpen } = props;
   const [password, setPassword] = useState('');
@@ -40,7 +40,7 @@ export default function LoginForm(props) {
         <DialogTitle id="form-dialog-title">Login</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            To access search functionallity you have to be logged in.
+            To access this page you have to be logged in.
           </DialogContentText>
           <DialogContentText>
             Do you have no account?, create one

@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 
-import api from '../api/index';
+import api from 'api/index';
 
 export function fetchForecast(dispatch, {
   location,

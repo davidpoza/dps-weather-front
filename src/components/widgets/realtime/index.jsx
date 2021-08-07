@@ -1,24 +1,37 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClock, faSun, faMoon } from '@fortawesome/free-solid-svg-icons';
-import Typography from '@material-ui/core/Typography';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
+import PropTypes from 'prop-types';
+import TabContext from '@material-ui/lab/TabContext';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Store from 'reducers/store';
 import WidgetBase from '../base';
-import Store from '../../../reducers/store';
 import useStyles from './useStyles';
-import { transformDateToLocaleDay, getCESTTime } from '../../helpers/utils';
-import Index from './_children/index/index';
 import api from '../../../api/index';
+import AirTab from './_children/air/index';
+import CloudsTab from './_children/clouds/index';
+import AstroTab from './_children/astro/index';
+import HoursTab from './_children/hours/index';
+import TextForecastTab from './_children/textForecast/index';
 
 export default function RealtimeWidget({ location }) {
-  const [state, dispatch] = useContext(Store);
+  const [state] = useContext(Store);
   const [realtimeData, setRealtimeData] = useState();
-  const { wind } = state.currentConditions;
+  const [madridPollutionScene, setMadridPollutionScene] = useState();
+  const { wind: windSpeed } = state.currentConditions;
   const classes = useStyles();
 
-  async function makeRequest() {
-    const res = await api.weather.realtimeClimaCell(location);
+  const [tab, setTab] = React.useState('1');
+
+  const handleTabChange = (event, newValue) => {
+    setTab(newValue);
+  };
+
+  const makeRequest = useCallback(async () => {
+    const res = await api.weather.getForecast(location);
+    const resPollutionScene = await api.pollution.getMadridScene();
+    setMadridPollutionScene(await resPollutionScene.json());
     setRealtimeData(await res.json());
-  }
+  }, [location, setMadridPollutionScene, setRealtimeData]);
 
   useEffect(() => {
     (async () => {
@@ -27,93 +40,74 @@ export default function RealtimeWidget({ location }) {
     setInterval(async () => {
       await makeRequest();
     }, 2 * 60 * 1000);
-  }, []);
+  }, [makeRequest]);
 
-  const weatherCode = realtimeData?.data?.weather_code?.value;
-  const visibility = realtimeData?.data?.visibility?.value;
-  const radiation = realtimeData?.data?.surface_shortwave_radiation?.value;
-  const cloudCover = realtimeData?.data?.cloud_cover?.value;
-  const windDirection = realtimeData?.data?.wind_direction?.value || 0;
-  const sunrise = state?.forecast?.['colmenar-viejo']?.data?.[0]?.sunrise?.value;
-  const sunset = state?.forecast?.['colmenar-viejo']?.data?.[0]?.sunset?.value;
-  const pollenWeed = realtimeData?.data?.pollen_weed?.value;
-  const pollenTree = realtimeData?.data?.pollen_tree?.value;
-  const pollenGrass = realtimeData?.data?.pollen_grass?.value;
-
-  const Extended = () => (
-    <div>
-      <div className={classes.visibility}>
-        Visibilidad:
-        <br />
-        <strong>
-          {` ${visibility?.toFixed(2)}Km.`}
-        </strong>
-      </div>
-      <div className={classes.cloudCover}>
-        Cobertura de nubes:
-        <br />
-        <strong>
-          {` ${cloudCover?.toFixed(2)}%.`}
-        </strong>
-      </div>
-      <div className={classes.radiation}>
-        Radiación solar:
-        <br />
-        <strong>
-          {` ${radiation?.toFixed(2)}W/m².`}
-        </strong>
-      </div>
-      <div className={classes.radiation}>
-        <FontAwesomeIcon icon={faSun} />
-        {`${sunrise ? getCESTTime(sunrise) : ''} `}
-        <FontAwesomeIcon icon={faMoon} />
-        {`${sunset ? getCESTTime(sunset) : ''}`}
-      </div>
-      <div className={classes.pollen}>
-        Polen maleza
-        <Index key="pollenWeed" value={pollenWeed} max={5} />
-      </div>
-      <div className={classes.pollen}>
-        Polen hierba
-        <Index key="pollenGrass" value={pollenGrass} max={5} />
-      </div>
-      <div className={classes.pollen}>
-        Polen árboles
-        <Index key="pollenTree" value={pollenTree} max={5} />
-      </div>
-    </div>
-  );
+  const visibility = realtimeData?.data?.current?.visibility;
+  const uvi = realtimeData?.data?.current?.uvi;
+  const cloudCover = realtimeData?.data?.current?.['cloud_cover'];
+  // const windSpeed = realtimeData?.data?.current?.['wind_speed'] || 0;
+  const windDirection = realtimeData?.data?.current?.['wind_direction'] || 0;
+  const sunrise = realtimeData?.data?.current?.sunrise * 1000;
+  const sunset = realtimeData?.data?.current?.sunset * 1000;
+  const pollenWeed = realtimeData?.data?.pollen?.weedIndex;
+  const pollenTree = realtimeData?.data?.pollen?.treeIndex;
+  const pollenGrass = realtimeData?.data?.pollen?.grassIndex;
+  const hourly = realtimeData?.data?.['hourly_forecast'];
+  const moonPhase = realtimeData?.data?.['daily_forecast']?.[0]?.['moon_phase'];
+  const moonrise = realtimeData?.data?.['daily_forecast']?.[0]?.['moonrise'] * 1000;
+  const moonset = realtimeData?.data?.['daily_forecast']?.[0]?.['moonset'] * 1000;
+  const textForecast = realtimeData?.data?.textForecast;
 
   return (
-    <WidgetBase title="Condiciones en tiempo real" extended={<Extended />}>
-      <div className={classes.wind}>
-        <img
-          className={classes.icon}
-          src="svg/wind-rose.svg"
-          style={{ transform: `rotate(${windDirection}deg)` }}
-          alt={weatherCode}
+    <WidgetBase spaceBetween>
+      <TabContext value={tab}>
+        <Tabs
+          value={tab}
+          variant="fullWidth"
+          onChange={handleTabChange}
+          indicatorColor="primary"
+          textColor="primary"
+          centered
+        >
+          <Tab classes={{ root: classes.tab }} label="Astro" value="1" />
+          <Tab classes={{ root: classes.tab }} label="Aire" value="2" />
+          <Tab classes={{ root: classes.tab }} label="Avance" value="3" />
+          <Tab classes={{ root: classes.tab }} label="Nubes" value="4" />
+          <Tab classes={{ root: classes.tab }} label="P.Texto" value="5" />
+        </Tabs>
+        <AstroTab
+          value="1"
+          moonPhase={moonPhase}
+          sunrise={sunrise}
+          sunset={sunset}
+          moonrise={moonrise}
+          moonset={moonset}
         />
-        <div>
-          <div>
-            {wind}
-          </div>
-          <div className="units">
-            Km/h
-          </div>
-        </div>
-      </div>
-      <div className={classes.updated}>
-        <Typography variant="caption">
-          {
-            realtimeData?.ts && (
-              <>
-                <FontAwesomeIcon icon={faClock} />
-                {` ${transformDateToLocaleDay(realtimeData.ts)}`}
-              </>
-            )
-          }
-        </Typography>
-      </div>
+        <AirTab
+          value="2"
+          pollenWeed={pollenWeed}
+          pollenTree={pollenTree}
+          pollenGrass={pollenGrass}
+          madridPollutionScene={madridPollutionScene?.scene}
+          ts={madridPollutionScene?.ts}
+        />
+        <HoursTab value="3" data={hourly} />
+        <CloudsTab
+          value="4"
+          windDirection={windDirection}
+          windSpeed={windSpeed}
+          ts={realtimeData?.ts}
+          cloudCover={cloudCover}
+          visibility={visibility}
+          uvi={uvi}
+          textForecast={textForecast}
+        />
+        <TextForecastTab value="5" textForecast={textForecast} />
+      </TabContext>
     </WidgetBase>
   );
 }
+
+RealtimeWidget.propTypes = {
+  location: PropTypes.string,
+};

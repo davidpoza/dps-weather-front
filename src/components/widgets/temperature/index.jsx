@@ -1,13 +1,11 @@
 import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faClock, faThermometerQuarter,
 } from '@fortawesome/free-solid-svg-icons';
 import Typography from '@material-ui/core/Typography';
-import WidgetBase from '../base';
-import Store from '../../../reducers/store';
-import useStyles from './useStyles';
-import TrendIcon from '../../trend-icon';
+import Store from 'reducers/store';
 import {
   calculateDewPoint,
   transformDateToLocaleDay,
@@ -15,15 +13,18 @@ import {
   filterArrayObjects,
   calculateTHWIndex,
   fromDateTimeToIsoString,
-} from '../../helpers/utils';
+} from 'components/helpers/utils';
+import WidgetBase from '../base';
+import useStyles from './useStyles';
+import TrendIcon from '../../trend-icon';
 
 
 export default function TempertureWidget() {
   const classes = useStyles();
-  const [state, dispatch] = useContext(Store);
+  const [state] = useContext(Store);
 
   const {
-    date, outdoorTemp, indoorTemp, indoorHum, outdoorHum, pressure, wind,
+    date, outdoorTemp, indoorTemp, indoorHum, outdoorHum, wind,
   } = state.currentConditions;
 
   function calculateColor(value) {
@@ -100,6 +101,10 @@ export default function TempertureWidget() {
     );
   }
 
+  ExtendedData.propTypes = {
+    sensorId: PropTypes.string,
+  };
+
   const DoubleExtended = () => (
     <div className={classes.doubleExtended}>
       <ExtendedData sensorId="HOME_INDOOR" />
@@ -109,7 +114,7 @@ export default function TempertureWidget() {
 
   const last24hDiffTempOutdoor = (outdoorTemp - state?.last24hComparison?.['HOME_OUTDOOR']?.temperature)?.toFixed(2);
   const last24hDiffTempIndoor = (indoorTemp - state?.last24hComparison?.['HOME_INDOOR']?.temperature)?.toFixed(2);
-  console.log(state);
+
   return (
     <WidgetBase title="Temperatura" extended={<DoubleExtended />}>
       <div>

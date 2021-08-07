@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock } from '@fortawesome/free-solid-svg-icons';
@@ -6,13 +6,13 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
+import useCachedFetch from 'hooks/useCachedFetch';
+import {
+  transformDateToLocaleDay, formatWeekDay,
+} from 'components/helpers/utils';
 import WidgetBase from '../base';
 import useStyles from './useStyles';
-import {
-  transformDateToLocaleDay,
-} from '../../helpers/utils';
 import DayForecast from './_children/day';
-import useCachedFetch from '../../../hooks/useCachedFetch';
 
 const locations = {
   'colmenar-viejo': 'Colmenar Viejo',
@@ -23,14 +23,10 @@ const locations = {
 
 export default function ForecastWidget({ defaultLocation }) {
   const [location, setLocation] = useState(defaultLocation);
-  const [forecast, setForecast] = useState([]);
   const classes = useStyles();
-  const enppoint = `https://tiempo.davidinformatico.com/forecast/${location}.json`;
-  const [data, isLoading] = useCachedFetch(enppoint);
+  const enppoint = `https://tiempo.davidinformatico.com/forecastv2/${location}.json`;
 
-  useEffect(() => {
-    setForecast(data);
-  }, [data]);
+  const [forecast] = useCachedFetch(enppoint);
 
   return (
     <WidgetBase
@@ -62,14 +58,15 @@ export default function ForecastWidget({ defaultLocation }) {
     >
       <div className={classes.root}>
         {
-          forecast?.data?.map((f) => (
+          forecast?.data?.['daily_forecast']?.slice(1, 6).map((f) => (
             <DayForecast
-              code={f?.['weather_code']?.value}
-              date={f?.['observation_time']?.value}
-              maxT={f?.temp?.[1]?.max?.value}
-              minT={f?.temp?.[0]?.min?.value}
-              precipitation={f?.precipitation?.[0]?.max?.value}
-              wind={f?.['wind_speed']?.[1]?.max?.value}
+              code={f?.weather}
+              date={formatWeekDay(f?.date)}
+              maxT={f?.['max_temp']}
+              minT={f?.['min_temp']}
+              precipitation={f?.rain}
+              probPrecipitation={f?.['probability_of_precipitation']}
+              wind={f?.['wind_speed']}
             />
           ))
         }

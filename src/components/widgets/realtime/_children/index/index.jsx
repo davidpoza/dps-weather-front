@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
@@ -34,3 +35,8 @@ export default function Index({ value, max }) {
     <BorderLinearProgress variant="determinate" value={(value / max) * 100} />
   );
 }
+
+Index.propTypes = {
+  value: PropTypes.number,
+  max: PropTypes.number,
+};

@@ -1,14 +1,12 @@
 import React, { useContext } from 'react';
 import moment from 'moment-timezone/builds/moment-timezone-with-data';
+import Store from 'reducers/store';
+import Chart from 'components/chart';
 import WidgetBase from '../base';
-import Store from '../../../reducers/store';
-import useStyles from './useStyles';
-import Chart from '../../chart';
 
 
 export default function TemperatureChart() {
-  const classes = useStyles();
-  const [state, dispatch] = useContext(Store);
+  const [state] = useContext(Store);
 
   const date = moment().format('YYYY-MM-DD');
   return (

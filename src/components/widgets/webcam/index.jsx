@@ -1,6 +1,7 @@
 import React, {
-  useState, useContext, useEffect, useRef,
+  useState, useEffect, useCallback,
 } from 'react';
+import isEqual from 'lodash.isequal';
 
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
@@ -11,11 +12,9 @@ import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import SkipNextIcon from '@material-ui/icons/SkipNext';
 import PauseIcon from '@material-ui/icons/Pause';
-
 import Typography from '@material-ui/core/Typography';
-import PropTypes from 'prop-types';
+import { mod } from 'components/helpers/utils';
 import useStyles from './useStyles';
-import Store from '../../../reducers/store';
 import WidgetBase from '../base';
 
 
@@ -46,8 +45,8 @@ const webcams = [
     url: 'https://aventurate.com/webcam_externas/venta-marcelino-3',
   },
 ];
-function WebcamWidget(props) {
-  const [state, dispatch] = useContext(Store);
+
+function WebcamWidget() {
   const [selectedUrl, setSelectedUrl] = useState(webcams[0].url);
   const [panoramic, setPanoramic] = useState(webcams[0].panoramic);
   const [photoIndex, setPhotoIndex] = useState(0);
@@ -55,54 +54,51 @@ function WebcamWidget(props) {
   const [playing, setPlaying] = useState(false);
   const [imageList, setImageList] = useState([]);
   const classes = useStyles();
-  const imageElement = useRef(null);
 
-  function preloadImage(index) {
+  const preloadImage = useCallback((index) => { // <--- 5. preloadImage cambia porque cambia imageList
     if (imageList.length) {
       const imgPreloadedUrl = `${selectedUrl}/${imageList[`${mod(index + 1, imageList.length)}`]}`;
       const imgPreloaded = new Image();
       imgPreloaded.src = imgPreloadedUrl;
       window.imgPreloaded = imgPreloaded;
     }
-  }
+  }, [imageList, selectedUrl]);
 
-  function fetchImageList() {
+  const fetchImageList = useCallback(() => {
     const url = `${selectedUrl}/listdir.php`;
     return fetch(url)
       .then((response) => response.json())
       .then((data) => {
-        setImageList(data);
-        setImageLoaded(true);
-        preloadImage(1);
+        if (!isEqual(data, imageList)) {
+          setImageList(data); // <--- 3. al cambiar imageList
+          setImageLoaded(true);
+          preloadImage(1);
+        }
         return (data);
       });
-  }
+  }, [selectedUrl, preloadImage, imageList]);
 
-  function mod(n, m) {
-    return ((n % m) + m) % m;
-  }
-
-  function changePhoto(index) {
+  const changePhoto = useCallback((index) => {
     preloadImage(index);
     setPhotoIndex(mod(index, imageList.length));
-  }
+  }, [preloadImage, imageList.length]);
 
   useEffect(() => {
-    preloadImage(0);
-  }, [imageList]);
+    preloadImage(0);   // <---- 4. se lanza un preloadImage
+  }, [imageList, preloadImage]);
 
   useEffect(() => {
     if (imageList.length === 0) {
       setImageLoaded(false);
       fetchImageList();
     }
-  }, [imageLoaded]);
+  }, [imageLoaded, fetchImageList, imageList.length]);
 
   useEffect(() => {
     setImageLoaded(false);
-    fetchImageList();
+    fetchImageList();  // <--- 2. llama a fetchImageList
     preloadImage(0);
-  }, [selectedUrl]);
+  }, [fetchImageList, preloadImage]);  // <---- 1.render inicial    6. vuelve a renderizar porque cambia preloadImage
 
   useEffect(() => {
     if (playing) {
@@ -110,7 +106,7 @@ function WebcamWidget(props) {
         changePhoto(photoIndex + 1);
       }, 500);
     }
-  }, [playing, photoIndex]);
+  }, [playing, photoIndex, changePhoto]);
 
   function play() {
     setPlaying(!playing);
@@ -132,63 +128,64 @@ function WebcamWidget(props) {
   }
 
   const { day, hour, minute } = parseImageDate(imageList[photoIndex]);
-  return (imageList.length > 0
-    ? (
-      <WidgetBase
-        actionsClasses={classes.buttons}
-        panoramic={panoramic}
-        spaceBetween
-        actions={(
-          <>
-            <FormControl variant="outlined" className={classes.formControl}>
-              <Select
-                labelId="selected"
-                id="selected"
-                value={selectedUrl}
-                onChange={(e) => {
-                  const selectedWebcam = webcams.find(w => w.url === e.target.value);
-                  setPanoramic(selectedWebcam?.panoramic || false);
-                  setSelectedUrl(e.target.value);
-                }}
-                label="Selecciona webcam"
-              >
-                {
-                  webcams.map((w) => (
-                    <MenuItem value={w.url}>
-                      {w.name}
-                    </MenuItem>
-                  ))
-                }
-              </Select>
-            </FormControl>
+  return (
+    imageList.length > 0
+      ? (
+        <WidgetBase
+          actionsClasses={classes.buttons}
+          panoramic={panoramic}
+          spaceBetween
+          actions={(
+            <>
+              <FormControl variant="outlined" className={classes.formControl}>
+                <Select
+                  labelId="selected"
+                  id="selected"
+                  value={selectedUrl}
+                  onChange={(e) => {
+                    const selectedWebcam = webcams.find(w => w.url === e.target.value);
+                    setPanoramic(selectedWebcam?.panoramic || false);
+                    setSelectedUrl(e.target.value);
+                  }}
+                  label="Selecciona webcam"
+                >
+                  {
+                    webcams.map((w) => (
+                      <MenuItem value={w.url}>
+                        {w.name}
+                      </MenuItem>
+                    ))
+                  }
+                </Select>
+              </FormControl>
 
-            <IconButton title="Anterior foto" onClick={() => changePhoto(photoIndex - 1)}>
-              <NavigateBeforeIcon />
-            </IconButton>
-            <IconButton title="Ver animación (hacia atrás en el tiempo)" onClick={play}>
-              { playing ? <PauseIcon /> : <PlayArrowIcon /> }
-            </IconButton>
-            <IconButton title="Siguiente foto" onClick={() => changePhoto(photoIndex + 1)}>
-              <NavigateNextIcon />
-            </IconButton>
+              <IconButton title="Anterior foto" onClick={() => changePhoto(photoIndex - 1)}>
+                <NavigateBeforeIcon />
+              </IconButton>
+              <IconButton title="Ver animación (hacia atrás en el tiempo)" onClick={play}>
+                { playing ? <PauseIcon /> : <PlayArrowIcon /> }
+              </IconButton>
+              <IconButton title="Siguiente foto" onClick={() => changePhoto(photoIndex + 1)}>
+                <NavigateNextIcon />
+              </IconButton>
 
-            <IconButton title="Volver a foto actual" onClick={() => changePhoto(0)}>
-              <SkipNextIcon />
-            </IconButton>
-          </>
-        )}
-      >
-        <div
-          style={{ backgroundImage: `url(${selectedUrl}/${imageList[`${photoIndex}`]})` }}
-          className={panoramic ? classes.panoramicMedia : classes.media}
-        />
+              <IconButton title="Volver a foto actual" onClick={() => changePhoto(0)}>
+                <SkipNextIcon />
+              </IconButton>
+            </>
+          )}
+        >
+          <div
+            style={{ backgroundImage: `url(${selectedUrl}/${imageList[`${photoIndex}`]})` }}
+            className={panoramic ? classes.panoramicMedia : classes.media}
+          />
 
-        <Typography variant="body1" component="div">
-          { `Foto ${photoIndex + 1} de ${imageList.length}, el día ${parseInt(day, 10)} a las ${hour}:${minute}` }
-        </Typography>
-      </WidgetBase>
-    )
-    : null
+          <Typography variant="body1" component="div">
+            { `Foto ${photoIndex + 1} de ${imageList.length}, el día ${parseInt(day, 10)} a las ${hour}:${minute}` }
+          </Typography>
+        </WidgetBase>
+      )
+      : null
   );
 }
 

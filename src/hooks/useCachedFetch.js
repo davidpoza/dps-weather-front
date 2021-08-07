@@ -27,7 +27,7 @@ export default function useCachedFetch(url, defaultValue = [], ttl = 120) {
         setLoading(false);
       })();
     }
-  }, [url, defaultValue]);
+  }, [url, defaultValue, ttl]);
 
   return [data, isLoading];
 }

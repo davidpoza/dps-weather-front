@@ -7,11 +7,10 @@ import get from 'lodash.get';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Store from 'reducers/store';
+import { fetchLogData } from 'actions/chart-actions';
 import useStyles from './useStyles';
 import DateSelector from '../date-selector';
-import Store from '../../reducers/store';
-import { fetchLogData } from '../../actions/chart-actions';
-import usePrevious from '../../hooks/use-previous';
 
 function SearchFrom(props) {
   const { setFormOpen } = props;
@@ -25,7 +24,6 @@ function SearchFrom(props) {
   const classes = useStyles();
 
   const makeRequests = () => {
-    console.log("---->peticiones lanzadas");
     fetchLogData(dispatch, {
       graph: 1,
       date: get(state, 'graph1_date'),
@@ -39,19 +37,6 @@ function SearchFrom(props) {
       token: get(state, 'user.token'),
     });
   };
-
-  const prevState = usePrevious({ ...state });
-
-  // useEffect(() => {
-  //   const prevDate1 = get(prevState, 'graph1_date');
-  //   const prevDate2 = get(prevState, 'graph2_date');
-  //   const date1 = get(state, 'graph1_date');
-  //   const date2 = get(state, 'graph2_date');
-
-  //   if (!prevDate1 && date1) {
-  //     makeRequests();
-  //   }
-  // }, [...Object.values(state)]);
 
   useEffect(() => {
     /*
@@ -72,8 +57,6 @@ function SearchFrom(props) {
       }
     }
   }, [...Object.values(state)]);
-
-  console.log("RENDERIZADO")
 
   return (
     <div>

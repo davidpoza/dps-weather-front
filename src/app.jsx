@@ -1,6 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom/';
-import Drawer from './components/drawer';
+import { BrowserRouter as Router, Route } from 'react-router-dom/';
 import MainScreen from './components/main-screen';
 // import ResultsScreen from './components/results-screen';
 import AppBar from './components/app-bar';
@@ -9,8 +8,7 @@ import RegisterForm from './components/register-form';
 import Store from './reducers/store';
 
 function App() {
-  const [state, dispatch] = useContext(Store);
-  const [drawerIsOpen, setOpenDrawer] = useState(false);
+  const [state] = useContext(Store);
   const [loginFormIsOpen, setLoginFormOpen] = useState(!state.user);
   const [registerFormIsOpen, setRegisterFormOpen] = useState(false);
   return (
@@ -22,23 +20,13 @@ function App() {
           setRegisterFormOpen={setRegisterFormOpen}
         />
         <RegisterForm formIsOpen={registerFormIsOpen} setFormOpen={setRegisterFormOpen} />
-        <AppBar drawerIsOpen={drawerIsOpen} setDrawerOpen={setOpenDrawer} setLoginFormOpen={setLoginFormOpen} />
-        <Drawer drawerIsOpen={drawerIsOpen} setDrawerOpen={setOpenDrawer} />
+        <AppBar setLoginFormOpen={setLoginFormOpen} />
         <Route
           exact
           path="/"
         >
           <MainScreen setFormOpen={setLoginFormOpen} />
         </Route>
-        {/* <Route
-          path="/results/:searchId/:pag?"
-        >
-          {
-            state.user
-              ? <ResultsScreen />
-              : <Redirect to="/" />
-          }
-        </Route> */}
       </Router>
     </>
   );
