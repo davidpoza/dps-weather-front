@@ -151,7 +151,7 @@ function WebcamWidget() {
                 >
                   {
                     webcams.map((w) => (
-                      <MenuItem value={w.url}>
+                      <MenuItem key={`item${w.name}`} value={w.url}>
                         {w.name}
                       </MenuItem>
                     ))
@@ -159,17 +159,17 @@ function WebcamWidget() {
                 </Select>
               </FormControl>
 
-              <IconButton title="Anterior foto" onClick={() => changePhoto(photoIndex - 1)}>
+              <IconButton key="prev" title="Anterior foto" onClick={() => changePhoto(photoIndex - 1)}>
                 <NavigateBeforeIcon />
               </IconButton>
-              <IconButton title="Ver animación (hacia atrás en el tiempo)" onClick={play}>
+              <IconButton key="animation" title="Ver animación (hacia atrás en el tiempo)" onClick={play}>
                 { playing ? <PauseIcon /> : <PlayArrowIcon /> }
               </IconButton>
-              <IconButton title="Siguiente foto" onClick={() => changePhoto(photoIndex + 1)}>
+              <IconButton key="next" title="Siguiente foto" onClick={() => changePhoto(photoIndex + 1)}>
                 <NavigateNextIcon />
               </IconButton>
 
-              <IconButton title="Volver a foto actual" onClick={() => changePhoto(0)}>
+              <IconButton key="current" title="Volver a foto actual" onClick={() => changePhoto(0)}>
                 <SkipNextIcon />
               </IconButton>
             </>

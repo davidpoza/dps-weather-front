@@ -46,7 +46,7 @@ export default function ForecastWidget({ defaultLocation }) {
             >
               {
                 Object.keys(locations).map((loc) => (
-                  <MenuItem value={loc}>
+                  <MenuItem key={`menuitem${loc}`} value={loc}>
                     {locations[loc]}
                   </MenuItem>
                 ))
@@ -58,8 +58,9 @@ export default function ForecastWidget({ defaultLocation }) {
     >
       <div className={classes.root}>
         {
-          forecast?.data?.['daily_forecast']?.slice(1, 6).map((f) => (
+          forecast?.data?.['daily_forecast']?.slice(1, 6).map((f, i) => (
             <DayForecast
+              key={`day${i}`}
               code={f?.weather}
               date={formatWeekDay(f?.date)}
               maxT={f?.['max_temp']}

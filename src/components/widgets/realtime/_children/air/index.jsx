@@ -53,7 +53,7 @@ export default function AirTab({
 }
 
 AirTab.propTypes = {
-  value: PropTypes.number,
+  value: PropTypes.string,
   pollenTree: PropTypes.number,
   pollenGrass: PropTypes.number,
   pollenWeed: PropTypes.number,

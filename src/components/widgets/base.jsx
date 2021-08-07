@@ -68,6 +68,6 @@ WidgetBase.propTypes = {
   panoramic: PropTypes.bool,
   extended: PropTypes.node,
   actions: PropTypes.node,
-  actionsClasses: PropTypes.object,
+  actionsClasses: PropTypes.string,
   spaceBetween: PropTypes.bool,
 };

@@ -17,7 +17,7 @@ export default function TextForecastTab({ value, textForecast, ts = 0 }) {
 }
 
 TextForecastTab.propTypes = {
-  value: PropTypes.number,
+  value: PropTypes.string,
   textForecast: PropTypes.string,
   ts: PropTypes.number,
 };
