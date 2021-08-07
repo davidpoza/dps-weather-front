@@ -17,12 +17,12 @@ import RealtimeWidget from 'components/widgets/realtime';
 import WindyWidget from 'components/widgets/windy';
 import useStyles from './useStyles';
 
+const sensors = ['HOME_INDOOR', 'HOME_OUTDOOR', 'BEDROOM', 'BEDROOM2'];
 
 function MainScreen() {
   const [state, dispatch] = useContext(Store);
   const classes = useStyles();
   const token = get(state, 'user.token');
-  const sensors = ['HOME_INDOOR', 'HOME_OUTDOOR', 'BEDROOM', 'BEDROOM2'];
 
   const requestAllSensors = useCallback(() => {
     fetchCurrentData(dispatch, { token });
@@ -35,27 +35,14 @@ function MainScreen() {
       });
       fetch24hComparison(dispatch, { stationId: id, token });
     });
-  }, [sensors, dispatch, token]);
-
-  const makeRequests = useCallback(() => {
-    const currentDate = moment.tz(new Date(), 'Europe/Madrid');
-    const lastRegisteredDate = get(state, 'currentConditions.date');
-    const lastRegisteredDateObj = moment.tz(
-      lastRegisteredDate, 'DD-MM-YYYY HH:mm:ss', 'Europe/Madrid',
-    );
-    const diff = currentDate.diff(lastRegisteredDateObj, 'minutes');
-    if (get(state, 'user.token') && !get(state, 'loading')
-      && (!lastRegisteredDate || diff >= 1)) {
-      requestAllSensors();
-    }
-  }, [state, requestAllSensors]);
+  }, [dispatch, token]);
 
   useEffect(() => {
-    makeRequests();
+    requestAllSensors();
     setInterval(() => {
-      makeRequests();
+      requestAllSensors();
     }, 2 * 60 * 1000);
-  }, [makeRequests]);
+  }, [requestAllSensors]);
 
   if (!state?.user) return null;
   return (
