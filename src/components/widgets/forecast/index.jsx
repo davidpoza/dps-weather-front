@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock } from '@fortawesome/free-solid-svg-icons';
@@ -6,27 +6,22 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
-import useCachedFetch from 'hooks/useCachedFetch';
 import {
   transformDateToLocaleDay, formatWeekDay,
 } from 'components/helpers/utils';
 import WidgetBase from '../base';
 import useStyles from './useStyles';
 import DayForecast from './_children/day';
-
-const locations = {
-  'colmenar-viejo': 'Colmenar Viejo',
-  penalara: 'Peñalara',
-  'hoyos-del-espino': 'Hoyos del Espino',
-  somosierra: 'Somosierra',
-};
+import useForecast from './hook';
 
 export default function ForecastWidget({ defaultLocation }) {
-  const [location, setLocation] = useState(defaultLocation);
   const classes = useStyles();
-  const enppoint = `https://tiempo.davidinformatico.com/forecastv2/${location}.json`;
-
-  const [forecast] = useCachedFetch(enppoint);
+  const {
+    forecast,
+    handleLocationChange,
+    location,
+    locations,
+  } = useForecast(defaultLocation);
 
   return (
     <WidgetBase
@@ -39,9 +34,7 @@ export default function ForecastWidget({ defaultLocation }) {
               labelId="selected"
               id="selected"
               value={location}
-              onChange={(e) => {
-                setLocation(e.target.value);
-              }}
+              onChange={handleLocationChange}
               label="Selecciona localización"
             >
               {

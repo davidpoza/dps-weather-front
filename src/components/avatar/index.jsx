@@ -1,30 +1,20 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Avatar from '@material-ui/core/Avatar';
-import Store from 'reducers/store';
-import { logout } from 'actions/user-actions';
 import useStyles from './useStyles';
+import useAvatar from './hook';
 
-export default function MyAvatar(props) {
-  const [state, dispatch] = useContext(Store);
+export default function MyAvatar({ userId }) {
   const classes = useStyles();
-  const { userId } = props;
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleLogout = () => {
-    handleClose();
-    logout(dispatch);
-  };
+  const {
+    anchorEl,
+    email,
+    handleClick,
+    handleClose,
+    handleLogout,
+  } = useAvatar();
 
   if (userId) {
     return (
@@ -41,7 +31,7 @@ export default function MyAvatar(props) {
           open={Boolean(anchorEl)}
           onClose={handleClose}
         >
-          <MenuItem className={classes.menuEmail} disabled>{state.user.email}</MenuItem>
+          <MenuItem className={classes.menuEmail} disabled>{email}</MenuItem>
           <MenuItem onClick={handleLogout}>Logout</MenuItem>
         </Menu>
       </>

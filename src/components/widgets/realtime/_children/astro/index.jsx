@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faSun, faMoon, faArrowUp, faArrowDown,
@@ -50,3 +51,13 @@ export default function AstroTab({
     </TabPanel>
   );
 }
+
+AstroTab.propTypes = {
+  value: PropTypes.string,
+  moonPhase: PropTypes.number,
+  sunrise: PropTypes.number,
+  sunset: PropTypes.number,
+  moonrise: PropTypes.number,
+  moonset: PropTypes.number,
+  ts: PropTypes.number,
+};

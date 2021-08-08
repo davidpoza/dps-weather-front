@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock } from '@fortawesome/free-solid-svg-icons';
 import TabPanel from '@material-ui/lab/TabPanel';
@@ -6,7 +7,15 @@ import Typography from '@material-ui/core/Typography';
 import { transformDateToLocaleDay, getUVI } from 'components/helpers/utils';
 import useStyles from './useStyles';
 
-export default function AirTab({ value, windSpeed, windDirection, visibility, cloudCover, uvi, ts = 0 }) {
+export default function CloudsTab({
+  value,
+  windSpeed,
+  windDirection,
+  visibility,
+  cloudCover,
+  uvi,
+  ts = 0,
+}) {
   const classes = useStyles();
 
   const Extended = () => (
@@ -14,21 +23,17 @@ export default function AirTab({ value, windSpeed, windDirection, visibility, cl
       <div className={classes.visibility}>
         Visibilidad
         <br />
-        <strong>
-          {` ${(visibility / 1000)?.toFixed(2)}Km`}
-        </strong>
+        <strong>{` ${(visibility / 1000)?.toFixed(2)}Km`}</strong>
       </div>
       <div className={classes.cloudCover}>
         Cobertura de nubes
         <br />
-        <strong>
-          {` ${cloudCover?.toFixed(2)}%`}
-        </strong>
+        <strong>{` ${cloudCover?.toFixed(2)}%`}</strong>
       </div>
       <div className={classes.radiation}>
         Radiación ultravioleta
         <br />
-        <strong style={{ color: getUVI(uvi).color }}>
+        <strong style={{color: getUVI(uvi).color}}>
           {` ${uvi?.toFixed(2)} ${getUVI(uvi).description}`}
         </strong>
       </div>
@@ -43,28 +48,22 @@ export default function AirTab({ value, windSpeed, windDirection, visibility, cl
             <img
               className={classes.icon}
               src="svg/wind-rose.svg"
-              style={{ transform: `rotate(${windDirection}deg)` }}
+              style={{transform: `rotate(${windDirection}deg)`}}
               alt={windDirection}
             />
             <div>
-              <div>
-                {windSpeed}
-              </div>
-              <div className="units">
-                Km/h
-              </div>
+              <div>{windSpeed}</div>
+              <div className="units">Km/h</div>
             </div>
           </div>
           <div className={classes.updated}>
             <Typography variant="caption">
-              {
-                ts && (
-                  <>
-                    <FontAwesomeIcon icon={faClock} />
-                    {` ${transformDateToLocaleDay(ts)}`}
-                  </>
-                )
-              }
+              {ts && (
+                <>
+                  <FontAwesomeIcon icon={faClock} />
+                  {` ${transformDateToLocaleDay(ts)}`}
+                </>
+              )}
             </Typography>
           </div>
         </div>
@@ -73,3 +72,13 @@ export default function AirTab({ value, windSpeed, windDirection, visibility, cl
     </TabPanel>
   );
 }
+
+CloudsTab.propTypes = {
+  ts: PropTypes.number,
+  value: PropTypes.string,
+  windSpeed: PropTypes.number,
+  windDirection: PropTypes.number,
+  visibility: PropTypes.number,
+  cloudCover: PropTypes.number,
+  uvi: PropTypes.number,
+};

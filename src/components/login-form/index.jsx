@@ -24,6 +24,7 @@ export default function LoginForm({ formIsOpen, setFormOpen, setRegisterFormOpen
     handleOpenRegisterForm,
     password,
   } = useLogin({ formIsOpen, setFormOpen, setRegisterFormOpen });
+
   return (
     <div>
       <Dialog open={formIsOpen} onClose={handleClose} aria-labelledby="form-dialog-title">
