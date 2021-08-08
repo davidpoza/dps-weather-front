@@ -1,4 +1,6 @@
-import { useContext, useState, useEffect, useCallback } from 'react';
+import {
+  useContext, useState, useEffect, useCallback,
+} from 'react';
 import Store from 'reducers/store';
 import api from '../../../api/index';
 

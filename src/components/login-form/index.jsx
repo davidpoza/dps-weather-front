@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -7,33 +7,23 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Store from 'reducers/store';
-import { login } from 'actions/user-actions';
+
 import useStyles from './useStyles';
+import useLogin from './hook';
 
-export default function LoginForm(props) {
-  const [, dispatch] = useContext(Store);
+export default function LoginForm({ formIsOpen, setFormOpen, setRegisterFormOpen }) {
   const classes = useStyles();
-  const { formIsOpen, setFormOpen, setRegisterFormOpen } = props;
-  const [password, setPassword] = useState('');
-  const [email, setEmail] = useState('');
-
-  const handleClose = () => {
-    setFormOpen(false);
-  };
-
-  const handleLogin = () => {
-    setFormOpen(false);
-    login(dispatch, { email, password });
-    setPassword('');
-    setEmail('');
-  };
-
-  const handleOpenRegisterForm = () => {
-    setFormOpen(false);
-    setRegisterFormOpen(true);
-  };
-
+  const {
+    disabled,
+    email,
+    handleClose,
+    handleEnterPress,
+    handleLogin,
+    handleOnChangeEmail,
+    handleOnChangePassword,
+    handleOpenRegisterForm,
+    password,
+  } = useLogin({ formIsOpen, setFormOpen, setRegisterFormOpen });
   return (
     <div>
       <Dialog open={formIsOpen} onClose={handleClose} aria-labelledby="form-dialog-title">
@@ -52,11 +42,7 @@ export default function LoginForm(props) {
             </Button>
           </DialogContentText>
           <TextField
-            onChange={
-              (e) => {
-                setEmail(e.target.value);
-              }
-            }
+            onChange={handleOnChangeEmail}
             value={email}
             autoFocus
             margin="dense"
@@ -66,16 +52,8 @@ export default function LoginForm(props) {
             fullWidth
           />
           <TextField
-            onChange={
-              (e) => {
-                setPassword(e.target.value);
-              }
-            }
-            onKeyPress={(e) => {
-              if (e.key === 'Enter' && password !== '') {
-                handleLogin();
-              }
-            }}
+            onChange={handleOnChangePassword}
+            onKeyPress={handleEnterPress}
             value={password}
             margin="dense"
             id="password"
@@ -89,7 +67,7 @@ export default function LoginForm(props) {
             Cancel
           </Button>
           <Button
-            disabled={password === '' || email === ''}
+            disabled={disabled}
             onClick={handleLogin}
             color="primary"
           >
