@@ -8,9 +8,8 @@ export default function useRealtime(location) {
   const [state] = useContext(Store);
   const [realtimeData, setRealtimeData] = useState();
   const [madridPollutionScene, setMadridPollutionScene] = useState();
-  const { wind: windSpeed } = state.currentConditions;
-
   const [tab, setTab] = useState('1');
+  const { wind: windSpeed } = state.currentConditions;
 
   const handleTabChange = (event, newValue) => {
     setTab(newValue);

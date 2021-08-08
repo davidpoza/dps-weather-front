@@ -33,7 +33,7 @@ export default function AstroTab({
         </div>
         <div className={classes.col}>
           <div>
-            { moonPhase && <img className={classes.moonImage} src={moon.image} alt="lunar_phase" /> }
+            { moonPhase !== undefined && <img className={classes.moonImage} src={moon.image} alt="lunar_phase" /> }
           </div>
           <div className={classes.clock}>
             <div className="text">{moon.phase}</div>
