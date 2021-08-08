@@ -21,6 +21,7 @@ export default function ForecastWidget({ defaultLocation }) {
     handleLocationChange,
     location,
     locations,
+    ts,
   } = useForecast(defaultLocation);
 
   return (
@@ -51,7 +52,7 @@ export default function ForecastWidget({ defaultLocation }) {
     >
       <div className={classes.root}>
         {
-          forecast?.data?.['daily_forecast']?.slice(1, 6).map((f, i) => (
+          forecast?.map((f, i) => (
             <DayForecast
               key={`day${i}`}
               code={f?.weather}
@@ -68,10 +69,10 @@ export default function ForecastWidget({ defaultLocation }) {
       <div className={classes.updated}>
         <Typography variant="caption">
           {
-            forecast.ts && (
+            ts && (
               <>
                 <FontAwesomeIcon icon={faClock} />
-                { ` Actualizado en: ${transformDateToLocaleDay(forecast.ts)}` }
+                { ` Actualizado en: ${transformDateToLocaleDay(ts)}` }
               </>
             )
           }

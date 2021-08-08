@@ -7,6 +7,7 @@ export default makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     margin: '5px',
+    minWidth: '22%',
   },
   border: {
     padding: '5px',

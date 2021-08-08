@@ -19,9 +19,10 @@ export default function useForecast(defaultLocation) {
   };
 
   return {
-    forecast,
+    forecast: forecast?.data?.['daily_forecast'],
     handleLocationChange,
     location,
     locations,
+    ts: forecast.ts,
   };
 }
