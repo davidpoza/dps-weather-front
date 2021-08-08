@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -17,15 +18,17 @@ function TableCol({ data }) {
       <Table size="small" aria-label="a dense table">
         <TableBody>
           {
-            data?.map((row) => (
-              <TableRow key={row.name}>
+            data?.map((row, i) => (
+              <TableRow key={i}>
                 <TableCell
+                  key="date"
                   classes={{ root: classes.dateCell }}
                   scope="row"
                 >
                   { transformDateToLocaleDay(row.date * 1000) }
                 </TableCell>
                 <TableCell
+                  key="temp"
                   classes={{ root: classes.cell }}
                   align="right"
                 >
@@ -47,9 +50,26 @@ export default function HoursTab({ value, data }) {
   return (
     <TabPanel value={value} className={classes.tabPanel}>
       <div className={classes.root}>
-        <TableCol data={data?.slice(0, 8)} />
-        <TableCol data={data?.slice(8, 16)} />
+        <TableCol key="left" data={data?.slice(0, 8)} />
+        <TableCol key="right" data={data?.slice(8, 16)} />
       </div>
     </TabPanel>
   );
 }
+
+const dataProptypes = PropTypes.arrayOf(PropTypes.shape({
+  name: PropTypes.string,
+  date: PropTypes.nmumber,
+  temp: PropTypes.number,
+  rain: PropTypes.number,
+  probability_of_precipitation: PropTypes.number,
+}));
+
+HoursTab.propTypes = {
+  value: PropTypes.string,
+  data: dataProptypes,
+};
+
+TableCol.propTypes = {
+  data: dataProptypes,
+};
