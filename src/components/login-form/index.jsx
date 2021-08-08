@@ -30,15 +30,15 @@ export default function LoginForm({ formIsOpen, setFormOpen, setRegisterFormOpen
         <DialogTitle id="form-dialog-title">Login</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            To access this page you have to be logged in.
+            Para acceder a esta página debes identificarte primero.
           </DialogContentText>
           <DialogContentText>
-            Do you have no account?, create one
+            ¿No tienes cuenta? Crea una ahora
             <Button
               onClick={handleOpenRegisterForm}
               className={classes.createAccount}
             >
-              here
+              Aquí
             </Button>
           </DialogContentText>
           <TextField
@@ -47,7 +47,7 @@ export default function LoginForm({ formIsOpen, setFormOpen, setRegisterFormOpen
             autoFocus
             margin="dense"
             id="email"
-            label="Email Address"
+            label="Email"
             type="email"
             fullWidth
           />
@@ -57,14 +57,14 @@ export default function LoginForm({ formIsOpen, setFormOpen, setRegisterFormOpen
             value={password}
             margin="dense"
             id="password"
-            label="Password"
+            label="Contraseña"
             type="password"
             fullWidth
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
-            Cancel
+            Cancelar
           </Button>
           <Button
             disabled={disabled}

@@ -1,6 +1,4 @@
-import React, {
-  useState, useCallback, useEffect, useContext,
-} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -10,102 +8,58 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import ErrorIcon from '@material-ui/icons/Error';
-import { emailIsValid, passwordIsValid } from 'components/helpers/utils';
-import Store from 'reducers/store';
-import { register } from 'actions/user-actions';
 import useStyles from './useStyles';
+import useRegisterForm from './hook';
 
-export default function RegisterForm(props) {
-  const [, dispatch] = useContext(Store);
+export default function RegisterForm({ formIsOpen, setFormOpen }) {
   const classes = useStyles();
-  const { formIsOpen, setFormOpen } = props;
-  const [msg, setMsg] = useState('');
-  const [error, setError] = useState(true);
-  const [password, setPassword] = useState('');
-  const [repeatedPassword, setRepeatedPassword] = useState('');
-  const [email, setEmail] = useState('');
+  const {
+    email,
+    error,
+    handleClose,
+    handleOnChangeEmail,
+    handleOnChangePassword,
+    handleOnChangeRepeatedPassword,
+    handleRegister,
+    msg,
+    password,
+    repeatedPassword,
+  } = useRegisterForm({ setFormOpen });
 
-  const handleClose = () => {
-    setFormOpen(false);
-  };
-
-  const handleRegister = () => {
-    register(dispatch, { email, password });
-    handleClose();
-  };
-
-  const validate = useCallback(() => {
-    if (email === '' && password === '' && repeatedPassword === '') {
-      setMsg('');
-      setError(true);
-    } else if (!emailIsValid(email)) {
-      setError(true);
-      setMsg('Email address is not valid.');
-    } else if (password !== repeatedPassword) {
-      setError(true);
-      setMsg('Passwords don\'t match');
-    } else if (password !== '' && !passwordIsValid(password)) {
-      setError(true);
-      // eslint-disable-next-line max-len
-      setMsg('Password must have at least 8 characters length and at least 3 characters from these subsets: upper cases letters, lower case letters, numbers or no-alphanumerics symbols.');
-    } else if ((email === '' || password === '' || repeatedPassword === '')) {
-      setError(true);
-      setMsg('You must fill-in all fields');
-    } else {
-      setError(false);
-      setMsg('');
-    }
-  }, [email, password, repeatedPassword, setMsg, setError]);
-
-  useEffect(() => {
-    validate();
-  }, [validate]);
 
   return (
     <div>
       <Dialog open={formIsOpen} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Create new account</DialogTitle>
+        <DialogTitle id="form-dialog-title">Crear una cuenta</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            If you don&apos;t have an account, you can create one by filling-in this form.
+            Si no tienes cuenta puedes crear una rellenándo este formulario.
           </DialogContentText>
           <TextField
-            onChange={
-              (e) => {
-                setEmail(e.target.value);
-              }
-            }
+            onChange={handleOnChangeEmail}
             value={email}
             autoFocus
             margin="dense"
             id="email"
-            label="Email Address"
+            label="Email"
             type="email"
             fullWidth
           />
           <TextField
-            onChange={
-              (e) => {
-                setPassword(e.target.value);
-              }
-            }
+            onChange={handleOnChangePassword}
             value={password}
             margin="dense"
             id="password"
-            label="Password"
+            label="Contraseña"
             type="password"
             fullWidth
           />
           <TextField
-            onChange={
-              (e) => {
-                setRepeatedPassword(e.target.value);
-              }
-            }
+            onChange={handleOnChangeRepeatedPassword}
             value={repeatedPassword}
             margin="dense"
             id="password"
-            label="Repeat password"
+            label="Repite la contraseña"
             type="password"
             fullWidth
           />
@@ -120,14 +74,14 @@ export default function RegisterForm(props) {
         }
         <DialogActions>
           <Button onClick={handleClose} color="primary">
-            Cancel
+            Cancelar
           </Button>
           <Button
             disabled={error}
             onClick={handleRegister}
             color="primary"
           >
-            Register
+            Registrarme
           </Button>
         </DialogActions>
       </Dialog>
