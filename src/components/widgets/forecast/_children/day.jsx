@@ -22,14 +22,14 @@ export default function DayForecast({
       </div>
       {
         minT && (
-        <div className={classes.minT}>
+        <div className={classes.minT} style={{ color: `${calculateTempColor(minT)}` }}>
           {`${minT} °C`}
         </div>
         )
       }
       {
         minT && (
-        <div className={classes.maxT}>
+        <div className={classes.maxT} style={{ color: `${calculateTempColor(maxT)}` }}>
           {`${maxT} °C`}
         </div>
         )

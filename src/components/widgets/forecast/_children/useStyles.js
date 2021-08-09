@@ -25,12 +25,10 @@ export default makeStyles((theme) => ({
   minT: {
     fontSize: '0.9em',
     fontWeight: 'bold',
-    color: '#7bb6c9',
   },
   maxT: {
     fontSize: '0.9em',
     fontWeight: 'bold',
-    color: '#ac1058',
   },
   wind: {
     fontSize: '0.9em',
