@@ -18,6 +18,10 @@ export default makeStyles((theme) => ({
   icon: {
     width: '40px',
   },
+  currentT: {
+    fontSize: '0.9em',
+    fontWeight: 'bold',
+  },
   minT: {
     fontSize: '0.9em',
     fontWeight: 'bold',

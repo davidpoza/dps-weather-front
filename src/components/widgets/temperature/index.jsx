@@ -13,6 +13,7 @@ import {
   filterArrayObjects,
   calculateTHWIndex,
   fromDateTimeToIsoString,
+  calculateTempColor,
 } from 'components/helpers/utils';
 import WidgetBase from '../base';
 import useStyles from './useStyles';
@@ -26,12 +27,6 @@ export default function TempertureWidget() {
   const {
     date, outdoorTemp, indoorTemp, indoorHum, outdoorHum, wind,
   } = state.currentConditions;
-
-  function calculateColor(value) {
-    if (value > 27) return '#ac1058';
-    if (value < 15) return '#7bb6c9';
-    return '#46c48d';
-  }
 
   function ExtendedData({ sensorId = 'HOME_OUTDOOR' }) {
     const value = {
@@ -120,7 +115,7 @@ export default function TempertureWidget() {
       <div>
         <FontAwesomeIcon icon={faThermometerQuarter} className={classes.icon} size="2x" />
       </div>
-      <div className={classes.value} style={{ color: calculateColor(outdoorTemp) }}>
+      <div className={classes.value} style={{ color: calculateTempColor(outdoorTemp) }}>
         {`${outdoorTemp} °C`}
       </div>
       <div>
@@ -137,7 +132,7 @@ export default function TempertureWidget() {
           }
         </strong>
       </div>
-      <div className={classes.value} style={{ color: calculateColor(indoorTemp) }}>
+      <div className={classes.value} style={{ color: calculateTempColor(indoorTemp) }}>
         {`${indoorTemp} °C`}
       </div>
       <div>

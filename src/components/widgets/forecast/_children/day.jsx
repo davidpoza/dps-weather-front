@@ -4,11 +4,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faWind, faTint,
 } from '@fortawesome/free-solid-svg-icons';
-import { getWeatherImage } from 'components/helpers/utils';
+import { getWeatherImage, calculateTempColor } from 'components/helpers/utils';
 import useStyles from './useStyles';
 
 export default function DayForecast({
-  code, date, maxT, minT, precipitation = 0, probPrecipitation = 0, wind,
+  code, date, maxT, minT, currentT, precipitation = 0, probPrecipitation = 0, wind,
 }) {
   const classes = useStyles();
 
@@ -20,12 +20,28 @@ export default function DayForecast({
         </div>
         <img className={classes.icon} src={getWeatherImage(code)} alt={code} />
       </div>
-      <div className={classes.minT}>
-        {`${minT} °C`}
-      </div>
-      <div className={classes.maxT}>
-        {`${maxT} °C`}
-      </div>
+      {
+        minT && (
+        <div className={classes.minT}>
+          {`${minT} °C`}
+        </div>
+        )
+      }
+      {
+        minT && (
+        <div className={classes.maxT}>
+          {`${maxT} °C`}
+        </div>
+        )
+      }
+      {
+        currentT && (
+        <div className={classes.currentT} style={{ color: `${calculateTempColor(currentT)}` }}>
+          <div>Ahora</div>
+          {`${currentT} °C`}
+        </div>
+        )
+      }
       <div className={classes.precipitation}>
         <FontAwesomeIcon
           icon={faTint}
@@ -46,6 +62,7 @@ DayForecast.propTypes = {
   date: PropTypes.string,
   maxT: PropTypes.number,
   minT: PropTypes.number,
+  currentT: PropTypes.number,
   precipitation: PropTypes.number,
   probPrecipitation: PropTypes.number,
   wind: PropTypes.number,

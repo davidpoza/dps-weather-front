@@ -292,4 +292,12 @@ export function mod(n, m) {
   return ((n % m) + m) % m;
 }
 
+export function calculateTempColor(value) {
+  if (value >= 35) return '#e83609';
+  if (value >= 27 && value < 35) return '#ac1058';
+  if (value >= 15 && value < 27) return '#46c48d';
+  if (value >= 5 && value < 15) return '#7bb6c9';
+  if (value < 5) return '#3f51b5';
+}
+
 /* eslint-enable import/prefer-default-export */

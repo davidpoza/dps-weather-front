@@ -17,6 +17,7 @@ import useForecast from './hook';
 export default function ForecastWidget({ defaultLocation }) {
   const classes = useStyles();
   const {
+    current,
     forecast,
     handleLocationChange,
     location,
@@ -51,6 +52,15 @@ export default function ForecastWidget({ defaultLocation }) {
       )}
     >
       <div className={classes.root}>
+        <DayForecast
+          key="currentday"
+          code={current?.weather}
+          date={formatWeekDay(new Date().getTime() / 1000)}
+          currentT={current?.temp}
+          precipitation={current?.rain}
+          probPrecipitation={current?.['probability_of_precipitation']}
+          wind={current?.['wind_speed']}
+        />
         {
           forecast?.map((f, i) => (
             <DayForecast
