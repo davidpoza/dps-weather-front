@@ -19,8 +19,8 @@ export default function useForecast(defaultLocation) {
   };
 
   return {
-    forecast: forecast?.data?.['daily_forecast'].slice(1),
-    current: forecast?.data?.['hourly_forecast'][0],
+    forecast: forecast?.data?.data?.['daily_forecast'].slice(1),
+    current: forecast?.data?.data?.['hourly_forecast'][0],
     handleLocationChange,
     location,
     locations,

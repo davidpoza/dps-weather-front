@@ -50,8 +50,9 @@ export default function useWebcam() {
     }
   }, [imageList, selectedUrl]);
 
-  if (data && data.length && !isEqual(data, imageList)) {
-    setImageList(data);
+  // added comparation of data.url and current selectedUrl to avoid mismatching between url and list of images
+  if (data.data && data.data.length && !isEqual(data.data, imageList) && data.url.startsWith(selectedUrl)) {
+    setImageList(data.data);
   }
 
   const handleOnChange = (e) => {
@@ -63,13 +64,13 @@ export default function useWebcam() {
 
   const changePhoto = useCallback((index) => {
     preloadImage(index + 1);
-    preloadImage(index + 2);
+    // preloadImage(index + 2);
     setPhotoIndex(mod(index, imageList.length));
   }, [preloadImage, imageList.length]);
 
   useEffect(() => {
     preloadImage(1);
-    preloadImage(2);
+    // preloadImage(2);
   }, [imageList, preloadImage]);
 
   useEffect(() => {

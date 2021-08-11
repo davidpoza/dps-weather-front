@@ -22,7 +22,7 @@ export default function useCachedFetch(url, defaultValue = [], ttl = 120) {
       (async () => {
         const res = await fetch(url);
         const resData = await res.json();
-        CACHE[cacheID].data = resData;
+        CACHE[cacheID].data = { url, data: resData };
         setData(resData);
         setLoading(false);
       })();
