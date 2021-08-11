@@ -7,7 +7,7 @@ export default function useCachedFetch(url, defaultValue = [], ttl = 120) {
   const [isLoading, setLoading] = useState(true);
   useEffect(() => {
     const cacheID = url;
-    if (CACHE[cacheID]?.data !== undefined) {
+    if (CACHE[cacheID]?.data !== undefined && cacheID) {
       setData(CACHE[cacheID]?.data);
       setLoading(false);
     } else {

@@ -3,6 +3,7 @@ import {
 } from 'react';
 import isEqual from 'lodash.isequal';
 import { mod } from 'components/helpers/utils';
+import useCachedFetch from 'hooks/useCachedFetch';
 
 const webcams = [
   {
@@ -36,60 +37,40 @@ export default function useWebcam() {
   const [selectedUrl, setSelectedUrl] = useState(webcams[0].url);
   const [panoramic, setPanoramic] = useState(webcams[0].panoramic);
   const [photoIndex, setPhotoIndex] = useState(0);
-  const [imageLoaded, setImageLoaded] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [imageList, setImageList] = useState([]);
-
-  const handleOnChange = (e) => {
-    const selectedWebcam = webcams.find((w) => w.url === e.target.value);
-    setPanoramic(selectedWebcam?.panoramic || false);
-    setSelectedUrl(e.target.value);
-  };
+  const [data] = useCachedFetch(`${selectedUrl}/listdir.php`);
 
   const preloadImage = useCallback((index) => {
-    if (imageList.length) {
-      const imgPreloadedUrl = `${selectedUrl}/${imageList[`${mod(index + 1, imageList.length)}`]}`;
+    if (imageList?.length) {
+      const imgPreloadedUrl = `${selectedUrl}/${imageList[`${mod(index, imageList.length)}`]}`;
       const imgPreloaded = new Image();
       imgPreloaded.src = imgPreloadedUrl;
       window.imgPreloaded = imgPreloaded;
     }
   }, [imageList, selectedUrl]);
 
-  const fetchImageList = useCallback(() => {
-    const url = `${selectedUrl}/listdir.php`;
-    return fetch(url)
-      .then((response) => response.json())
-      .then((data) => {
-        if (!isEqual(data, imageList)) {
-          setImageList(data);
-          setImageLoaded(true);
-          preloadImage(1);
-        }
-        return (data);
-      });
-  }, [selectedUrl, preloadImage, imageList]);
+  if (data && data.length && !isEqual(data, imageList)) {
+    setImageList(data);
+  }
+
+  const handleOnChange = (e) => {
+    setImageList([]); // invalidate current list doesnt match with selectedUrl
+    const selectedWebcam = webcams.find((w) => w.url === e.target.value);
+    setPanoramic(selectedWebcam?.panoramic || false);
+    setSelectedUrl(e.target.value);
+  };
 
   const changePhoto = useCallback((index) => {
-    preloadImage(index);
+    preloadImage(index + 1);
+    preloadImage(index + 2);
     setPhotoIndex(mod(index, imageList.length));
   }, [preloadImage, imageList.length]);
 
   useEffect(() => {
-    preloadImage(0);
+    preloadImage(1);
+    preloadImage(2);
   }, [imageList, preloadImage]);
-
-  useEffect(() => {
-    if (imageList.length === 0) {
-      setImageLoaded(false);
-      fetchImageList();
-    }
-  }, [imageLoaded, fetchImageList, imageList.length]);
-
-  useEffect(() => {
-    setImageLoaded(false);
-    fetchImageList();
-    preloadImage(0);
-  }, [fetchImageList, preloadImage]);
 
   useEffect(() => {
     if (playing) {
