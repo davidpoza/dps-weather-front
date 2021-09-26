@@ -7,9 +7,13 @@ import useCachedFetch from 'hooks/useCachedFetch';
 
 const webcams = [
   {
-    name: 'Aventúrate',
+    name: 'Cuerdalarga',
     url: 'https://aventurate.com/webcam',
     panoramic: true,
+  },
+  {
+    name: 'Maliciosa',
+    url: 'https://aventurate.com/webcam_externas/maliciosa',
   },
   {
     name: 'Navacerrada 1',
@@ -30,6 +34,27 @@ const webcams = [
   {
     name: 'Venta Marcelino 3',
     url: 'https://aventurate.com/webcam_externas/venta-marcelino-3',
+  },
+  {
+    name: 'Venta Marcelino 4',
+    url: 'https://aventurate.com/webcam_externas/venta-marcelino-4',
+  },
+  {
+    name: 'Sierra Nevada Borreguiles',
+    url: 'https://aventurate.com/webcam_externas/sierra-nevada-borreguiles',
+    panoramic: true,
+  },
+  {
+    name: 'Refugio Poqueria 2',
+    url: 'https://aventurate.com/webcam_externas/refugio-poqueira-2',
+  },
+  {
+    name: 'Refugio Poqueria 3',
+    url: 'https://aventurate.com/webcam_externas/refugio-poqueira-3',
+  },
+  {
+    name: 'Refugio Poqueria 4',
+    url: 'https://aventurate.com/webcam_externas/refugio-poqueira-4',
   },
 ];
 

@@ -19,6 +19,7 @@ export default makeStyles((theme) => ({
     transition: 'opacity 1s ease-in-out',
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
+    backgroundPositionY: 'center',
   },
   panoramicMedia: {
     height: '180px',
